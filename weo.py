@@ -14,11 +14,9 @@ def convert(x):
         return float(x)
     except ValueError:
         return np.nan
-    
-assert convert("9,902.554") == 9902.554
 
 class WEO:
-    """Wrapper for pandas dataframe that hold 
+    """Wrapper for pandas dataframe that holds 
        World Economic Outlook source data as a table.
        
        Inspection methods:
@@ -75,8 +73,8 @@ class WEO:
         return _df.applymap(convert)
 
     def find_countries(self, name: str):
-        """Find country names that include *name* substring, 
-           irrespective of lower or upper case."""
+        """Find country names that include *name* as substring, 
+           case-insensitive."""
         c = name.lower()
         ix = self.countries_df['Country'].apply(lambda x: c in x.lower())
         return self.countries_df[ix]                   

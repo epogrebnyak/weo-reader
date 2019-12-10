@@ -1,4 +1,4 @@
-# Mark countries to select with +
+# Mark countries you want to select with +
 
 countries_doc = """Afghanistan
 Albania
@@ -203,5 +203,4 @@ focus_countries = [w.iso_code(c[1:]) for c
                    in countries_doc.split('\n') 
                    if c.startswith('+')]
 
-assert w.iso_code('Neth') == 'NLD'
 print(focus_countries)
