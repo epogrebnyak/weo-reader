@@ -18,6 +18,22 @@ def convert(x):
 assert convert("9,902.554") == 9902.554
 
 class WEO:
+    """Wrapper for pandas dataframe that hold 
+       World Economic Outlook source data as a table.
+       
+       Inspection methods:
+           .vars()
+           .units()
+           .find_countries()
+           .iso_code()
+       
+       Single-variable dataframe:
+           .get()     
+           
+       Presets:
+           .gdp_usd()
+           
+       """
     years = [str(x) for x in range(1980, LATEST_YEAR+1)]
     
     def __init__(self, filename):
@@ -58,16 +74,16 @@ class WEO:
                                   freq='A')
         return _df.applymap(convert)
 
-    def find(self, country: str):
-        """Find country names that include *country* substring, 
+    def find_countries(self, name: str):
+        """Find country names that include *name* substring, 
            irrespective of lower or upper case."""
-        c = country.lower()
+        c = name.lower()
         ix = self.countries_df['Country'].apply(lambda x: c in x.lower())
         return self.countries_df[ix]                   
     
     def iso_code(self, country: str):
         """Return ISO code for *country* name."""
-        return self.find(country).ISO.iloc[0]    
+        return self.find_countries(country).ISO.iloc[0]    
   
     def gdp_usd(self, year=2018):
         return self.get('Gross domestic product, current prices', 
