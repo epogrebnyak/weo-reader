@@ -80,14 +80,8 @@ class WEO:
 def plot_axh(df, **kwarg):
   df.plot(**kwarg).axhline(y=0, ls='-', lw=0.5, color='darkgrey')
      
-if __name__  == '__main__':
-    
+if __name__  == '__main__':    
     w = WEO('weo.csv')
-    
-    # w.vars
-    # w.units()    
-    # w.units('Gross domestic product, current prices')
-    # w.get('General government gross debt', 'Percent of GDP')
     
     def plot_deficit(subset, source=w):
         _df = source.get('General government net lending/borrowing',
