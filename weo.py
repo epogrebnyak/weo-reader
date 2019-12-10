@@ -44,7 +44,7 @@ class WEO:
         self.countries_df = self.df[country_cols].drop_duplicates()
 
     def vars(self):
-        return self.df['Subject Descriptor'].unique()                
+        return self.df['Subject Descriptor'].unique().tolist()                
         
     def by_subject(self, subjects):
         if isinstance(subjects, str):
@@ -90,9 +90,18 @@ class WEO:
                         .transpose() \
                         .iloc[:,0] \
                         .sort_values(ascending=False)
+                        
+    def libor_usd(self):
+        return self.get('Six-month London interbank' 
+                        ' offered rate (LIBOR)', 'Percent')['USA']
 
 def plot_axh(df, **kwarg):
   df.plot(**kwarg).axhline(y=0, ls='-', lw=0.5, color='darkgrey')
+  
+  # TODO: indicate data gaps
+  #       check identities
+  #       attempt timing recesssions 
+  #       employment flexibility?
      
 if __name__  == '__main__':    
     w = WEO('weo.csv')
