@@ -99,9 +99,16 @@ def plot_axh(df, **kwarg):
   df.plot(**kwarg).axhline(y=0, ls='-', lw=0.5, color='darkgrey')
   
   # TODO: indicate data gaps
-  #       check identities
+  #       check identities: CA, deflator, PPP rate, per capita GDPs
+  #       savings vs investment
+  #       can estimate consumption 
+  #       distributions by country slice
   #       attempt timing recesssions 
   #       employment flexibility?
+  #       replicate ouptput gap
+  #       tiles
+  #       AutoML-like 
+  #       cointegration tests
      
 if __name__  == '__main__':    
     w = WEO('weo.csv')
