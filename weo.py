@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+LATEST_YEAR = 2024
+
 def convert(x):
     if isinstance(x, str) and "," in x:
         x = x.replace(",","")
@@ -16,18 +18,19 @@ def convert(x):
 assert convert("9,902.554") == 9902.554
 
 class WEO:
-    years = [str(x) for x in range(1980, 2024+1)]
+    years = [str(x) for x in range(1980, LATEST_YEAR+1)]
     
     def __init__(self, filename):
         df = pd.read_csv(filename, delimiter="\t", encoding="iso-8859-1")
         ix = df['Country'].isna()
         self.df = df[~ix]
         # attributes
-        self.vars = self.df['Subject Descriptor'].unique()        
         self.columns = self.df.columns
-        self.units = self.df['Units'].unique()
         country_cols = ['WEO Country Code', 'ISO', 'Country']     
-        self.countries_df = self.df[country_cols].drop_duplicates()          
+        self.countries_df = self.df[country_cols].drop_duplicates()
+
+    def vars(self):
+        return self.df['Subject Descriptor'].unique()                
         
     def by_subject(self, subjects):
         if isinstance(subjects, str):
@@ -35,24 +38,36 @@ class WEO:
         ix = self.df['Subject Descriptor'].isin(subjects) 
         return self.df[ix]                   
     
-    def get(self, subject, unit):
+    def units(self, subject=None):
+        _df = self.by_subject(subject) if subject else self.df
+        return _df['Units'].unique().tolist()        
+            
+    def get(self, subject: str, unit: str):
         _df = self.by_subject(subject)
         units = _df['Units'].unique()
         if unit not in units:
             raise ValueError(f"Unit must be one of {units}, provided: {unit}")
         cols = self.years + ['ISO']
-        ix = _df['Units'] == unit
-        _df = _df[ix][cols] \
+        _df = _df[_df['Units'] == unit] \
+                 [cols] \
                  .set_index('ISO') \
                  .transpose()
         _df.columns.name = ''
-        _df.index = pd.date_range(start='1980', end='2025', freq='A')
+        _df.index = pd.date_range(start='1980', 
+                                  end=str(LATEST_YEAR+1), 
+                                  freq='A')
         return _df.applymap(convert)
 
     def find(self, country: str):
+        """Find country names that include *country* substring, 
+           irrespective of lower or upper case."""
         c = country.lower()
         ix = self.countries_df['Country'].apply(lambda x: c in x.lower())
         return self.countries_df[ix]                   
+    
+    def iso_code(self, country: str):
+        """Return ISO code for *country* name."""
+        return self.find(country).ISO.iloc[0]    
   
     def gdp_usd(self, year=2018):
         return self.get('Gross domestic product, current prices', 
@@ -62,222 +77,22 @@ class WEO:
                         .iloc[:,0] \
                         .sort_values(ascending=False)
 
-    
-countries_doc = """Afghanistan
-Albania
-Algeria
-Angola
-Antigua and Barbuda
-+Argentina
-Armenia
-Aruba
-+Australia
-Austria
-Azerbaijan
-The Bahamas
-Bahrain
-Bangladesh
-Barbados
-Belarus
-Belgium
-Belize
-Benin
-Bhutan
-Bolivia
-Bosnia and Herzegovina
-Botswana
-+Brazil
-Brunei Darussalam
-Bulgaria
-Burkina Faso
-Burundi
-Cabo Verde
-Cambodia
-Cameroon
-Canada
-Central African Republic
-Chad
-Chile
-+China
-Colombia
-Comoros
-Democratic Republic of the Congo
-Republic of Congo
-Costa Rica
-Côte d'Ivoire
-Croatia
-Cyprus
-Czech Republic
-Denmark
-Djibouti
-Dominica
-Dominican Republic
-Ecuador
-Egypt
-El Salvador
-Equatorial Guinea
-Eritrea
-Estonia
-Eswatini
-Ethiopia
-Fiji
-Finland
-+France
-Gabon
-The Gambia
-Georgia
-+Germany
-Ghana
-+Greece
-Grenada
-Guatemala
-Guinea
-Guinea-Bissau
-Guyana
-Haiti
-Honduras
-Hong Kong SAR
-Hungary
-Iceland
-+India
-Indonesia
-Islamic Republic of Iran
-Iraq
-Ireland
-Israel
-+Italy
-Jamaica
-+Japan
-Jordan
-Kazakhstan
-Kenya
-Kiribati
-Korea
-Kosovo
-Kuwait
-Kyrgyz Republic
-Lao P.D.R.
-Latvia
-Lebanon
-Lesotho
-Liberia
-Libya
-Lithuania
-Luxembourg
-Macao SAR
-Madagascar
-Malawi
-Malaysia
-Maldives
-Mali
-Malta
-Marshall Islands
-Mauritania
-Mauritius
-Mexico
-Micronesia
-Moldova
-Mongolia
-Montenegro
-Morocco
-Mozambique
-Myanmar
-Namibia
-Nauru
-Nepal
-Netherlands
-New Zealand
-Nicaragua
-Niger
-Nigeria
-North Macedonia
-+Norway
-Oman
-Pakistan
-Palau
-Panama
-Papua New Guinea
-Paraguay
-Peru
-Philippines
-Poland
-Portugal
-Puerto Rico
-Qatar
-Romania
-+Russia
-Rwanda
-Samoa
-San Marino
-São Tomé and Príncipe
-+Saudi Arabia
-Senegal
-Serbia
-Seychelles
-Sierra Leone
-Singapore
-Slovak Republic
-Slovenia
-Solomon Islands
-Somalia
-+South Africa
-South Sudan
-+Spain
-Sri Lanka
-St. Kitts and Nevis
-St. Lucia
-St. Vincent and the Grenadines
-Sudan
-Suriname
-Sweden
-Switzerland
-Syria
-Taiwan Province of China
-Tajikistan
-Tanzania
-Thailand
-Timor-Leste
-Togo
-Tonga
-Trinidad and Tobago
-Tunisia
-Turkey
-Turkmenistan
-Tuvalu
-Uganda
-Ukraine
-United Arab Emirates
-+United Kingdom
-+United States
-Uruguay
-Uzbekistan
-Vanuatu
-Venezuela
-Vietnam
-Yemen
-Zambia
-Zimbabwe"""
-
-
-def plot_axh(df, title):
-  df.plot(title=title) \
-     .axhline(y=0, ls='-', lw=0.5, color='darkgrey')
+def plot_axh(df, **kwarg):
+  df.plot(**kwarg).axhline(y=0, ls='-', lw=0.5, color='darkgrey')
      
 if __name__  == '__main__':
     
     w = WEO('weo.csv')
     
-    def find_first(s):
-        return w.find(s).ISO.iloc[0]    
-    
-    focus_countries = [find_first(c[1:]) for c 
-                       in countries_doc.split('\n') 
-                       if c.startswith('+')]
+    # w.vars
+    # w.units()    
+    # w.units('Gross domestic product, current prices')
+    # w.get('General government gross debt', 'Percent of GDP')
     
     def plot_deficit(subset, source=w):
         _df = source.get('General government net lending/borrowing',
                          'Percent of GDP')[subset]
-        plot_axh(_df, "Чистое кредитование/заимствование, % ВВП")
+        plot_axh(_df, title="Чистое кредитование/заимствование, % ВВП")
     
     def plot_debt(subset, source=w):
         _df = source.get('General government gross debt',
