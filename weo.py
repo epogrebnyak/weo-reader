@@ -1,13 +1,12 @@
-# Download source:
-# curl -o weo.csv
-# https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
+# Download source file from IMF website as weo.csv:
+#
+# curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
+#
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 LATEST_YEAR = 2024
-
 
 def convert(x):
     if isinstance(x, str) and "," in x:
@@ -16,6 +15,39 @@ def convert(x):
         return float(x)
     except ValueError:
         return np.nan
+
+
+def read_csv(filename):
+    df = pd.read_csv(filename, delimiter="\t", encoding="iso-8859-1")
+    ix = df['Country'].isna()
+    return df[~ix], df[ix]
+
+
+def split_footnote(s):
+    import re
+    res = re.search("International Monetary Fund, "
+                    "World Economic Outlook Database, "
+                    r"(\w*) (\d*)", s)
+    return int(res[2]), res[1]
+
+
+def version(filename):
+    _, tail = read_csv(filename)
+    return split_footnote(tail.iloc[0,0])
+
+
+def accept_year(func):
+    def inner(self, *arg, year=None):  
+        df = func(self)
+        if arg:
+            year = arg[0]
+        if year:
+            return df[str(year)] \
+               .transpose() \
+               .iloc[:, 0]
+        else:
+            return df
+    return inner
 
 
 class WEO:
@@ -41,24 +73,42 @@ class WEO:
        """
 
     def __init__(self, filename):
-        self._df = pd.read_csv(filename, delimiter="\t", encoding="iso-8859-1")
+        self.df, _ = read_csv(filename)        
 
     @property
     def years(self):
-        return [x for x in self._df.columns if x.isdigit()]
-
+        return [x for x in self.df.columns if x.isdigit()]
+    
     @property
-    def df(self):
-        ix = self._df['Country'].isna()
-        return self._df[~ix]
+    def daterange(self):
+        return pd.period_range(start=self.years[0],
+                               end=self.years[-1],
+                               freq='A')
 
     @property
     def countries_df(self):
         country_cols = ['WEO Country Code', 'ISO', 'Country']
-        return self._df[country_cols].drop_duplicates()
+        return self.df[country_cols].drop_duplicates()
 
-    def variables(self):
+    def subjects(self):
         return self.df['Subject Descriptor'].unique().tolist()
+    
+    def variables(self):
+        return [(v, u, self.varcode(v,u)) 
+                for v in self.subjects() 
+                for u in self.units(v)]
+    
+    def _get(self, subject: str, unit: str):
+        ix = (self.df['Subject Descriptor'] == subject) & \
+             (self.df['Units'] == unit)
+        return self.df[ix]
+
+    def get_by_code(self, subject_code):
+        ix = self.df['WEO Subject Code'] == subject_code
+        return self.df[ix]
+    
+    def varcode(self, subject: str, unit: str):
+        return self._get(subject, unit)['WEO Subject Code'].iloc[0]
 
     def by_subject(self, subjects):
         """Subset source dataframe by variable names (subjects)."""
@@ -71,19 +121,34 @@ class WEO:
         _df = self.by_subject(subject) if subject else self.df
         return _df['Units'].unique().tolist()
 
-    def get(self, subject: str, unit: str):
-        _df = self.by_subject(subject)
-        units = _df['Units'].unique()
+    def check_subject(self, subject):
+        ss = self.subjects()
+        if subject not in ss:
+            raise ValueError("Subject must be one of \n"
+                             + "%s" % ("\n  ".join(ss))
+                             + f"\nProvided: {subject}")
+
+    def check_units(self, subject, unit):
+        units = self.units(subject)
         if unit not in units:
-            raise ValueError(f"Unit must be one of {units}, provided: {unit}")
-        _df = _df[_df['Units'] == unit][self.years + ['ISO']] \
-            .set_index('ISO') \
-            .transpose()
+            raise ValueError(f"Unit must be one of {units}\n"
+                             f"Provided: {unit}")
+
+
+    def t(self, df, column):
+        _df = df[self.years + [column]] \
+              .set_index(column) \
+              .transpose() \
+              .applymap(convert)              
         _df.columns.name = ''
-        _df.index = pd.date_range(start='1980',
-                                  end=str(LATEST_YEAR + 1),
-                                  freq='A')
-        return _df.applymap(convert)
+        _df.index = self.daterange
+        return _df
+
+    def get(self, subject: str, unit: str):
+        self.check_subject(subject)
+        self.check_units(subject, unit)
+        _df = self._get(subject, unit) 
+        return self.t(_df, 'ISO')
 
     def find_countries(self, name: str):
         """Find country names that include *name* as substring.
@@ -95,53 +160,85 @@ class WEO:
     def iso_code(self, country: str):
         """Return ISO code for *country* name."""
         return self.find_countries(country).ISO.iloc[0]
+    
+    def country(self, iso_code):
+        return self.df[self.df.ISO == iso_code]        
 
-    def gdp_usd(self, year=2018):
+    @accept_year
+    def gdp_nc(self):        
         return self.get('Gross domestic product, current prices',
-                        'U.S. dollars')[str(year)] \
-            .transpose() \
-            .iloc[:, 0] \
-            .sort_values(ascending=False)
+                        'National currency')
+
+    @accept_year
+    def gdp_usd(self):        
+        return self.get('Gross domestic product, current prices',
+                        'U.S. dollars')
+        
+    @accept_year
+    def gdp_growth(self):
+       return self.get('Gross domestic product, constant prices', 
+                       'Percent change')
+    
+    @accept_year
+    def current_account(self):
+       return self.get('Current account balance', 'U.S. dollars')
+
+    @accept_year
+    def inflation(self):
+      return self.get('Inflation, end of period consumer prices', 
+                      'Percent change')
+
+    @accept_year
+    def gov_net_lending_pgdp(self): 
+      return self.get('General government net lending/borrowing',
+                        'Percent of GDP')
+
+    @accept_year
+    def gov_debt_pgdp(self):
+        return self.get('General government gross debt',
+                            'Percent of GDP')
 
     def libor_usd(self):
         return self.get('Six-month London interbank'
                         ' offered rate (LIBOR)', 'Percent')['USA']
 
-
-def plot_axh(df, **kwarg):
-    df.plot(**kwarg).axhline(y=0, ls='-', lw=0.5, color='darkgrey')
-
-
 if __name__ == '__main__':
+    from matplotlib.pyplot import figure
+    
     w = WEO('weo.csv')
 
-    def plot_deficit(subset, source=w):
-        _df = source.get('General government net lending/borrowing',
-                         'Percent of GDP')[subset]
-        plot_axh(_df, title="Чистое кредитование/заимствование, % ВВП")
+    # What are the largest economies?
+    w.gdp_usd(2018).dropna().sort_values(ascending=True).tail(15).plot.barh()
+    
+    # Is everyone growing fast?
+    figure()
+    g = ((w.gdp_growth().loc['2018':,]/100+1).prod() ** (1/7)-1)*100
+    g.hist(bins=50)
+    
+    figure()
+    w.gdp_growth()['RUS'].plot.bar() # change time axis
+    
+    # So why is everyone centering around 2% inflation?
+    figure()
+    w.inflation(2024).where(lambda x: x < 15).dropna().hist(bins=40)
+    
+    # Care to look at current accounts?
+    ca = w.current_account()
+   
+    # Net exporters
+    figure()
+    ca.loc[:,ca.max() > 200].plot()
+    
+    # Net importers
+    figure()
+    ca.loc[:,ca.min() < -100].plot()
 
-    def plot_debt(subset, source=w):
-        _df = source.get('General government gross debt',
-                         'Percent of GDP')[subset]
-        _df.plot(title="Государственный долг, % ВВП")
-
+    # Who has most debt? Who is running a deficit?    
     brics = ['BRA', 'IND', 'CHN', 'RUS']
     cri = ['ARG', 'GRC', 'RUS', ]  # can also include 'ECU', 'MEX'
     oil = ['NOR', 'SAU', 'RUS', 'IRN']
-    g3j = ['FRA', 'DEU', 'ITA', 'GBR', 'USA']  # 'ESP', 'KOR'
-
-    plot_debt(g3j)
-    plot_deficit(g3j)
-
-    plot_debt(brics)
-    plot_deficit(brics)
-
-    plot_debt(cri)
-    plot_deficit(cri)
-
-    plot_debt(oil)
-    plot_deficit(oil)
-
-    plt.figure()
-    w.gdp_usd(2018).head(20).iloc[::-
-                                  1].plot.barh(title="ВВП, млрд долл. (2018)")
+    dev = ['FRA', 'DEU', 'ITA', 'GBR', 'USA']  # 'ESP', 'KOR'
+    
+    for subset in [brics, cri, oil, dev]:
+        w.gov_debt_pgdp()[subset].plot()
+        w.gov_net_lending_pgdp()[subset].plot().axhline(y=0, ls='-', lw=0.5, color='darkgrey')
