@@ -240,5 +240,7 @@ if __name__ == '__main__':
     dev = ['FRA', 'DEU', 'ITA', 'GBR', 'USA']  # 'ESP', 'KOR'
     
     for subset in [brics, cri, oil, dev]:
-        w.gov_debt_pgdp()[subset].plot()
-        w.gov_net_lending_pgdp()[subset].plot().axhline(y=0, ls='-', lw=0.5, color='darkgrey')
+        w.gov_debt_pgdp()[subset].plot(title="Государственный долг, % ВВП")
+        w.gov_net_lending_pgdp()[subset] \
+           .plot(title="Чистое кредитование/заимствование госсектора, % ВВП") \
+           .axhline(y=0, ls='-', lw=0.5, color='darkgrey')
