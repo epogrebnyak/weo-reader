@@ -62,13 +62,16 @@ class WEO:
            .units()
            .find_countries()
            .iso_code()
+           .subject_code()
 
        Single-variable dataframe:
            .get()
+           .get_by_code()
 
-       Presets:
+       Variables:
            .gdp_usd()
            .libor_usd()
+           and other
 
        """
 
@@ -94,7 +97,7 @@ class WEO:
         return self.df['Subject Descriptor'].unique().tolist()
     
     def variables(self):
-        return [(v, u, self.varcode(v,u)) 
+        return [(v, u, self.subject_code(v,u)) 
                 for v in self.subjects() 
                 for u in self.units(v)]
     
@@ -107,7 +110,7 @@ class WEO:
         ix = self.df['WEO Subject Code'] == subject_code
         return self.df[ix]
     
-    def varcode(self, subject: str, unit: str):
+    def subject_code(self, subject: str, unit: str):
         return self._get(subject, unit)['WEO Subject Code'].iloc[0]
 
     def by_subject(self, subjects):
