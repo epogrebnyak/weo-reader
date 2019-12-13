@@ -7,7 +7,7 @@ with open('README.md', encoding='utf-8') as file:
   readme_str = '\n'.join(file.readlines())
 
 setup(name='weo',
-      version='0.0.1',
+      version='0.0.2',
       description='Python client to read IMF WEO dataset as pandas dataframe',
       url='http://github.com/epogrebnyak/weo-reader',
       author='Evgeniy Pogrebnyak',
