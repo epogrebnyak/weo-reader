@@ -42,9 +42,10 @@ def accept_year(func):
         if arg:
             year = arg[0]
         if year:
-            return df[str(year)] \
+            ts = df[str(year)] \
                .transpose() \
                .iloc[:, 0]
+            return ts
         else:
             return df
     return inner
@@ -206,8 +207,8 @@ class WEO:
                         ' offered rate (LIBOR)', 'Percent')['USA']
 
 if __name__ == '__main__':
-    from matplotlib.pyplot import figure
-    
+    from matplotlib.pyplot import figure    
+   
     w = WEO('weo.csv')
 
     # What are the largest economies?
@@ -246,4 +247,6 @@ if __name__ == '__main__':
         w.gov_debt_pgdp()[subset].plot(title="Государственный долг, % ВВП")
         w.gov_net_lending_pgdp()[subset] \
            .plot(title="Чистое кредитование/заимствование госсектора, % ВВП") \
-           .axhline(y=0, ls='-', lw=0.5, color='darkgrey')
+           .axhline(y=0, ls='-', lw=0.5, color='darkgrey')           
+
+    w.df['POL']
