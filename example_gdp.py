@@ -1,11 +1,5 @@
 """
 GDP growth rates worldwide, as seen together with economy size.
-
-In 2018 US was the fastest growing ecomony
-except India, China, Indonesia and Poland.
-ARG contracted. 
-
-# Plotting details at https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.bar.html
 """
 
 import matplotlib.pyplot as plt
