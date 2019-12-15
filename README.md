@@ -17,7 +17,7 @@ Please note `WEOOct2019all.xls` is in fact a tab-delimited CSV file.
 
 Alternatively, can use `weo.download()` function:
 
-``python 
+```python 
 from weo import download
 
 download('weo.csv', 2019, 2)
