@@ -43,19 +43,19 @@ def plot_mekko(widths,
     return plt.Rectangle((0, 0), 1, 1, fc=color)    
     
 
-def large_economies(w, year, nlargest):
-    d_ = dict(w=w.gdp_usd(year), h=w.gdp_growth(year))
+def largest(w, year, n):
+    d_ = dict(gdp=w.gdp_usd(year), growth=w.gdp_growth(year))
     return pd.DataFrame(d_) \
             .dropna() \
-            .sort_values('w') \
-            .tail(nlargest) \
-            .sort_values('h')
+            .sort_values('gdp') \
+            .tail(n) \
+            .sort_values('growth')
 
 def plot_growth_mekko(source, year, nlargest=25, **kwargs):
-    df = large_economies(w, year, nlargest)
-    return plot_mekko(widths=df.w, 
-                      heights=df.h,
-                      title=f'Largest economies GDP growth rates in 2024 and 2018',
+    df = largest(w, year, nlargest)
+    return plot_mekko(widths=df.gdp, 
+                      heights=df.growth,
+                      title='Largest economies GDP growth rates in 2024 and 2018',
                       **kwargs)
 
 
