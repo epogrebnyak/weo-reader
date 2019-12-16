@@ -151,10 +151,10 @@ class WEO:
 
     def __init__(self, filename):
         self._df, _ = read_csv(filename)
-        
-    #TODO:
-    # add index of NGDP_RPCH 
-    # exchange rate        
+
+    # TODO:
+    # add index of NGDP_RPCH
+    # exchange rate
 
     @property
     def years(self):
@@ -169,10 +169,10 @@ class WEO:
     @property
     def core(self):
         return ['NGDP',
-                'NGDPD',                
+                'NGDPD',
                 'NGDP_RPCH',
                 'PCPIEPCH',
-                'PCPIPCH',                
+                'PCPIPCH',
                 'LP',
                 'LUR',
                 'GGR',
@@ -180,7 +180,7 @@ class WEO:
                 'GGXWDG',
                 'GGXONLB',
                 'BCA',
-]
+                ]
 
     # subjects and codes
 
@@ -287,8 +287,8 @@ class WEO:
         else:
             _df = _df[str(year)].transpose()
             _df['Variable'] = \
-                _df.index.map(lambda x : ' - '.join(self.code(x)))
-            return _df    
+                _df.index.map(lambda x: ' - '.join(self.code(x)))
+            return _df
 
     # convenience functions
 
@@ -333,4 +333,4 @@ class WEO:
 
 if __name__ == '__main__':
     from weo import WEO
-    w = WEO('weo.csv')   
+    w = WEO('weo.csv')
