@@ -150,7 +150,7 @@ class WEO:
        """
 
     def __init__(self, filename):
-        self._df, _ = read_csv(filename)
+        self.df, _ = read_csv(filename)
 
     # TODO:
     # add index of NGDP_RPCH
