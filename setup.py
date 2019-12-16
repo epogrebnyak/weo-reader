@@ -6,10 +6,11 @@ from pathlib import Path
 with open('README.md', encoding='utf-8') as file:
   readme_str = '\n'.join(file.readlines())
 
-# 0.0.32 - can download a file as download('weo.csv', 2019, 2)
+# 0.0.3 - can download a file as download('weo.csv', 2019, 2)
+# 0.0.4 - download has year limits, more data accessor functions
 
 setup(name='weo',
-      version='0.0.32',
+      version='0.0.4',
       description='Python client to read IMF WEO dataset as pandas dataframe',
       url='http://github.com/epogrebnyak/weo-reader',
       author='Evgeniy Pogrebnyak',

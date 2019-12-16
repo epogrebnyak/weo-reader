@@ -24,16 +24,34 @@ import requests
 LATEST_YEAR = 2024
 
 
-class WEO_Period_Error(ValueError):
+class WEO_Error(ValueError):
     pass
 
 
 def url(year, period):
+    return _url(year, period, prefix='all')  # alla for commodities
+
+
+def _url(year, period, prefix):
+    """
+    URL for country data file starting Oct 2007.
+    Data in other formats goes back to 2000.
+
+    Typical page with URLs:
+    https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/download.aspx
+    """
+    if prefix not in ['all', 'alla']:
+        raise WEO_Error(prefix)
+    if (year, period) < (2007, 2):
+        raise WEO_Error(
+            f'Valid year and period starts after (2007, 2), provided: {(year, period)}')
     period_marker = str(period).zfill(2)
     month = {1: 'Apr', 2: 'Oct'}[period]
+    if year == 2011 and period == 2:
+        month = 'Sep'
     return ('https://www.imf.org/external/pubs/ft/weo/'
             f'{year}/{period_marker}'
-            f'/weodata/WEO{month}{year}all.xls')
+            f'/weodata/WEO{month}{year}{prefix}.xls')
 
 
 def curl(path: str, url: str):
@@ -50,12 +68,13 @@ def to_mb(x):
     return round(x / 2 ** (10 * 2), 1)
 
 
-def download(path, year, period):
+def download(path, year, period, force=False):
     if period not in [1, 2]:
-        raise WEO_Period_Error(f'period should be 1 or 2, got {period}')
+        raise WEO_Error(f'period should be 1 or 2, got {period}')
     curl(path, url(year, period))
     p = Path(path)
-    print('Downloaded', to_mb(p.stat().st_size), 'Mb')
+    size = to_mb(p.stat().st_size)
+    print('Downloaded', size, 'Mb')
     return p
 
 
@@ -112,9 +131,12 @@ class WEO:
        Inspection methods:
            .variables()
            .units()
+           .codes()
+
+       Countries:
            .find_countries()
            .iso_code()
-           .subject_code()
+           .country_name()
 
        Single-variable dataframe:
            .get(subject, unit)
@@ -128,7 +150,11 @@ class WEO:
        """
 
     def __init__(self, filename):
-        self.df, _ = read_csv(filename)
+        self._df, _ = read_csv(filename)
+        
+    #TODO:
+    # add index of NGDP_RPCH 
+    # exchange rate        
 
     @property
     def years(self):
@@ -140,23 +166,48 @@ class WEO:
                                end=self.years[-1],
                                freq='A')
 
+    @property
+    def core(self):
+        return ['NGDP',
+                'NGDPD',                
+                'NGDP_RPCH',
+                'PCPIEPCH',
+                'PCPIPCH',                
+                'LP',
+                'LUR',
+                'GGR',
+                'GGX',
+                'GGXWDG',
+                'GGXONLB',
+                'BCA',
+]
+
     # subjects and codes
 
     def subjects(self):
         return self.df['Subject Descriptor'].unique().tolist()
 
     def variables(self):
-        return [(v, u, self.subject_code(v, u))
+        return [(v, u, self._subject_code(v, u))
                 for v in self.subjects()
                 for u in self.units(v)]
 
-    def subject_code(self, subject: str, unit: str):
+    def _subject_code(self, subject: str, unit: str):
         return self._get(subject, unit)['WEO Subject Code'].iloc[0]
 
+    def codes(self):
+        return self.df['WEO Subject Code'].unique().tolist()
+
+    def code(self, code):
+        _df = self.df[self.df['WEO Subject Code'] == code][[
+            'Subject Descriptor', 'Units']].iloc[0, ]
+        return tuple(_df.to_list())
+
+    # return self w.code('LUR')
+
     def units(self, subject=None):
-        ix = self.df['Subject Descriptor'] == subject        
-        return (self.df[ix] if subject else self.df) \
-               ['Units'].unique().tolist()
+        ix = self.df['Subject Descriptor'] == subject
+        return (self.df[ix] if subject else self.df)['Units'].unique().tolist()
 
     # countries
 
@@ -177,7 +228,8 @@ class WEO:
         return self.find_countries(country).ISO.iloc[0]
 
     def country_name(self, iso_code):
-        return self.df[self.df.ISO == iso_code]
+        """Return country name for ISO country *code*."""
+        return self.df[self.df.ISO == iso_code].Country.iloc[0]
 
     # checkers
 
@@ -188,7 +240,7 @@ class WEO:
                              + "%s" % ("\n  ".join(ss))
                              + f"\nProvided: {subject}")
 
-    def check_units(self, subject, unit):
+    def check_unit(self, subject, unit):
         units = self.units(subject)
         if unit not in units:
             raise ValueError(f"Unit must be one of {units}\n"
@@ -199,10 +251,6 @@ class WEO:
     def _get(self, subject: str, unit: str):
         ix = (self.df['Subject Descriptor'] == subject) & \
              (self.df['Units'] == unit)
-        return self.df[ix]
-
-    def get_by_code(self, variable_code):
-        ix = self.df['WEO Subject Code'] == variable_code
         return self.df[ix]
 
     def t(self, df, column):
@@ -216,12 +264,31 @@ class WEO:
 
     def get(self, subject: str, unit: str):
         self.check_subject(subject)
-        self.check_units(subject, unit)
+        self.check_unit(subject, unit)
         _df = self._get(subject, unit)
         return self.t(_df, 'ISO')
 
+    def get_by_code(self, variable_code):
+        ix = self.df['WEO Subject Code'] == variable_code
+        return self.df[ix]
+
     def fix_year(self, year):
-        pass
+        year_col = str(year)
+        return self.df[['ISO', 'WEO Subject Code', year_col]] \
+                   .pivot(index='WEO Subject Code',
+                          columns='ISO',
+                          values=year_col)
+
+    def country(self, iso_code, year=None):
+        ix = self.df.ISO == iso_code
+        _df = self.t(self.df[ix], 'WEO Subject Code')[self.core]
+        if year is None:
+            return _df
+        else:
+            _df = _df[str(year)].transpose()
+            _df['Variable'] = \
+                _df.index.map(lambda x : ' - '.join(self.code(x)))
+            return _df    
 
     # convenience functions
 
@@ -265,44 +332,5 @@ class WEO:
 
 
 if __name__ == '__main__':
-    from matplotlib.pyplot import figure
-
-    w = WEO('weo.csv')
-
-    # What are the largest economies?
-    w.gdp_usd(2018).dropna().sort_values(ascending=True).tail(15).plot.barh()
-
-    # Is everyone growing fast?
-    figure()
-    g = ((w.gdp_growth().loc['2018':, ] / 100 + 1).prod() ** (1 / 7) - 1) * 100
-    g.hist(bins=50)
-
-    figure()
-    w.gdp_growth()['RUS'].plot.bar()  # change time axis
-
-    # So why is everyone centering around 2% inflation?
-    figure()
-    w.inflation(2024).where(lambda x: x < 15).dropna().hist(bins=40)
-
-    # Care to look at current accounts?
-    ca = w.current_account()
-
-    # Net exporters
-    figure()
-    ca.loc[:, ca.max() > 200].plot()
-
-    # Net importers
-    figure()
-    ca.loc[:, ca.min() < -100].plot()
-
-    # Who has most debt? Who is running a deficit?
-    brics = ['BRA', 'IND', 'CHN', 'RUS']
-    cri = ['ARG', 'GRC', 'RUS', ]  # can also include 'ECU', 'MEX'
-    oil = ['NOR', 'SAU', 'RUS', 'IRN']
-    dev = ['FRA', 'DEU', 'ITA', 'GBR', 'USA']  # 'ESP', 'KOR'
-
-    for subset in [brics, cri, oil, dev]:
-        w.gov_debt_pgdp()[subset].plot(title="Государственный долг, % ВВП")
-        w.gov_net_lending_pgdp()[subset] .plot(
-            title="Чистое кредитование/заимствование госсектора, % ВВП") .axhline(
-            y=0, ls='-', lw=0.5, color='darkgrey')
+    from weo import WEO
+    w = WEO('weo.csv')   
