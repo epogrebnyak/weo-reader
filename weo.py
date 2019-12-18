@@ -114,7 +114,7 @@ def version(filename):
     return split_footnote(tail.iloc[0, 0])
 
 
-def accept_year(func):
+def accept_year(func): #FIXME: make accept a country
     def inner(self, *arg, year=None):
         df = func(self)
         if arg:
@@ -373,7 +373,7 @@ class WEO:
                         'Percent of GDP')
 
     @accept_year
-    def gov_debt_pgdp(self):
+    def gov_gross_debt_pgdp(self):
         return self.get('General government gross debt',
                         'Percent of GDP')
 
