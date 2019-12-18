@@ -28,10 +28,6 @@ class WEO_Error(ValueError):
     pass
 
 
-def url(year, period):
-    return _url(year, period, prefix='all')  # alla for commodities
-
-
 def to_month(period: int):
     try:
         return {1: 'Apr', 2: 'Oct'}[period]
@@ -51,7 +47,8 @@ def _url(year, period, prefix):
         raise WEO_Error(prefix)
     if (year, period) < (2007, 2):
         raise WEO_Error(
-            f'Valid year and period starts after (2007, 2), provided: {(year, period)}')
+            f'Valid year and period starts after (2007, 2), '
+            f'provided: {(year, period)}')
     period_marker = str(period).zfill(2)
     month = to_month(period)
     if year == 2011 and period == 2:  # one WEO issue was in September, not October
@@ -59,6 +56,10 @@ def _url(year, period, prefix):
     return ('https://www.imf.org/external/pubs/ft/weo/'
             f'{year}/{period_marker}'
             f'/weodata/WEO{month}{year}{prefix}.xls')
+
+
+def url(year, period):
+    return _url(year, period, prefix='all')  # alla for commodities
 
 
 def curl(path: str, url: str):
@@ -131,6 +132,8 @@ def accept_year(func):
 class WEO:
     """Wrapper for pandas dataframe that holds
        World Economic Outlook country dataset.
+       
+       Initialised by local filename, for example 'weo.csv'.
 
        Source data:
            .df
@@ -139,15 +142,15 @@ class WEO:
            .variables()
            .units()
            .codes()
-
-       Countries:
            .countries()
+
+       Country finders:           
            .iso_code()
            .country_name()
 
        Single-variable dataframe:
            .get(subject, unit)
-           .get_by_code(variable_code)
+           .get_by_code(code)
 
        Variables:
            .gdp_usd()
@@ -158,10 +161,6 @@ class WEO:
 
     def __init__(self, filename):
         self.df, _ = read_csv(filename)
-
-    # TODO:
-    # add index of NGDP_RPCH
-    # exchange rate
 
     @property
     def years(self):
@@ -260,14 +259,19 @@ class WEO:
             raise ValueError(f"Unit must be one of {units}\n"
                              f"Provided: {unit}")
 
-    # assessors
+    # assessor by subject/unit or code
 
-    def _get(self, subject: str, unit: str):
+    def _get_by_subject_and_unit(self, subject: str, unit: str):
         ix = (self.df['Subject Descriptor'] == subject) & \
              (self.df['Units'] == unit)
         return self.df[ix]
 
+    def _get_by_code(self, variable_code):
+        ix = self.df['WEO Subject Code'] == variable_code
+        return self.df[ix]
+
     def t(self, df, column):
+        """Extract columns with years from *df*, make *column* am index."""
         _df = df[self.years + [column]] \
             .set_index(column) \
             .transpose() \
@@ -276,15 +280,17 @@ class WEO:
         _df.index = self.daterange
         return _df
 
-    def get(self, subject: str, unit: str):
-        self.check_subject(subject)
-        self.check_unit(subject, unit)
-        _df = self._get(subject, unit)
+    def get(self, subject: str='', unit: str='', code: str=''):
+        if code:
+          self.check_code(code)
+          _df = self._get_by_code(code)
+        else:  
+          self.check_subject(subject)
+          self.check_unit(subject, unit)
+          _df = self._get_by_subject_and_unit(subject, unit)
         return self.t(_df, 'ISO')
-
-    def get_by_code(self, variable_code):
-        ix = self.df['WEO Subject Code'] == variable_code
-        return self.df[ix]
+    
+    # assessors in other dimensions (WIP)
 
     def fix_year(self, year):
         year_col = str(year)
@@ -300,8 +306,8 @@ class WEO:
             return _df
         else:
             _df = _df[str(year)].transpose()
-            _df['Variable'] = \
-                _df.index.map(lambda x: ' - '.join(self.code(x)))
+            _df['Description']  = \
+                _df.index.map(lambda x: ' - '.join(self.subject_and_unit(x)))
             return _df
 
     # convenience functions
@@ -315,6 +321,9 @@ class WEO:
     def gdp_usd(self):
         return self.get('Gross domestic product, current prices',
                         'U.S. dollars')
+    
+    def exchange_rate(self):
+        return self.gdp_nc() / self.gdp_usd()    
 
     @accept_year
     def gdp_growth(self):
@@ -346,5 +355,4 @@ class WEO:
 
 
 if __name__ == '__main__':
-    from weo import WEO
     w = WEO('weo.csv')
