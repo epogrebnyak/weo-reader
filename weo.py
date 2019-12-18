@@ -51,7 +51,7 @@ def _url(year, period, prefix):
             f'provided: {(year, period)}')
     period_marker = str(period).zfill(2)
     month = to_month(period)
-    if year == 2011 and period == 2:  # one WEO issue was in September, not October
+    if year == 2011 and period == 2:  # Second 2011 WEO issue was in September, not October
         month = 'Sep'
     return ('https://www.imf.org/external/pubs/ft/weo/'
             f'{year}/{period_marker}'
