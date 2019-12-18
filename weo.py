@@ -138,11 +138,15 @@ class WEO:
        Source data:
            .df
 
-       Inspection methods:
-           .variables()
+       Attributes:
+           .variables
+           .codes                      
+           .core_codes
+
+       All-or-subset inspection methods:           
            .units()
-           .codes()
            .countries()
+
 
        Country finders:
            .iso_code()
@@ -150,13 +154,13 @@ class WEO:
 
        Single-variable dataframe:
            .get(subject, unit)
-           .get_by_code(code)
+           .getc(code)
 
        Variables:
            .gdp_usd()
+           .current_account()
            .libor_usd()
            and other
-
        """
 
     def __init__(self, filename):
@@ -173,7 +177,7 @@ class WEO:
                                freq='A')
 
     @property
-    def core(self):
+    def core_codes(self):
         return ['NGDP',
                 'NGDP_RPCH',
                 # Inflation
@@ -327,9 +331,11 @@ class WEO:
                           columns='ISO',
                           values=year_col)
 
-    def country(self, iso_code, year=None):
+    def country(self, iso_code, year=None, full=False):
         ix = self.df.ISO == iso_code
-        _df = self.t(self.df[ix], 'WEO Subject Code')[self.core]
+        _df = self.t(self.df[ix], 'WEO Subject Code')
+        if not full:
+            _df = _df[self.core_codes]
         if year is None:
             return _df
         else:
@@ -384,3 +390,14 @@ class WEO:
 
 if __name__ == '__main__':
     w = WEO('weo.csv')
+    
+    import missingno as msno
+    msno.matrix(w.df.sort_values(['ISO', 'WEO Subject Code']))
+    for label in w.core_codes:
+        print(label, *w.from_code(label)) 
+        msno.matrix(w.getc(label))
+        
+    z = w.fix_year(2018)
+    z[~z.isna()] = 1
+    z.sum().sort_values().head()
+    z.sum().sort_values().head(20).index.map(lambda x: w.country_name(x))
