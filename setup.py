@@ -12,7 +12,7 @@ with open('README.md', encoding='utf-8') as file:
 # 0.0.6 - minor change of interfaces, exchange rate added
 
 setup(name='weo',
-      version='0.0.6',
+      version='0.0.65',
       description='Python client to read IMF WEO dataset as pandas dataframe',
       url='http://github.com/epogrebnyak/weo-reader',
       author='Evgeniy Pogrebnyak',
