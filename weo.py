@@ -80,7 +80,7 @@ def download(path, year, period, force=False):
     curl(path, url(year, period))
     p = Path(path)
     size = to_mb(p.stat().st_size)
-    print('Downloaded {year}-{to_month(period)} WEO dataset, ({size}Mb)')
+    print(f'Downloaded {year}-{to_month(period)} WEO dataset, ({size}Mb)')
     print('File:', p)
     return p
 
