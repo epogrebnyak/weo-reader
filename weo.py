@@ -36,7 +36,7 @@ def to_month(period: int):
     try:
         return {1: 'Apr', 2: 'Oct'}[period]
     except KeyError:
-        raise WEO_Error(f'period should be 1 or 2, got {period}')  
+        raise WEO_Error(f'period should be 1 or 2, got {period}')
 
 
 def _url(year, period, prefix):
@@ -54,7 +54,7 @@ def _url(year, period, prefix):
             f'Valid year and period starts after (2007, 2), provided: {(year, period)}')
     period_marker = str(period).zfill(2)
     month = to_month(period)
-    if year == 2011 and period == 2: # one WEO issue was in September, not October
+    if year == 2011 and period == 2:  # one WEO issue was in September, not October
         month = 'Sep'
     return ('https://www.imf.org/external/pubs/ft/weo/'
             f'{year}/{period_marker}'
@@ -80,8 +80,8 @@ def download(path, year, period, force=False):
     curl(path, url(year, period))
     p = Path(path)
     size = to_mb(p.stat().st_size)
-    print(f'Downloaded {year}-{to_month(period)} WEO dataset, ({size}Mb)')
-    print('File:', p)
+    print(f'Downloaded {year}-{to_month(period)} WEO dataset.')
+    print('File:', p, f'({size}Mb)')
     return p
 
 
@@ -141,7 +141,7 @@ class WEO:
            .codes()
 
        Countries:
-           .find_countries()
+           .countries()
            .iso_code()
            .country_name()
 
@@ -195,22 +195,25 @@ class WEO:
         return self.df['Subject Descriptor'].unique().tolist()
 
     def variables(self):
-        return [(v, u, self._subject_code(v, u))
+        return [(v, u, self.code(v, u))
                 for v in self.subjects()
                 for u in self.units(v)]
 
-    def _subject_code(self, subject: str, unit: str):
+    def code(self, subject: str, unit: str):
         return self._get(subject, unit)['WEO Subject Code'].iloc[0]
 
     def codes(self):
         return self.df['WEO Subject Code'].unique().tolist()
 
-    def code(self, code):
-        _df = self.df[self.df['WEO Subject Code'] == code][[
-            'Subject Descriptor', 'Units']].iloc[0, ]
-        return tuple(_df.to_list())
+    def subject_and_unit(self, code):
+        """Example:
 
-    # return self w.code('LUR')
+        w.subject_and_unit('LUR')
+
+        """
+        _df = self.df[self.df['WEO Subject Code'] == code][[
+            'Subject Descriptor', 'Units']] .iloc[0, ]
+        return tuple(_df.to_list())
 
     def units(self, subject=None):
         ix = self.df['Subject Descriptor'] == subject
@@ -218,21 +221,25 @@ class WEO:
 
     # countries
 
+    def countries(self, name=None):
+        """List all countries or find country names that
+           include *name* as substring. The search is case-insensitive.
+        """
+        if name:
+            c = name.lower()
+            ix = self._countries_df['Country'].apply(lambda x: c in x.lower())
+            return self._countries_df[ix]
+        else:
+            return self._countries_df
+
     @property
-    def countries_df(self):
-        country_cols = ['WEO Country Code', 'ISO', 'Country']
-        return self.df[country_cols].drop_duplicates()
+    def _countries_df(self):
+        return self.df[['WEO Country Code',
+                        'ISO', 'Country']].drop_duplicates()
 
-    def find_countries(self, name: str):
-        """Find country names that include *name* as substring.
-           Search is case-insensitive."""
-        c = name.lower()
-        ix = self.countries_df['Country'].apply(lambda x: c in x.lower())
-        return self.countries_df[ix]
-
-    def iso_code(self, country: str):
-        """Return ISO code for *country* name."""
-        return self.find_countries(country).ISO.iloc[0]
+    def iso_code(self, country_name: str):
+        """Return ISO code for *country_name*."""
+        return self.countries(country_name).ISO.iloc[0]
 
     def country_name(self, iso_code):
         """Return country name for ISO country *code*."""
