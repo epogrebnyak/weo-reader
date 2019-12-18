@@ -188,7 +188,7 @@ class WEO:
                 'GGXWDG', # ('General government gross debt', 'National currency')
                 'GGXWDN',
                 'GGXONLB', # ('General government primary net lending/borrowing', 'National currency')
-                'GGXCNL'
+                'GGXCNL',
                 # In USD
                 'NGDPD', # GDP
                 'BCA', # Current account
