@@ -7,4 +7,4 @@ twine upload dist/*
 REM Cleaning up...
 rd build /Q/S
 rd dist /Q/S
-rd boo.egg-info /Q/S
+rd weo.egg-info /Q/S
