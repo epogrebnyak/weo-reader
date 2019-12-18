@@ -32,12 +32,19 @@ def url(year, period):
     return _url(year, period, prefix='all')  # alla for commodities
 
 
+def to_month(period: int):
+    try:
+        return {1: 'Apr', 2: 'Oct'}[period]
+    except KeyError:
+        raise WEO_Error(f'period should be 1 or 2, got {period}')  
+
+
 def _url(year, period, prefix):
     """
     URL for country data file starting Oct 2007.
     Data in other formats goes back to 2000.
 
-    Typical page with URLs:
+    Landing page with URLs:
     https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/download.aspx
     """
     if prefix not in ['all', 'alla']:
@@ -46,8 +53,8 @@ def _url(year, period, prefix):
         raise WEO_Error(
             f'Valid year and period starts after (2007, 2), provided: {(year, period)}')
     period_marker = str(period).zfill(2)
-    month = {1: 'Apr', 2: 'Oct'}[period]
-    if year == 2011 and period == 2:
+    month = to_month(period)
+    if year == 2011 and period == 2: # one WEO issue was in September, not October
         month = 'Sep'
     return ('https://www.imf.org/external/pubs/ft/weo/'
             f'{year}/{period_marker}'
@@ -64,17 +71,17 @@ def curl(path: str, url: str):
     return path
 
 
-def to_mb(x):
-    return round(x / 2 ** (10 * 2), 1)
+def to_mb(bytes):
+    """Express bytes in Mb"""
+    return round(bytes / 2 ** (10 * 2), 1)
 
 
 def download(path, year, period, force=False):
-    if period not in [1, 2]:
-        raise WEO_Error(f'period should be 1 or 2, got {period}')
     curl(path, url(year, period))
     p = Path(path)
     size = to_mb(p.stat().st_size)
-    print('Downloaded', size, 'Mb')
+    print('Downloaded {year}-{to_month(period)} WEO dataset, ({size}Mb)')
+    print('File:', p)
     return p
 
 
