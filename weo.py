@@ -129,10 +129,14 @@ def accept_year(func):
     return inner
 
 
+class Variable:
+    pass
+
+
 class WEO:
     """Wrapper for pandas dataframe that holds
        World Economic Outlook country dataset.
-       
+
        Initialised by local filename, for example 'weo.csv'.
 
        Source data:
@@ -144,7 +148,7 @@ class WEO:
            .codes()
            .countries()
 
-       Country finders:           
+       Country finders:
            .iso_code()
            .country_name()
 
@@ -175,16 +179,18 @@ class WEO:
     @property
     def core(self):
         return ['NGDP',
-                'NGDPD',
                 'NGDP_RPCH',
                 'PCPIEPCH',
                 'PCPIPCH',
                 'LP',
                 'LUR',
+                # Govermen
                 'GGR',
                 'GGX',
                 'GGXWDG',
                 'GGXONLB',
+                # in USD
+                'NGDPD',
                 'BCA',
                 ]
 
@@ -194,15 +200,19 @@ class WEO:
         return self.df['Subject Descriptor'].unique().tolist()
 
     def variables(self):
-        return [(v, u, self.code(v, u))
+        return [(v, u, self._code(v, u))
                 for v in self.subjects()
                 for u in self.units(v)]
 
-    def code(self, subject: str, unit: str):
+    def to_code(self, subject: str, unit: str):
         return self._get(subject, unit)['WEO Subject Code'].iloc[0]
 
     def codes(self):
         return self.df['WEO Subject Code'].unique().tolist()
+    
+    def describe_code(code=''):
+        if code:
+            return self.subject_and_unit(code)
 
     def subject_and_unit(self, code):
         """Example:
@@ -280,16 +290,16 @@ class WEO:
         _df.index = self.daterange
         return _df
 
-    def get(self, subject: str='', unit: str='', code: str=''):
+    def get(self, subject: str = '', unit: str = '', code: str = ''):
         if code:
-          self.check_code(code)
-          _df = self._get_by_code(code)
-        else:  
-          self.check_subject(subject)
-          self.check_unit(subject, unit)
-          _df = self._get_by_subject_and_unit(subject, unit)
+            self.check_code(code)
+            _df = self._get_by_code(code)
+        else:
+            self.check_subject(subject)
+            self.check_unit(subject, unit)
+            _df = self._get_by_subject_and_unit(subject, unit)
         return self.t(_df, 'ISO')
-    
+
     # assessors in other dimensions (WIP)
 
     def fix_year(self, year):
@@ -306,7 +316,7 @@ class WEO:
             return _df
         else:
             _df = _df[str(year)].transpose()
-            _df['Description']  = \
+            _df['Description'] = \
                 _df.index.map(lambda x: ' - '.join(self.subject_and_unit(x)))
             return _df
 
@@ -321,9 +331,9 @@ class WEO:
     def gdp_usd(self):
         return self.get('Gross domestic product, current prices',
                         'U.S. dollars')
-    
+
     def exchange_rate(self):
-        return self.gdp_nc() / self.gdp_usd()    
+        return self.gdp_nc() / self.gdp_usd()
 
     @accept_year
     def gdp_growth(self):
