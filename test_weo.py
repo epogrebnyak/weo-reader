@@ -1,3 +1,4 @@
+import random
 import pytest
 from weo import (WEO_Error,
                  download, convert, url,
@@ -29,10 +30,6 @@ def test_convert():
     assert convert("9,902.554") == 9902.554
 
 
-def test_varibale_list_length(w):
-    assert len(w.variables()) == len(w.codes())
-
-
 def test_country_name(w):
     assert w.country_name('DZA') == 'Algeria'
 
@@ -42,5 +39,27 @@ def test_iso_code(w):
 
 
 def test_code(w):
-    return w.code('LUR') == \
+    assert w.from_code('LUR') == \
         ('Unemployment rate', 'Percent of total labor force')
+    assert w.from_code('LP') == \
+        ('Population', 'Persons')
+
+
+def test_number_of_variables(w):
+    assert len(w.variables) == len(w.codes)
+
+
+def test_getc(w):
+    c = random.choice(w.codes)
+    df = w.getc(c)
+    assert df.shape == (45, 194)
+
+
+def test_getc(w):
+    s, u, _ = random.choice(w.variables)
+    df = w.get(s, u)
+    assert df.shape == (45, 194)
+
+
+def test_units(w):
+    assert w.units(random.choice(w.subjects))

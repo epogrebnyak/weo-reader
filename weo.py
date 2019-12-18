@@ -129,10 +129,6 @@ def accept_year(func):
     return inner
 
 
-class Variable:
-    pass
-
-
 class WEO:
     """Wrapper for pandas dataframe that holds
        World Economic Outlook country dataset.
@@ -180,53 +176,68 @@ class WEO:
     def core(self):
         return ['NGDP',
                 'NGDP_RPCH',
+                # Inflation
                 'PCPIEPCH',
                 'PCPIPCH',
+                # Labor
                 'LP',
                 'LUR',
-                # Govermen
-                'GGR',
-                'GGX',
-                'GGXWDG',
-                'GGXONLB',
-                # in USD
-                'NGDPD',
-                'BCA',
+                # Goverment - national currentcy
+                'GGR', # ('General government revenue', 'National currency')
+                'GGX', # ('General government total expenditure', 'National currency')
+                'GGXWDG', # ('General government gross debt', 'National currency')
+                'GGXONLB', # ('General government primary net lending/borrowing', 'National currency')
+                # In USD
+                'NGDPD', # GDP
+                'BCA', # Current account
                 ]
 
     # subjects and codes
 
+    def _unique(self, columns):
+        return self.df[columns].drop_duplicates()
+
+    def _allowed_values(self, column):
+        return self.df[column].unique().tolist()
+
+    @property
+    def _subject_df(self):
+        return self._unique(['WEO Subject Code', 'Subject Descriptor', 'Units']) \
+            .set_index('WEO Subject Code')
+
+    @property
+    def _countries_df(self):
+        return self._unique(['WEO Country Code', 'ISO', 'Country'])
+
+    @property
     def subjects(self):
-        return self.df['Subject Descriptor'].unique().tolist()
+        return self._allowed_values('Subject Descriptor')
 
-    def variables(self):
-        return [(v, u, self._code(v, u))
-                for v in self.subjects()
-                for u in self.units(v)]
-
-    def to_code(self, subject: str, unit: str):
-        return self._get(subject, unit)['WEO Subject Code'].iloc[0]
-
+    @property
     def codes(self):
-        return self.df['WEO Subject Code'].unique().tolist()
-    
-    def describe_code(code=''):
-        if code:
-            return self.subject_and_unit(code)
+        return self._allowed_values('WEO Subject Code')
 
-    def subject_and_unit(self, code):
-        """Example:
+    # subjects and codes
 
-        w.subject_and_unit('LUR')
-
-        """
-        _df = self.df[self.df['WEO Subject Code'] == code][[
-            'Subject Descriptor', 'Units']] .iloc[0, ]
-        return tuple(_df.to_list())
+    @property
+    def variables(self):
+        return [(v, u, self.to_code(v, u))
+                for v in self.subjects
+                for u in self.units(v)]
 
     def units(self, subject=None):
         ix = self.df['Subject Descriptor'] == subject
         return (self.df[ix] if subject else self.df)['Units'].unique().tolist()
+
+    def to_code(self, subject: str, unit: str):
+        self.check_subject(subject)
+        self.check_unit(subject, unit)
+        return self._get_by_subject_and_unit(subject, unit)['WEO Subject Code'].iloc[0]
+
+    def from_code(self, variable_code):
+        self.check_code(variable_code)
+        ix = self._subject_df.index == variable_code
+        return tuple(self._subject_df[ix].transpose().iloc[:, 0].to_list())
 
     # countries
 
@@ -241,11 +252,6 @@ class WEO:
         else:
             return self._countries_df
 
-    @property
-    def _countries_df(self):
-        return self.df[['WEO Country Code',
-                        'ISO', 'Country']].drop_duplicates()
-
     def iso_code(self, country_name: str):
         """Return ISO code for *country_name*."""
         return self.countries(country_name).ISO.iloc[0]
@@ -256,18 +262,23 @@ class WEO:
 
     # checkers
 
+    def _must_be_one_of(self, x, xs, name: str):
+        if x not in xs:
+            raise WEO_Error(f"{name.capitalize()} must be one of \n"
+                             + ", ".join(xs)
+                             + f"\nProvided {name}: {x}")
+
     def check_subject(self, subject):
-        ss = self.subjects()
-        if subject not in ss:
-            raise ValueError("Subject must be one of \n"
-                             + "%s" % ("\n  ".join(ss))
-                             + f"\nProvided: {subject}")
+        self._must_be_one_of(subject, self.subjects, 'subject')
 
     def check_unit(self, subject, unit):
-        units = self.units(subject)
-        if unit not in units:
-            raise ValueError(f"Unit must be one of {units}\n"
-                             f"Provided: {unit}")
+        self._must_be_one_of(unit, self.units(subject), 'unit')
+
+    def check_code(self, code):
+        self._must_be_one_of(code, self.codes, 'code')
+
+    def check_country(self, iso_code):
+        self._must_be_one_of(iso_code, w.countries().ISO.to_list(), 'country')
 
     # assessor by subject/unit or code
 
@@ -281,7 +292,7 @@ class WEO:
         return self.df[ix]
 
     def t(self, df, column):
-        """Extract columns with years from *df*, make *column* am index."""
+        """Extract columns with years from *df*, make *column* an index."""
         _df = df[self.years + [column]] \
             .set_index(column) \
             .transpose() \
@@ -290,15 +301,15 @@ class WEO:
         _df.index = self.daterange
         return _df
 
-    def get(self, subject: str = '', unit: str = '', code: str = ''):
-        if code:
-            self.check_code(code)
-            _df = self._get_by_code(code)
-        else:
-            self.check_subject(subject)
-            self.check_unit(subject, unit)
-            _df = self._get_by_subject_and_unit(subject, unit)
+    def get(self, subject: str, unit: str):
+        self.check_subject(subject)
+        self.check_unit(subject, unit)
+        _df = self._get_by_subject_and_unit(subject, unit)
         return self.t(_df, 'ISO')
+
+    def getc(self, code: str):
+        self.check_code(code)        
+        return self.get(*self.from_code(code))
 
     # assessors in other dimensions (WIP)
 
@@ -317,7 +328,7 @@ class WEO:
         else:
             _df = _df[str(year)].transpose()
             _df['Description'] = \
-                _df.index.map(lambda x: ' - '.join(self.subject_and_unit(x)))
+                _df.index.map(lambda c: ' - '.join(self.from_code(c)))
             return _df
 
     # convenience functions
