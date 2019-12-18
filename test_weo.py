@@ -30,6 +30,10 @@ def test_convert():
     assert convert("9,902.554") == 9902.554
 
 
+def test_countries(w):
+    assert len(w.countries()) == 194
+
+
 def test_country_name(w):
     assert w.country_name('DZA') == 'Algeria'
 

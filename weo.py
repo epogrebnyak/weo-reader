@@ -183,15 +183,18 @@ class WEO:
                 'LP',
                 'LUR',
                 # Goverment - national currentcy
-                'GGR', # ('General government revenue', 'National currency')
-                'GGX', # ('General government total expenditure', 'National currency')
-                'GGXWDG', # ('General government gross debt', 'National currency')
+                'GGR',  # ('General government revenue', 'National currency')
+                'GGX',
+                # ('General government total expenditure', 'National currency')
+                'GGXWDG',
+                # ('General government gross debt', 'National currency')
                 'GGXWDN',
-                'GGXONLB', # ('General government primary net lending/borrowing', 'National currency')
+                'GGXONLB',
+                # ('General government primary net lending/borrowing', 'National currency')
                 'GGXCNL',
                 # In USD
-                'NGDPD', # GDP
-                'BCA', # Current account
+                'NGDPD',  # GDP
+                'BCA',  # Current account
                 ]
 
     # subjects and codes
@@ -204,8 +207,9 @@ class WEO:
 
     @property
     def _subject_df(self):
-        return self._unique(['WEO Subject Code', 'Subject Descriptor', 'Units']) \
-            .set_index('WEO Subject Code')
+        return self._unique(['WEO Subject Code',
+                             'Subject Descriptor',
+                             'Units']) .set_index('WEO Subject Code')
 
     @property
     def _countries_df(self):
@@ -234,7 +238,8 @@ class WEO:
     def to_code(self, subject: str, unit: str):
         self.check_subject(subject)
         self.check_unit(subject, unit)
-        return self._get_by_subject_and_unit(subject, unit)['WEO Subject Code'].iloc[0]
+        return self._get_by_subject_and_unit(
+            subject, unit)['WEO Subject Code'].iloc[0]
 
     def from_code(self, variable_code):
         self.check_code(variable_code)
@@ -267,8 +272,8 @@ class WEO:
     def _must_be_one_of(self, x, xs, name: str):
         if x not in xs:
             raise WEO_Error(f"{name.capitalize()} must be one of \n"
-                             + ", ".join(xs)
-                             + f"\nProvided {name}: {x}")
+                            + ", ".join(xs)
+                            + f"\nProvided {name}: {x}")
 
     def check_subject(self, subject):
         self._must_be_one_of(subject, self.subjects, 'subject')
@@ -310,7 +315,7 @@ class WEO:
         return self.t(_df, 'ISO')
 
     def getc(self, code: str):
-        self.check_code(code)        
+        self.check_code(code)
         return self.get(*self.from_code(code))
 
     # assessors in other dimensions (WIP)
