@@ -1,3 +1,6 @@
 pandas
 numpy
 matplotlib
+iso3166
+black
+pytest

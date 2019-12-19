@@ -200,6 +200,9 @@ class WEO:
             # GDP
             "NGDP",
             "NGDP_RPCH",
+            # Saving and investment
+            'NGSD_NGDP',
+            'NID_NGDP',
             # Inflation
             "PCPIEPCH",
             "PCPIPCH",
