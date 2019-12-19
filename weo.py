@@ -406,8 +406,11 @@ class WEO:
     def gdp_usd(self):
         return self.get("Gross domestic product, current prices", "U.S. dollars")
 
-    def exchange_rate(self):
-        return self.gdp_nc() / self.gdp_usd()
+    def nlargest(self, n=10, year=2018): 
+       return self.gdp_usd(year).sort_values(ascending=False).head(n).index.tolist()
+
+    def exchange_rate(self, year=None):
+        return self.gdp_nc(year) / self.gdp_usd(year)
 
     @accept_year
     def gdp_growth(self):

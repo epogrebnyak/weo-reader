@@ -86,3 +86,6 @@ def test_get(w):
 
 def test_units(w):
     assert w.units(random.choice(w.subjects))
+    
+def test_nlargest(w):
+    assert w.nlargest(n=10, year=2018) == ['USA', 'CHN', 'JPN', 'DEU', 'GBR', 'FRA', 'IND', 'ITA', 'BRA', 'KOR']     
