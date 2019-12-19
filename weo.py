@@ -201,8 +201,8 @@ class WEO:
             "NGDP",
             "NGDP_RPCH",
             # Saving and investment
-            'NGSD_NGDP',
-            'NID_NGDP',
+            "NGSD_NGDP",
+            "NID_NGDP",
             # Inflation
             "PCPIEPCH",
             "PCPIPCH",
@@ -213,19 +213,20 @@ class WEO:
             # Goverment - national currency
             "GGR",  # General government revenue
             "GGX",  # General government total expenditure
-            # Government debt 
-            "GGXWDG", # gross
-            "GGXWDN", # net
+            # Government debt
+            "GGXWDG",  # gross
+            "GGXWDN",  # net
             # Net lending/borrowing
             "GGXONLB",
             "GGXCNL",
             # In USD
             "NGDPD",  # GDP
             "BCA",  # Current account
+            "PPPEX" # Implied PPP conversion rate
         ]
-    
+
     def core_codes_describe(self):
-        return [(c, *self.from_code(c))  for c in self.core_codes]
+        return [(c, *self.from_code(c)) for c in self.core_codes]
 
     # subjects and codes
 
@@ -406,11 +407,15 @@ class WEO:
     def gdp_usd(self):
         return self.get("Gross domestic product, current prices", "U.S. dollars")
 
-    def nlargest(self, n=10, year=2018): 
-       return self.gdp_usd(year).sort_values(ascending=False).head(n).index.tolist()
+    def nlargest(self, n=10, year=2018):
+        return self.gdp_usd(year).sort_values(ascending=False).head(n).index.tolist()
 
     def exchange_rate(self, year=None):
         return self.gdp_nc(year) / self.gdp_usd(year)
+
+    @accept_year
+    def population(self):
+        return self.get("Population", "Persons")
 
     @accept_year
     def gdp_growth(self):
