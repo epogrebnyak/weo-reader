@@ -15,9 +15,8 @@ def w():
 
 
 def test_url_special_case_september():
-    assert url(
-        2011,
-        2) == 'https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/WEOSep2011all.xls'
+    assert url(2011, 2) == \
+        'https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/WEOSep2011all.xls'
 
 
 def test_url_wrong_year():
