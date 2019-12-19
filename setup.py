@@ -12,6 +12,7 @@ with open('README.md', encoding='utf-8') as file:
 # 0.0.6 - minor change of interfaces, exchange rate added
 # 0.0.7 - allow two-letter country codes
 
+setup(name='weo',
       version='0.0.7',
       description='Python client to read IMF WEO dataset as pandas dataframe',
       url='http://github.com/epogrebnyak/weo-reader',
@@ -28,6 +29,7 @@ with open('README.md', encoding='utf-8') as file:
         "requests",
         "pandas",
         "numpy",
+        "matplotlib",
         "iso3166"
         ],
       classifiers=[
