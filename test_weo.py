@@ -7,7 +7,11 @@ from weo import (WEO_Error,
 
 @pytest.fixture
 def w():
-    yield WEO('weo.csv')  # FIXME: weo.csv location not guaranteed
+    import os    
+    path = 'weo.csv'
+    if not os.path.exists(path):
+        download(path, 2019, 2)
+    yield WEO(path)
 
 
 def test_url_special_case_september():
