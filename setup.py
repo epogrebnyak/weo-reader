@@ -10,9 +10,9 @@ with open('README.md', encoding='utf-8') as file:
 # 0.0.4 - download has year limits, more data accessor functions
 # 0.0.5 - fixed as pip-installable, Google Colab example
 # 0.0.6 - minor change of interfaces, exchange rate added
+# 0.0.7 - allow two-letter country codes
 
-setup(name='weo',
-      version='0.0.65',
+      version='0.0.7',
       description='Python client to read IMF WEO dataset as pandas dataframe',
       url='http://github.com/epogrebnyak/weo-reader',
       author='Evgeniy Pogrebnyak',
@@ -28,7 +28,7 @@ setup(name='weo',
         "requests",
         "pandas",
         "numpy",
-        "matplotlib"
+        "iso3166"
         ],
       classifiers=[
         "Programming Language :: Python :: 3",
