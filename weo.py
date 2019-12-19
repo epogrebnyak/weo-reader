@@ -390,14 +390,3 @@ class WEO:
 
 if __name__ == '__main__':
     w = WEO('weo.csv')
-    
-    import missingno as msno
-    msno.matrix(w.df.sort_values(['ISO', 'WEO Subject Code']))
-    for label in w.core_codes:
-        print(label, *w.from_code(label)) 
-        msno.matrix(w.getc(label))
-        
-    z = w.fix_year(2018)
-    z[~z.isna()] = 1
-    z.sum().sort_values().head()
-    z.sum().sort_values().head(20).index.map(lambda x: w.country_name(x))
