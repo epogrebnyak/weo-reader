@@ -125,7 +125,8 @@ bottom = """
 """
 
 countries = {'North America' : ['USA', 'CAN', 'MEX']
-    , 'Europe' : ['DEU', 'GBR', 'FRA', 'ITA', 'ESP']
+    , 'Europe' : ['DEU', 'GBR', 'FRA', 'ITA', 'ESP', 'CHE']    
+    , 'CIS' : ['RUS', 'UA', 'KZ', 'BLR']
     , 'DM Asia' : ['JPN', 'KOR', 'AUS']
     , 'EM Asia' : ['CHN', 'IND', 'IDN']
     , 'Latin America' : ['BRA', 'ARG']
