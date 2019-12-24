@@ -14,18 +14,22 @@ df = pd.DataFrame()
 gdp = c.NGDP_RPCH.dropna()
 gdp.iloc[0] = 1 
 #FIXME: must use .combine to fix start of GDP time series for Russia, Ukraine, etc
-df['_GDP'] = (gdp/100+1).cumprod()*100
-df['_FX'] = c.NGDP / c.NGDPD
-df['_DEFICIT'] = (c.GGR - c.GGX) / c.NGDP * 100
+
+df['GDP'] = (c.NGDP_RPCH.dropna()/100+1).cumprod()*100
+df['CPI'] = c.PCPIPCH
+df['FX'] = c.NGDP / c.NGDPD
+df['DEFICIT'] = (c.GGR - c.GGX) / c.NGDP * 100
+df['CA'] = (c.BCA/c.NGDPD * 100)
+
 df['_GDEBT'] = (c.GGXWDG / c.NGDP) * 100
 df['_NDEBT'] = (c.GGXWDN / c.NGDP) * 100
 
-df._GDP.plot(ax=axes[0,0], title=f'GDP growth, {gdp.index[0].year}=100')
+df.GDP.plot(ax=axes[0,0], title=f'GDP growth, {gdp.index[0].year}=100')
 c.LUR.plot(ax=axes[1,0], title='Unemployment, %')
 c.PCPIPCH.plot(ax=axes[0,1], title='Inflation, annual average, %') # FIXME: can draw deflator too here
-df._FX.plot(ax=axes[1,1], title='Exchange rate, national currency / USD, annual average') # this is 1 for the US
+df.FX.plot(ax=axes[1,1], title='Exchange rate, national currency / USD, annual average') # this is 1 for the US
 (c.BCA/c.NGDPD * 100).plot(ax=axes[0,2], title="Current account, % GDP").axhline(y=0, ls='-', lw=1, color='darkgrey')
-df._DEFICIT.plot(ax=axes[1,2], title="Budget deficit, % GDP").axhline(y=0, ls='-', lw=1, color='darkgrey')
+df.DEFICIT.plot(ax=axes[1,2], title="Budget deficit, % GDP").axhline(y=0, ls='-', lw=1, color='darkgrey')
 df._GDEBT.plot(ax=axes[2,2], title="Gross government debt, % GDP").axhline(y=0, ls='-', lw=1, color='darkgrey')
 c.LP.plot(ax=axes[2,0], title='Population, mln')
 c.NGSD_NGDP.plot(ax=axes[2,1], title='Savings and investment, % GDP')
