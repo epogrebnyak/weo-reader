@@ -444,4 +444,5 @@ class WEO:
 
 
 if __name__ == "__main__":
-    w = WEO("weo.csv")
+    w = download("2020.csv", 2020, 1)
+    _ = [w.getc(x).head() for (s, u, x) in w.variables()]
