@@ -53,8 +53,8 @@ def _url(year, period, prefix):
         raise WEO_Error(prefix)
     if (year, period) < (2007, 2):
         raise WEO_Error(
-            f"Valid year and period starts after (2007, 2), "
-            f"provided: {(year, period)}"
+            f"Cannot process year and period before (2007, 2).\n"
+            f"Provided: {(year, period)}"
         )
     period_marker = str(period).zfill(2)
     month = to_month(period)
