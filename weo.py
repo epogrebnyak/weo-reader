@@ -197,32 +197,36 @@ class WEO:
     @property
     def core_codes(self):
         return [
-            # GDP
-            "NGDP",
-            "NGDP_RPCH",
-            # Saving and investment
-            "NGSD_NGDP",
-            "NID_NGDP",
-            # Inflation
-            "PCPIEPCH",
-            "PCPIPCH",
-            "NGDP_D",
-            # Labor
-            "LP",
-            "LUR",
-            # Goverment - national currency
-            "GGR",  # General government revenue
-            "GGX",  # General government total expenditure
-            # Government debt
-            "GGXWDG",  # gross
-            "GGXWDN",  # net
-            # Net lending/borrowing
-            "GGXONLB",
-            "GGXCNL",
-            # In USD
-            "NGDPD",  # GDP
-            "BCA",  # Current account
-            "PPPEX",  # Implied PPP conversion rate
+            x
+            for x in [
+                # GDP
+                "NGDP",
+                "NGDP_RPCH",
+                # Saving and investment
+                "NGSD_NGDP",
+                "NID_NGDP",
+                # Inflation
+                "PCPIEPCH",
+                "PCPIPCH",
+                "NGDP_D",
+                # Labor
+                "LP",
+                "LUR",
+                # Goverment - national currency
+                "GGR",  # General government revenue
+                "GGX",  # General government total expenditure
+                # Government debt
+                "GGXWDG",  # gross
+                "GGXWDN",  # net
+                # Net lending/borrowing
+                "GGXONLB",
+                "GGXCNL",
+                # In USD
+                "NGDPD",  # GDP
+                "BCA",  # Current account
+                "PPPEX",  # Implied PPP conversion rate
+            ]
+            if x in self.codes
         ]
 
     def core_codes_describe(self):
