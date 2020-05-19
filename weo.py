@@ -88,13 +88,13 @@ def to_mb(bytes):
     return round(bytes / 2 ** (10 * 2), 1)
 
 
-def download(path, year, period):
+def download(path: str, year: int, period: int):
     curl(path, url(year, period))
     p = Path(path)
     size = to_mb(p.stat().st_size)
     print(f"Downloaded {year}-{to_month(period)} WEO dataset.")
     print("File:", p, f"({size}Mb)")
-    return p
+    return WEO(p)
 
 
 def convert(x):
@@ -443,5 +443,5 @@ class WEO:
         )["USA"]
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     w = WEO("weo.csv")
