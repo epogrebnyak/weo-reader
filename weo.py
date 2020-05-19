@@ -222,7 +222,7 @@ class WEO:
             # In USD
             "NGDPD",  # GDP
             "BCA",  # Current account
-            "PPPEX" # Implied PPP conversion rate
+            "PPPEX",  # Implied PPP conversion rate
         ]
 
     def core_codes_describe(self):
@@ -443,5 +443,5 @@ class WEO:
         )["USA"]
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     w = WEO("weo.csv")

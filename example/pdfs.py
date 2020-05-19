@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 # Create the PdfPages object to which we will save the pages:
 # The with statement makes sure that the PdfPages object is closed properly at
 # the end of the block, even if an Exception occurs.
-with PdfPages('multipage_pdf.pdf') as pdf:
+with PdfPages("multipage_pdf.pdf") as pdf:
     plt.figure(figsize=(3, 3))
-    plt.plot(range(7), [3, 1, 4, 1, 5, 9, 2], 'r-o')
-    plt.title('Page One')
+    plt.plot(range(7), [3, 1, 4, 1, 5, 9, 2], "r-o")
+    plt.title("Page One")
     pdf.savefig()  # saves the current figure into a pdf page
     plt.close()
 
@@ -39,12 +39,12 @@ with PdfPages('multipage_pdf.pdf') as pdf:
     # d['Keywords'] = 'PdfPages multipage keywords author title subject'
     # d['CreationDate'] = datetime.datetime(2009, 11, 13)
     # d['ModDate'] = datetime.datetime.today()
-    
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 
-with PdfPages('multipage.pdf') as pp:
+with PdfPages("multipage.pdf") as pp:
     for i in range(0, 10):
         fig = plt.figure()
         ax1 = fig.add_subplot(211)
@@ -53,11 +53,12 @@ with PdfPages('multipage.pdf') as pp:
         ax1.plot(x, np.sin(x + i * np.pi / 10))
         ax2.plot(x, np.cos(x + i * np.pi / 10))
         pp.savefig(fig)
-        
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
+
 # Initialize:
-with PdfPages('foo.pdf') as pdf:
+with PdfPages("foo.pdf") as pdf:
     # As many times as you like, create a figure fig and save it:
     fig = plt.figure()
     pdf.savefig(fig)

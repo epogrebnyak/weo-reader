@@ -47,7 +47,7 @@ def test_countries(w):
 
 
 def test_country(w):
-    assert w.country('DE').equals(w.country('DEU'))
+    assert w.country("DE").equals(w.country("DEU"))
 
 
 def test_country_name(w):
@@ -86,6 +86,18 @@ def test_get(w):
 
 def test_units(w):
     assert w.units(random.choice(w.subjects))
-    
+
+
 def test_nlargest(w):
-    assert w.nlargest(n=10, year=2018) == ['USA', 'CHN', 'JPN', 'DEU', 'GBR', 'FRA', 'IND', 'ITA', 'BRA', 'KOR']     
+    assert w.nlargest(n=10, year=2018) == [
+        "USA",
+        "CHN",
+        "JPN",
+        "DEU",
+        "GBR",
+        "FRA",
+        "IND",
+        "ITA",
+        "BRA",
+        "KOR",
+    ]

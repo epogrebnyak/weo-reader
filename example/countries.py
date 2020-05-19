@@ -198,9 +198,9 @@ Zimbabwe"""
 
 from weo import WEO
 
-w = WEO('weo.csv')
-focus_countries = [w.iso_code(c[1:]) for c 
-                   in countries_doc.split('\n') 
-                   if c.startswith('+')]
+w = WEO("weo.csv")
+focus_countries = [
+    w.iso_code(c[1:]) for c in countries_doc.split("\n") if c.startswith("+")
+]
 
 print(focus_countries)
