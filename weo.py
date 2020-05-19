@@ -17,10 +17,11 @@ or
 """
 
 from pathlib import Path
-import pandas as pd
-import numpy as np
-import requests
-from iso3166 import countries
+
+import numpy as np  # type: ignore
+import pandas as pd  # type: ignore
+import requests  # type: ignore
+from iso3166 import countries  # type: ignore
 
 
 class WEO_Error(ValueError):
