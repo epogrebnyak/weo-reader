@@ -1,21 +1,18 @@
 # weo-reader
 
-1. The program uses Python 3.6. To install `weo` as a python package use:
+This is a python client to download [IMF World Economic Outlook Report][weo] dataset and use it pandas dataframe.
+
+[weo]: https://www.imf.org/en/Publications/WEO
+
+## Install
+
+The program uses Python 3.6. To install `weo` as a python package use:
 
 `pip install weo`
    
+## Start using   
    
-2. You need the data saved as a local file.  Download latest WEO country data file from IMF web site (for example as `weo.csv`). 
-
-You can do it manually in a command line with `curl` command:
-
-```
-curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
-```
-
-Please note `WEOOct2019all.xls` is in fact a tab-delimited CSV file. 
-
-Alternatively, can use `weo.download()` function:
+You need the data saved as a local file.  Download latest WEO country data file from IMF web site.
 
 ```python 
 from weo import download
@@ -23,9 +20,9 @@ from weo import download
 download(year=2019, period=2, path='weo_2019_2.csv', overwrite=True)
 ```
 
-2. Use `WEO` class from `weo` package or `weo.py` to view and extract data. `WEO` is a wrapper around a by-country pandas dataframe that ensures proper data import and easier access to it.
+Use `WEO` class from `weo` package or `weo.py` to view and extract data. `WEO` is a wrapper around a by-country pandas dataframe that ensures proper data import and easier access to it.
 
-3. Things to try in a REPL, by line:
+Things to try in a REPL, by line:
 
 ```python
 from weo import WEO
@@ -50,8 +47,27 @@ w.gdp_usd(2024).head(20).sort_values().plot.barh(title="GDP by country, USD bln 
 w.country("DEU", 2018)
 ```
 
-4.  Try [Google Colab Notebook](https://colab.research.google.com/drive/1euKYK0hdKREC0HQZt6SfHqBGtSbu45eL#scrollTo=BQkkZrcw7a1V)
+## Alternative
 
-## Dev notes
+If you need just the latest data and not the vintages of WEO releases you can try *dbnomics*: 
+- <https://db.nomics.world/IMF/WEO>
+- <https://db.nomics.world/IMF/WEOAGG>
 
--  `WEOOct2019all.xls` file from the web site is really a CSV file.
+Small example:
+
+```
+from dbnomics import fetch_series_by_api_link
+ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/series/IMF/WEO/DEU.NGDPRPC?observations=1")
+```
+## Development notes
+
+- You can download in command line with `curl` command:
+```
+curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
+```
+- `WEOOct2019all.xls` file from the web site is really a CSV file.
+
+
+
+
+
