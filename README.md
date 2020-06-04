@@ -34,15 +34,12 @@ w = WEO("weo_2019_2.csv")
 # What is inside?
 # - variable listing
 w.variables()
-
 # - units
 w.units()
 w.units("Gross domestic product, current prices")
-
 # - variable codes
 w.codes
 w.from_code("LUR")
-
 # - countries
 w.countries("United")      # Dataframe with United Arab Emirates, United Kingdom
                            # and United States
