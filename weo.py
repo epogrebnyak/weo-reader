@@ -16,6 +16,7 @@ or
 
 """
 
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np  # type: ignore
@@ -28,6 +29,19 @@ class WEO_Error(ValueError):
     pass
 
 
+def check_range(year, period):
+    if (year, period) < (2007, 2):
+        raise WEO_Error(
+            f"Cannot process year and period before (2007, 2).\n"
+            f"Provided: {(year, period)}"
+        )
+
+
+def check_prefix(prefix: str):
+    if prefix not in ["all", "alla"]:
+        raise WEO_Error(prefix)
+
+
 def alpha3_to_2(alpha3: str):
     if alpha3 == "UVK":
         return "Kosovo"
@@ -35,14 +49,26 @@ def alpha3_to_2(alpha3: str):
         return countries.get(alpha3).alpha2
 
 
-def to_month(period: int):
-    try:
-        return {1: "Apr", 2: "Oct"}[period]
-    except KeyError:
+def check_period(period):
+    if not period in [1,2]:
         raise WEO_Error(f"period should be 1 or 2, got {period}")
 
 
-def _url(year, period, prefix):
+def to_month(year: int, period: int):
+    check_period(period)
+    month = {1: "Apr", 2: "Oct"}[period]
+    # Second 2011 WEO issue was in September, not October
+    if year == 2011 and period == 2:
+        month = "Sep"
+    return month
+
+
+def make_url_countries(year: int, period: int):
+    return make_url(year, period, prefix="all")
+    # NOTE: can also use "alla" for commodities
+
+
+def make_url(year, period, prefix):
     """
     URL for country data file starting Oct 2007.
     Data in other formats goes back to 2000.
@@ -50,28 +76,14 @@ def _url(year, period, prefix):
     Landing page with URLs:
     https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/download.aspx
     """
-    if prefix not in ["all", "alla"]:
-        raise WEO_Error(prefix)
-    if (year, period) < (2007, 2):
-        raise WEO_Error(
-            f"Cannot process year and period before (2007, 2).\n"
-            f"Provided: {(year, period)}"
-        )
+    check_prefix(prefix)
+    month = to_month(year, period)
     period_marker = str(period).zfill(2)
-    month = to_month(period)
-    if (
-        year == 2011 and period == 2
-    ):  # Second 2011 WEO issue was in September, not October
-        month = "Sep"
     return (
         "https://www.imf.org/external/pubs/ft/weo/"
         f"{year}/{period_marker}"
         f"/weodata/WEO{month}{year}{prefix}.xls"
     )
-
-
-def url(year, period):
-    return _url(year, period, prefix="all")  # alla for commodities
 
 
 def curl(path: str, url: str):
@@ -84,19 +96,45 @@ def curl(path: str, url: str):
     return path
 
 
-def to_mb(bytes):
+def to_mb(bytes: int):
     """Express bytes in Mb"""
     return round(bytes / 2 ** (10 * 2), 1)
 
+def size(path: str):
+    return to_mb(Path(path).stat().st_size)
 
-def download(path: str, year: int, period: int):
-    curl(path, url(year, period))
-    p = Path(path)
-    size = to_mb(p.stat().st_size)
-    print(f"Downloaded {year}-{to_month(period)} WEO dataset.")
-    print("File:", p, f"({size}Mb)")
-    return WEO(p)
+# Using "forward reference" for WEO class: https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html#miscellaneous
+def download(year: int, period: int, path: str, overwrite=False) -> 'WEO':
+    """Download WEO dataset to local file at *path*.
+    *year* and *period* identify WEO dataset.
+    *year: int* is 2017 and up. 
+    *period: int* is 1 for April release and 2 for Sept/Oct release. 
+    Set *overwrite* flag to True if you want to delete existign file at *path*
+    (default value is False).
+    """
+    check_period(period)
+    check_range(year, period)
+    r = Release(year, period)
+    r.download(path, overwrite)
+    return WEO(path)
 
+@dataclass
+class Release(object):
+    year : int
+    period : int
+
+    def download(self, path:str, overwrite: bool):    
+        if Path(path).exists() and not overwrite:
+            raise FileExistsError(path)
+        pure_download(self.year, self.period, path)
+
+def pure_download(year: int, period: int, path: str):
+    url = make_url_countries(year, period)
+    curl(path, url)
+    mb = size(path)
+    print(f"Downloaded {year}-{to_month(year, period)} WEO dataset.")
+    print("File:", path, f"({mb}Mb)")
+    return WEO(path)
 
 def convert(x):
     if isinstance(x, str) and "," in x:
@@ -148,8 +186,11 @@ class WEO:
     """Wrapper for pandas dataframe that holds
        World Economic Outlook country dataset.
 
-       Initialised by local filename, for example 'weo.csv'.
+       Initialised by local filename, example: 
+       
+       w = WEO('weo.csv')
 
+       
        Source data:
            .df
 
@@ -259,7 +300,7 @@ class WEO:
     def codes(self):
         return self._allowed_values("WEO Subject Code")
 
-    # subjects and codes
+    # subjects
 
     def variables(self, pattern=None):
         vs = [(v, u, self.to_code(v, u)) for v in self.subjects for u in self.units(v)]
@@ -271,12 +312,14 @@ class WEO:
         ix = self.df["Subject Descriptor"] == subject
         return (self.df[ix] if subject else self.df)["Units"].unique().tolist()
 
+    # codes
+
     def to_code(self, subject: str, unit: str):
         self.check_subject(subject)
         self.check_unit(subject, unit)
         return self._get_by_subject_and_unit(subject, unit)["WEO Subject Code"].iloc[0]
 
-    def from_code(self, variable_code):
+    def from_code(self, variable_code: str):
         self.check_code(variable_code)
         ix = self._subject_df.index == variable_code
         return tuple(self._subject_df[ix].transpose().iloc[:, 0].to_list())
@@ -328,7 +371,7 @@ class WEO:
         self._must_be_one_of(code, self.codes, "code")
 
     def check_country(self, iso_code):
-        self._must_be_one_of(iso_code, w.countries().ISO.to_list(), "country")
+        self._must_be_one_of(iso_code, self.countries().ISO.to_list(), "country")
 
     # assessor by subject/unit or code
 
@@ -446,8 +489,3 @@ class WEO:
         return self.get(
             "Six-month London interbank" " offered rate (LIBOR)", "Percent"
         )["USA"]
-
-
-if __name__ == "__main__":
-    w = download("2020.csv", 2020, 1)
-    _ = [w.getc(x).head() for (s, u, x) in w.variables()]

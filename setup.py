@@ -1,6 +1,6 @@
 # https://docs.python.org/3/distutils/setupscript.html
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages  # type: ignore
 from pathlib import Path
 
 with open("README.md", encoding="utf-8") as file:
@@ -11,10 +11,11 @@ with open("README.md", encoding="utf-8") as file:
 # 0.0.5 - fixed as pip-installable, Google Colab example
 # 0.0.6 - minor change of interfaces, exchange rate added
 # 0.0.7 - allow two-letter country codes
+# 0.1.2020 - change of download args and fixes for 2020 April data
 
 setup(
     name="weo",
-    version="0.0.8",
+    version="0.1.2020",
     description="Python client to read IMF WEO dataset as pandas dataframe",
     url="http://github.com/epogrebnyak/weo-reader",
     author="Evgeniy Pogrebnyak",

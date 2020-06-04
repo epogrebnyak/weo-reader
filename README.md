@@ -20,7 +20,7 @@ Alternatively, can use `weo.download()` function:
 ```python 
 from weo import download
 
-download('weo.csv', 2019, 2)
+download(year=2019, period=2, path='weo_2019_2.csv', overwrite=True)
 ```
 
 2. Use `WEO` class from `weo` package or `weo.py` to view and extract data. `WEO` is a wrapper around a by-country pandas dataframe that ensures proper data import and easier access to it.
@@ -30,23 +30,24 @@ download('weo.csv', 2019, 2)
 ```python
 from weo import WEO
 
-w = WEO('weo.csv') 
+w = WEO("weo_2019_2.csv")
 
 # What is inside?
 w.variables()
-w.units()    
-w.units('Gross domestic product, current prices')
-w.codes()
-w.code('LUR')
+w.units()
+w.units("Gross domestic product, current prices")
+w.codes
+w.from_code("LUR")
 
 # Countries
-w.find_countries('United')
-w.iso_code('Netherlands')
+w.countries("United")      # Dataframe with United Arab Emirates, United Kingdom
+                           # and United States
+w.iso_code3("Netherlands") # 'NLD'
 
 # Get some data
-w.get('General government gross debt', 'Percent of GDP')
+w.get("General government gross debt", "Percent of GDP")
 w.gdp_usd(2024).head(20).sort_values().plot.barh(title="GDP by country, USD bln (2024)")
-w.country('DEU', 2018)
+w.country("DEU", 2018)
 ```
 
 4.  Try [Google Colab Notebook](https://colab.research.google.com/drive/1euKYK0hdKREC0HQZt6SfHqBGtSbu45eL#scrollTo=BQkkZrcw7a1V)

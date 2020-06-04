@@ -1,17 +1,20 @@
-from weo import WEO
+from weo import download, WEO
 
-w = WEO("weo.csv")
+download(year=2019, period=2, path="weo_2019_2.csv", overwrite=True)
+
+w = WEO("weo_2019_2.csv")
 
 # What is inside?
 w.variables()
 w.units()
 w.units("Gross domestic product, current prices")
-w.codes()
-w.code("LUR")
+w.codes
+w.from_code("LUR")
 
 # Countries
-w.find_countries("United")
-w.iso_code("Netherlands")
+w.countries("United")  # Dataframe with United Arab Emirates, United Kingdom
+# and United States
+w.iso_code3("Netherlands")  # 'NLD'
 
 # Get some data
 w.get("General government gross debt", "Percent of GDP")
