@@ -52,10 +52,11 @@ w.gdp_usd(2024).head(20).sort_values().plot.barh(title="GDP by country, USD bln 
 w.country("DEU", 2018)
 ```
 
-## Alternative
+## Alternatives
 
-If you need just the latest data and not the vintages of WEO releases, and you know 
-what you are looking for, *dbnomics* is a good choice: 
+
+1. If you need the latest data and not the vintages of WEO releases, and you know 
+variables that you are looking for, *dbnomics* is a good choice: 
 - <https://db.nomics.world/IMF/WEO>
 - <https://db.nomics.world/IMF/WEOAGG>
 
@@ -65,6 +66,9 @@ Small example:
 from dbnomics import fetch_series_by_api_link
 ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/series/IMF/WEO/DEU.NGDPRPC?observations=1")
 ```
+
+2. Similar dataset, but not updated since 2018 (has earlier years): https://github.com/datasets/imf-weo
+
 ## Development notes
 
 - You can download the WEO file in command line with `curl` command:
