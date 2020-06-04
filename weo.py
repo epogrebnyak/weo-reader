@@ -50,7 +50,7 @@ def alpha3_to_2(alpha3: str):
 
 
 def check_period(period):
-    if not period in [1,2]:
+    if not period in [1, 2]:
         raise WEO_Error(f"period should be 1 or 2, got {period}")
 
 
@@ -100,11 +100,13 @@ def to_mb(bytes: int):
     """Express bytes in Mb"""
     return round(bytes / 2 ** (10 * 2), 1)
 
+
 def size(path: str):
     return to_mb(Path(path).stat().st_size)
 
+
 # Using "forward reference" for WEO class: https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html#miscellaneous
-def download(year: int, period: int, path: str, overwrite=False) -> 'WEO':
+def download(year: int, period: int, path: str, overwrite=False) -> "WEO":
     """Download WEO dataset to local file at *path*.
     *year* and *period* identify WEO dataset.
     *year: int* is 2017 and up. 
@@ -118,15 +120,17 @@ def download(year: int, period: int, path: str, overwrite=False) -> 'WEO':
     r.download(path, overwrite)
     return WEO(path)
 
+
 @dataclass
 class Release(object):
-    year : int
-    period : int
+    year: int
+    period: int
 
-    def download(self, path:str, overwrite: bool):    
+    def download(self, path: str, overwrite: bool):
         if Path(path).exists() and not overwrite:
             raise FileExistsError(path)
         pure_download(self.year, self.period, path)
+
 
 def pure_download(year: int, period: int, path: str):
     url = make_url_countries(year, period)
@@ -135,6 +139,7 @@ def pure_download(year: int, period: int, path: str):
     print(f"Downloaded {year}-{to_month(year, period)} WEO dataset.")
     print("File:", path, f"({mb}Mb)")
     return WEO(path)
+
 
 def convert(x):
     if isinstance(x, str) and "," in x:
