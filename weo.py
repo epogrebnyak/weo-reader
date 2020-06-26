@@ -7,16 +7,15 @@ curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2
 or
 
   from weo import download
-  download('weo.csv', 2019, 2) # 1 or 2 are release numbers
+  download(2019, 'October', '2019_2.csv') # issues are normally in April and October
 
 2. Access data as WEO class instance
 
   from weo import WEO
-  w = WEO('weo.csv')
+  w = WEO('2019_2.csv')
 
 """
 
-from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np  # type: ignore
@@ -29,12 +28,9 @@ class WEO_Error(ValueError):
     pass
 
 
-def check_range(year, period):
-    if (year, period) < (2007, 2):
-        raise WEO_Error(
-            f"Cannot process year and period before (2007, 2).\n"
-            f"Provided: {(year, period)}"
-        )
+def check_range(year, month):
+    if (year, get_period(month)) < (2007, 2):
+        raise WEO_Error("Cannot process year and period before 2007")
 
 
 def check_prefix(prefix: str):
@@ -48,27 +44,22 @@ def alpha3_to_2(alpha3: str):
     else:
         return countries.get(alpha3).alpha2
 
-
-def check_period(period):
-    if not period in [1, 2]:
-        raise WEO_Error(f"period should be 1 or 2, got {period}")
-
-
-def to_month(year: int, period: int):
-    check_period(period)
-    month = {1: "Apr", 2: "Oct"}[period]
-    # Second 2011 WEO issue was in September, not October
-    if year == 2011 and period == 2:
-        month = "Sep"
-    return month
+# TODO: add valid_dates()
+# def to_month(year: int, period: int):
+#     check_period(period)
+#     month = {1: "Apr", 2: "Oct"}[period]
+#     # Second 2011 WEO issue was in September, not October
+#     if year == 2011 and period == 2:
+#         month = "Sep"
+#     return month
 
 
-def make_url_countries(year: int, period: int):
+def make_url_countries(year: int, period: str):
     return make_url(year, period, prefix="all")
-    # NOTE: can also use "alla" for commodities
+    #NOTE: can also use "alla" for commodities
 
 
-def make_url(year, period, prefix):
+def make_url(year, month, prefix):
     """
     URL for country data file starting Oct 2007.
     Data in other formats goes back to 2000.
@@ -77,8 +68,8 @@ def make_url(year, period, prefix):
     https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/download.aspx
     """
     check_prefix(prefix)
-    month = to_month(year, period)
-    period_marker = str(period).zfill(2)
+    month = normalise(month)
+    period_marker = get_marker(month)
     return (
         "https://www.imf.org/external/pubs/ft/weo/"
         f"{year}/{period_marker}"
@@ -105,8 +96,8 @@ def size(path: str):
     return to_mb(Path(path).stat().st_size)
 
 
-# Using "forward reference" for WEO class: https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html#miscellaneous
-def download(year: int, period: int, path: str, overwrite=False) -> "WEO":
+# NOTE: using "forward reference" for WEO class: https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html#miscellaneous
+def download(year: int, period: str, path: str, overwrite=False) -> "WEO":
     """Download WEO dataset to local file at *path*.
     *year* and *period* identify WEO dataset.
     *year: int* is 2017 and up. 
@@ -114,32 +105,35 @@ def download(year: int, period: int, path: str, overwrite=False) -> "WEO":
     Set *overwrite* flag to True if you want to delete existign file at *path*
     (default value is False).
     """
-    check_period(period)
+    period=normalise(period) 
     check_range(year, period)
-    r = Release(year, period)
-    r.download(path, overwrite)
-    return WEO(path)
-
-
-@dataclass
-class Release(object):
-    year: int
-    period: int
-
-    def download(self, path: str, overwrite: bool):
-        if Path(path).exists() and not overwrite:
-            raise FileExistsError(path)
-        pure_download(self.year, self.period, path)
-
-
-def pure_download(year: int, period: int, path: str):
+    if Path(path).exists() and not overwrite:
+        raise FileExistsError(path)
     url = make_url_countries(year, period)
     curl(path, url)
-    mb = size(path)
-    print(f"Downloaded {year}-{to_month(year, period)} WEO dataset.")
-    print("File:", path, f"({mb}Mb)")
+    print(f"Downloaded {year}-{period} WEO dataset.")
+    print("File:", path, f"({size(path)}Mb)")
     return WEO(path)
 
+
+VALID_MONTHS =  {'Apr':1, 'Jun':1, 'Sep':2, 'Oct':2}
+
+def get_period(month: str) -> int:
+    return VALID_MONTHS[month]
+
+
+def get_marker(month: str) -> str:
+    return str(get_period(month)).zfill(2)
+
+def normalise(month: str):
+    valid_months = " ".join(VALID_MONTHS.keys())
+    month3 = month[0:3].lower().capitalize()
+    if month3 in valid_months:
+        return month3
+    else:
+        raise WEO_Error(f"Valid months: {valid_months}, got: {month3}")    
+
+assert normalise("Jun") == 'Jun'
 
 def convert(x):
     if isinstance(x, str) and "," in x:

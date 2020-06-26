@@ -7,7 +7,7 @@ from weo import WEO_Error, download, convert, make_url, WEO
 # persist file for testing
 path = "weo_2019_2.csv"
 if not os.path.exists(path):
-    download(2019, 2, path)
+    download(2019, 'October', path)
 
 
 @pytest.fixture
@@ -15,21 +15,21 @@ def w():
     yield WEO(path)
 
 
-def test_url_special_case_september():
+def test_url_september():
     assert (
-        make_url(2011, 2, "all")
+        make_url(2011, "Sep", "all")
         == "https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/WEOSep2011all.xls"
     )
 
 
 def test_donaload_raises_on_wrong_year():
     with pytest.raises(WEO_Error):
-        download(1999, 1, "a.txt")
+        download(1999, "apr", "a.txt")
 
 
 def test_download_raises_on_wrong_period():
     with pytest.raises(WEO_Error):
-        download(2019, 3, "a.txt")
+        download(2019, "zzz", "a.txt")
 
 
 def test_convert():
