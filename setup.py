@@ -15,15 +15,13 @@ with open("README.md", encoding="utf-8") as file:
 
 setup(
     name="weo",
-    version="0.1.2020",
+    version="0.3.0",
     description="Python client to read IMF WEO dataset as pandas dataframe",
     url="http://github.com/epogrebnyak/weo-reader",
     author="Evgeniy Pogrebnyak",
     author_email="e.pogrebnyak@gmail.com",
     license="MIT",
-    py_modules=["weo"],
-    scripts=["weo.py"],
-    packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
+    packages=["weo"], 
     long_description=readme_str,
     long_description_content_type="text/markdown",
     zip_safe=False,

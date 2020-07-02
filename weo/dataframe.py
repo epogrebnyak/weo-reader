@@ -1,41 +1,16 @@
-"""Python client to get IMF WEO datasetas pandas dataframe.
-
-1. Download country data source file from IMF website (as weo.csv):
-
-curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
-
-or
-
-  from weo import download
-  download(2019, 'October', '2019_2.csv') # issues are normally in April and October
-
-2. Access data as WEO class instance
+"""Access WEO data as dataframe
 
   from weo import WEO
-  w = WEO('2019_2.csv')
-
+  w = WEO('weo.csv')
+  
 """
-
-from pathlib import Path
-
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
-import requests  # type: ignore
 from iso3166 import countries  # type: ignore
 
 
-class WEO_Error(ValueError):
+class WEO_ParsingError(ValueError):
     pass
-
-
-def check_range(year, month):
-    if (year, get_period(month)) < (2007, 2):
-        raise WEO_Error("Cannot process year and period before 2007")
-
-
-def check_prefix(prefix: str):
-    if prefix not in ["all", "alla"]:
-        raise WEO_Error(prefix)
 
 
 def alpha3_to_2(alpha3: str):
@@ -44,96 +19,6 @@ def alpha3_to_2(alpha3: str):
     else:
         return countries.get(alpha3).alpha2
 
-# TODO: add valid_dates()
-# def to_month(year: int, period: int):
-#     check_period(period)
-#     month = {1: "Apr", 2: "Oct"}[period]
-#     # Second 2011 WEO issue was in September, not October
-#     if year == 2011 and period == 2:
-#         month = "Sep"
-#     return month
-
-
-def make_url_countries(year: int, period: str):
-    return make_url(year, period, prefix="all")
-    #NOTE: can also use "alla" for commodities
-
-
-def make_url(year, month, prefix):
-    """
-    URL for country data file starting Oct 2007.
-    Data in other formats goes back to 2000.
-
-    Landing page with URLs:
-    https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/download.aspx
-    """
-    check_prefix(prefix)
-    month = normalise(month)
-    period_marker = get_marker(month)
-    return (
-        "https://www.imf.org/external/pubs/ft/weo/"
-        f"{year}/{period_marker}"
-        f"/weodata/WEO{month}{year}{prefix}.xls"
-    )
-
-
-def curl(path: str, url: str):
-    r = requests.get(url, stream=True)
-    iterable = r.iter_content(chunk_size=1024)
-    with open(path, "wb") as f:
-        for chunk in iterable:
-            if chunk:  # filter out keep-alive new chunks
-                f.write(chunk)
-    return path
-
-
-def to_mb(bytes: int):
-    """Express bytes in Mb"""
-    return round(bytes / 2 ** (10 * 2), 1)
-
-
-def size(path: str):
-    return to_mb(Path(path).stat().st_size)
-
-
-# NOTE: using "forward reference" for WEO class: https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html#miscellaneous
-def download(year: int, period: str, path: str, overwrite=False) -> "WEO":
-    """Download WEO dataset to local file at *path*.
-    *year* and *period* identify WEO dataset.
-    *year: int* is 2017 and up. 
-    *period: int* is 1 for April release and 2 for Sept/Oct release. 
-    Set *overwrite* flag to True if you want to delete existign file at *path*
-    (default value is False).
-    """
-    period=normalise(period) 
-    check_range(year, period)
-    if Path(path).exists() and not overwrite:
-        raise FileExistsError(path)
-    url = make_url_countries(year, period)
-    curl(path, url)
-    print(f"Downloaded {year}-{period} WEO dataset.")
-    print("File:", path, f"({size(path)}Mb)")
-    return WEO(path)
-
-
-VALID_MONTHS =  {'Apr':1, 'Jun':1, 'Sep':2, 'Oct':2}
-
-def get_period(month: str) -> int:
-    return VALID_MONTHS[month]
-
-
-def get_marker(month: str) -> str:
-    return str(get_period(month)).zfill(2)
-
-def normalise(month: str):
-    valid_months = " ".join(VALID_MONTHS.keys())
-    month3 = month[0:3].lower().capitalize()
-    if month3 in valid_months:
-        return month3
-    else:
-        raise WEO_Error(f"Valid months: {valid_months}, got: {month3}")    
-
-assert normalise("Jun") == 'Jun'
 
 def convert(x):
     if isinstance(x, str) and "," in x:
@@ -185,7 +70,7 @@ class WEO:
     """Wrapper for pandas dataframe that holds
        World Economic Outlook country dataset.
 
-       Initialised by local filename, example: 
+       Initialised by local filepath: 
        
        w = WEO('weo.csv')
 
@@ -354,7 +239,7 @@ class WEO:
 
     def _must_be_one_of(self, x, xs, name: str):
         if x not in xs:
-            raise WEO_Error(
+            raise WEO_ParsingError(
                 f"{name.capitalize()} must be one of \n"
                 + ", ".join(xs)
                 + f"\nProvided {name}: {x}"
@@ -433,7 +318,7 @@ class WEO:
         elif len(iso_code) == 2:
             ix = self.df.ISO.apply(alpha3_to_2) == iso_code
         else:
-            raise WEO_Error(iso_code)
+            raise WEO_ParsingError(iso_code)
         _df = self._extract(ix, "WEO Subject Code")
         if compact:
             _df = _df[self.core_codes]
