@@ -25,6 +25,9 @@ from weo import download
 download("2019-Oct", path='weo.csv', overwrite=True)
 ```
 
+You can access releases starting 2007-Oct with this client. WEO is normally released in April and October, exception is `2011-Sep`.
+
+
 ### Read and try
 
 Use `WEO` class to view and extract data. `WEO` is a wrapper around a by-country pandas dataframe that ensures proper data import and easier access to data.
@@ -80,3 +83,4 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/series/IMF/WEO/D
 curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
 ```
 - `WEOOct2019all.xls` from the web site is really a CSV file, not an Excel file.
+- You cannot get June 2020 GDP update awith this client as the update has a different table structure and just treats one variable.
