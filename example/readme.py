@@ -5,7 +5,7 @@ download(year=2019, period=2, path="weo_2019_2.csv", overwrite=True)
 w = WEO("weo_2019_2.csv")
 
 # What is inside?
-w.variables() # [('Gross domestic product, constant prices', 'National currency', 'NGDP_R'), 
+w.variables()  # [('Gross domestic product, constant prices', 'National currency', 'NGDP_R'),
 # ... ('Current account balance', 'Percent of GDP', 'BCA_NGDPD')]
 w.units()
 w.units("Gross domestic product, current prices")
