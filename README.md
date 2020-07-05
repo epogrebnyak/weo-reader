@@ -31,7 +31,7 @@ download("2019-Oct", path='weo.csv', overwrite=True)
 You can access releases starting 2007-Oct with this client. WEO is normally released in April and October, exception is `2011-Sep`. There is a un update of GDP figures in June 2020, but the file structure is incompatible with regular releases.
 
 
-### Read and try
+### Play with data
 
 Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access/slicing of data.
 
@@ -70,12 +70,12 @@ See some data:
 w.get("General government gross debt", "Percent of GDP")
 w.getc("NGDP_RPCH")
 w.country("DEU", 2018)
+```
 
 Plot a chart:
 
 ```python
 w.gdp_usd(2024).head(20).sort_values().plot.barh(title="GDP by country, USD bln (2024)")
-
 ```
 
 ## Alternatives
