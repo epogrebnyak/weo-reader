@@ -12,6 +12,7 @@ with open("README.md", encoding="utf-8") as file:
 # 0.0.6 - minor change of interfaces, exchange rate added
 # 0.0.7 - allow two-letter country codes
 # 0.1.2020 - change of download args and fixes for 2020 April data
+# 0.3.0 - accept date as YYYY-MM
 
 setup(
     name="weo",
