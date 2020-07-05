@@ -4,8 +4,7 @@
 
 This is a third-party Python client to download [IMF World Economic Outlook Report][weo] dataset and use it as [pandas](https://pandas.pydata.org/) dataframe. 
 
-You can download [WEO releases][weo] by year and month and explore the dataset. You can access releases starting 2007-Oct with this client. WEO is normally released in April and October, exception is `2011-Sep`. There is a un update of GDP figures in June 2020, but the file 
-structure is incompatible with regular releases.
+You can download [WEO releases][weo] by year and month and explore the dataset. 
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
@@ -27,11 +26,16 @@ from weo import download
 download("2019-Oct", path='weo.csv', overwrite=True)
 ```
 
+## Available dates 
+
+You can access releases starting 2007-Oct with this client. WEO is normally released in April and October, exception is `2011-Sep`. There is a un update of GDP figures in June 2020, but the file structure is incompatible with regular releases.
+
+
 ### Read and try
 
-Use `WEO` class to view and extract data. `WEO` is a wrapper around a by-country pandas dataframe that ensures proper data import and easier access to data.
+Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access/slicing of data.
 
-Somehting to try:
+Try code below:
 
 ```python
 from weo import WEO
@@ -39,7 +43,7 @@ from weo import WEO
 w = WEO("weo.csv")
 ```
 
-What is inside?
+What variables and measurements are inside?
 
 ```python
 # variable listing
