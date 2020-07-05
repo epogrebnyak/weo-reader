@@ -1,8 +1,11 @@
 # weo-reader
 
+![Python 3.7](https://github.com/epogrebnyak/weo-reader/workflows/Python%203.7/badge.svg)
+
 This is a third-party Python client to download [IMF World Economic Outlook Report][weo] dataset and use it as [pandas](https://pandas.pydata.org/) dataframe. 
 
-You can download WEO releases by year and month and explore the dataset.
+You can download [WEO releases][weo] by year and month and explore the dataset. 
+
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
