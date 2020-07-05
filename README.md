@@ -26,9 +26,11 @@ from weo import download
 download("2019-Oct", path='weo.csv', overwrite=True)
 ```
 
-## Available dates 
+## Available dates
 
-You can access releases starting 2007-Oct with this client. WEO is normally released in April and October, exception is `2011-Sep`. There is a un update of GDP figures in June 2020, but the file structure is incompatible with regular releases.
+You can access WEO releases starting `2007-Oct` with this client. WEO is normally released in April and October? exception is `2011-Sep`. There is an update of GDP figures in [June 2020](jun2020), but the file structure is incompatible with regular releases.
+
+`2020-04`, `2020-Apr`,  `2019-October`, `2010-Oct` are all valid date formats.
 
 
 ### Play with data
@@ -103,4 +105,6 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
 curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
 ```
 - `WEOOct2019all.xls` from the web site is really a CSV file, not an Excel file.
-- You cannot get June 2020 GDP update with this client as the update has a different table structure.
+- You cannot get [June 2020 GDP update][jun2020] with this client as the update has a different table structure.
+
+[jun2020]: https://www.imf.org/en/Publications/WEO/Issues/2020/06/24/WEOUpdateJune2020
