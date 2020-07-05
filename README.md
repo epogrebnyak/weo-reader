@@ -83,7 +83,7 @@ variables that you are looking for, *dbnomics* is a good choice:
 
 Small example:
 
-```
+```python
 from dbnomics import fetch_series_by_api_link
 ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
                                "series/IMF/WEO/DEU.NGDPRPC"
