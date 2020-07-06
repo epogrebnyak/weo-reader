@@ -18,8 +18,7 @@ The program uses Python 3.7. To install `weo` as a python package use:
 
 ### Download 
    
-You need to save data as a local file before use.
- Download latest WEO country data file from IMF web site as shown below:
+You need to save data as a local file before use. Download WEO country data file from IMF web site as shown below:
 
 ```python 
 from weo import download
@@ -33,10 +32,17 @@ You can access WEO releases starting `2007-Oct` with this client. WEO is normall
 
 There is an update of GDP figures in [June 2020](jun2020), but the file structure is incompatible with regular releases.
 
-`2020-04`, `2020-Apr`,  `2020-April`,  `2019-10`, `2019-Oct`, `2019-October` are all valid date formats. 
+Valid date formats are:
 
-See the progress of https://github.com/epogrebnyak/weo-reader/issues/9 for complete date listing.
+ - `2020-04`, `2020-Apr`, `2020-April` (April release),  
+ - `2019-10`, `2019-Oct`, `2019-October` (October release). 
 
+See all availabale dates or dates for a specific year:
+
+```python
+weo.all_dates() # ['2007-Oct', '2008-Apr', ..., '2019-Oct', '2020-Apr']
+weo.dates(2019) # ['2019-Apr', '2019-Oct']
+```
 
 ### Play with data
 
