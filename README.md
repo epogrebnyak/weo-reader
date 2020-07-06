@@ -1,6 +1,7 @@
 # weo-reader
 
 ![Python 3.7](https://github.com/epogrebnyak/weo-reader/workflows/Python%203.7/badge.svg)
+[![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
 This is a third-party Python client to download [IMF World Economic Outlook Report][weo] dataset and use it as [pandas](https://pandas.pydata.org/) dataframe. 
 
