@@ -1,5 +1,6 @@
 import pytest
-from weo.download import from_date, make_url_countries, Release, WEO_DateError, download
+from weo.download import from_date, make_url_countries, Release, download
+from weo.dates import WEO_DateError
 
 def test_from_date():
   assert from_date("2020-04") == Release(year=2020, month=4)

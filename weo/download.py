@@ -14,38 +14,14 @@ from pathlib import Path
 import requests  # type: ignore
 
 from dataclasses import dataclass
-from datetime import datetime, date
-
-
-class WEO_DateError(ValueError):
-    pass
-
-
-def validate(year: int, month: int):
-    text = date(year, month, 1).strftime("%Y-%b")
-    exceptions = [(2011, 9)]
-    if (year, month) < (2007, 4):
-        raise WEO_DateError(f"Cannot work with date earlier than 2007-Apr, got {text}")
-    t = datetime.today()
-    if (year, month) > (t.year, t.month):
-        raise WEO_DateError(f"The date is in the future, got {text}")
-    if month not in [4, 10] and (year, month) not in exceptions:
-        raise WEO_DateError(f"Usual accepted months are Apr and Oct, got {text}")
-
-
-def validate_month(month: int):
-    if month not in [4, 9, 10]:
-        raise WEO_DateError(month)
+from .dates import parse_and_validate
 
 
 @dataclass
 class Release:
     year: int
     month: int
-
-    def __post_init__(self):
-        validate_month(self.month)
-
+    
     def __iter__(self):
         yield self.year
         yield self.month
@@ -57,20 +33,9 @@ class Release:
         return {4: "01", 9: "02", 10: "02"}[self.month]
 
 
-def parse(s: str):
-    for fmt in "%Y-%b", "%Y-%m", "%Y-%B":
-        try:
-            dt = datetime.strptime(s, fmt)
-            return dt.year, dt.month
-        except ValueError:
-            pass
-    raise ValueError(s)
-
-
 def from_date(s: str) -> Release:
-    return Release(*parse(s))
-
-
+    year, month = parse_and_validate(s)
+    return Release(year, month)
 
 
 def make_url_countries(r: Release):
@@ -108,7 +73,6 @@ def download(date_str: str, path: str, overwrite=False):
     (default value is False).
     """
     r = from_date(date_str)
-    validate(*r)
     if Path(path).exists() and not overwrite:
         raise FileExistsError(path)
     url = make_url_countries(r)
