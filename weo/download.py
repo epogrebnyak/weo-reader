@@ -21,7 +21,7 @@ from .dates import parse_and_validate
 class Release:
     year: int
     month: int
-    
+
     def month_string(self) -> str:
         return {4: "Apr", 9: "Sep", 10: "Oct"}[self.month]
 
@@ -91,8 +91,10 @@ def to_mb(bytes: int):
     """Express bytes in Mb"""
     return round(bytes / 2 ** (10 * 2), 1)
 
+
 def size(path: str) -> int:
     return Path(path).stat().st_size
+
 
 def size_str(path: str) -> str:
     return f"{to_mb(size(path))}Mb"

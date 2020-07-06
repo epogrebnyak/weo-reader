@@ -16,8 +16,6 @@ def w():
     yield WEO(path)
 
 
-
-
 def test_convert():
     assert convert("9,902.554") == 9902.554
 
