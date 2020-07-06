@@ -26,7 +26,7 @@ from weo import download
 download("2019-Oct", path='weo.csv', overwrite=True)
 ```
 
-## Available dates
+### Available dates
 
 You can access WEO releases starting `2007-Oct` with this client. WEO is normally released in April and October, one exception is `2011-Sep`. 
 
@@ -85,10 +85,16 @@ w.getc("NGDP_RPCH")
 w.country("DEU", 2018)
 ```
 
-Plot a chart:
+Plot a chart with largest economies in 2024 (current prices):
 
 ```python
-w.gdp_usd(2024).head(20).sort_values().plot.barh(title="GDP by country, USD bln (2024)")
+(w.gdp_usd(2024)
+  .dropna()
+  .sort_values()
+  .tail(12)
+  .plot
+  .barh(title="GDP by country, USD bln (2024)")
+)
 ```
 
 ## Alternatives
