@@ -1,4 +1,4 @@
-from weo.dates import dates, all_dates
+from weo import dates, all_dates
 
 def test_dates():        
     assert dates(2007) == ["2007-Oct"]

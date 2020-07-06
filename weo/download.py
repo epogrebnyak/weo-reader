@@ -22,10 +22,6 @@ class Release:
     year: int
     month: int
     
-    def __iter__(self):
-        yield self.year
-        yield self.month
-
     def month_string(self) -> str:
         return {4: "Apr", 9: "Sep", 10: "Oct"}[self.month]
 
@@ -78,7 +74,7 @@ def download(date_str: str, path: str, overwrite=False):
     url = make_url_countries(r)
     curl(path, url)
     print(f"Downloaded {date_str} WEO dataset.")
-    print("File:", path, f"({size(path)}Mb)")
+    print("File:", path, size_str(path))
 
 
 def curl(path: str, url: str):
@@ -95,6 +91,8 @@ def to_mb(bytes: int):
     """Express bytes in Mb"""
     return round(bytes / 2 ** (10 * 2), 1)
 
+def size(path: str) -> int:
+    return Path(path).stat().st_size
 
-def size(path: str):
-    return to_mb(Path(path).stat().st_size)
+def size_str(path: str) -> str:
+    return f"{to_mb(size(path))}Mb"
