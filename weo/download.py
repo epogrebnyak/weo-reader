@@ -1,11 +1,11 @@
 """Download dataset from IMF WEO website.
 
   from weo import download
-  download("2019-Oct', 'weo.csv')       
+  download("2020-Oct', 'weo.csv')       
            
 Equivalent to:
 
-  curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
+  curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/WEOOct2020all.xls
 
 """
 
@@ -48,15 +48,23 @@ def make_url(r, prefix):
     Data in other formats goes back to 2000.
 
     Landing page with URLs:
-    https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/download.aspx
+    https://www.imf.org/en/Publications/SPROLLs/world-economic-outlook-databases
     """
+
+    base_url = "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database"
+
     year = r.year
     month = r.month_string()
     period_marker = r.period_string()
-    return (
-        "https://www.imf.org/external/pubs/ft/weo/"
-        f"{year}/{period_marker}"
-        f"/weodata/WEO{month}{year}{prefix}.xls"
+
+    if year > 2020 or (year == 2020 and month == "Oct"):  # New URL format
+        return (
+            f"{base_url}/{year}/{period_marker}"
+            f"/WEO{month}{year}{prefix}.xls"
+        )
+    return (  # Old URL format
+        f"{base_url}/{year}"
+        f"/WEO{month}{year}{prefix}.xls"
     )
 
 
