@@ -5,7 +5,7 @@
            
 Equivalent to:
 
-  curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/WEOOct2020all.xls
+  curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls
 
 """
 
