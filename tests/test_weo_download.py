@@ -16,14 +16,14 @@ def test_from_date_fails():
 def test_make_countries_url():
     assert (
         make_url_countries(from_date("2020-04"))
-        == "https://www.imf.org/external/pubs/ft/weo/2020/01/weodata/WEOApr2020all.xls"
+        == "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/WEOApr2020all.xls"
     )
 
 
 def test_url_september():
     assert (
         make_url_countries(from_date("2011-Sep"))
-        == "https://www.imf.org/external/pubs/ft/weo/2011/02/weodata/WEOSep2011all.xls"
+        == "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2011/WEOSep2011all.xls"
     )
 
 

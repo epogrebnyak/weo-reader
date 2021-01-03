@@ -4,7 +4,7 @@ from weo import dates, all_dates
 def test_dates():
     assert dates(2007) == ["2007-Oct"]
     assert dates(2011) == ["2011-Apr", "2011-Sep"]
-    assert dates(2020) == ["2020-Apr"]
+    assert dates(2020) == ["2020-Apr", "2020-Oct"]
 
 
 def test_all_dates():
