@@ -29,8 +29,11 @@ def convert(x):
         return np.nan
 
 
-def read_csv(filename):
+def read_csv(filename):  # October 2020 and later files use UTF-16 LE encoding
     df = pd.read_csv(filename, delimiter="\t", encoding="iso-8859-1")
+    if df.isnull().iloc[0, 0]:
+        df = pd.read_csv(filename, delimiter="\t", encoding="UTF-16 LE")
+        df.dropna(how="all", axis=1, inplace=True)
     ix = df["Country"].isna()
     return df[~ix], df[ix]
 
@@ -58,7 +61,7 @@ def accept_year(func):  # FIXME: make accept a country
         if arg:
             year = arg[0]
         if year:
-            ts = df[str(year)].transpose().iloc[:, 0]
+            ts = df.transpose()[str(year)]
             return ts
         else:
             return df
@@ -325,7 +328,7 @@ class WEO:
         if year is None:
             return _df
         else:
-            _df = _df[str(year)].transpose()
+            _df = _df.transpose()[str(year)]
             _df["Description"] = _df.index.map(lambda c: " - ".join(self.from_code(c)))
             return _df
 
