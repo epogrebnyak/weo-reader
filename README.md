@@ -3,21 +3,25 @@
 ![Python 3.7](https://github.com/epogrebnyak/weo-reader/workflows/Python%203.7/badge.svg)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
-This is a third-party Python client to download [IMF World Economic Outlook Report][weo] dataset and use it as [pandas](https://pandas.pydata.org/) dataframe. 
+This is a Python client to download [IMF World Economic Outlook Report][weo] dataset and use its data as [pandas](https://pandas.pydata.org/) dataframes. 
 
 You can download [WEO releases][weo] by year and month and explore the dataset. 
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
+
+![изображение](https://user-images.githubusercontent.com/9265326/103473902-8c64da00-4dae-11eb-957c-4737f56abdce.png)
+
+
 ## Install
 
-The program uses Python 3.7. To install `weo` as a python package use:
+The program uses Python 3.7. To install `weo` as a package use:
 
 `pip install weo`
    
 ## Start using   
 
-### Download 
+### Download data
    
 You need to save data as a local file before use. Download WEO country data file from IMF web site as shown below:
 
@@ -27,7 +31,7 @@ from weo import download
 download("2019-Oct", path='weo.csv', overwrite=True)
 ```
 
-### Available dates
+### Check available dates
 
 You can access WEO releases starting `2007-Oct` with this client. WEO is normally released in April and October, one exception is `2011-Sep`. 
 
@@ -38,7 +42,7 @@ Valid date formats are:
  - `2020-04`, `2020-Apr`, `2020-April` (April release),  
  - `2019-10`, `2019-Oct`, `2019-October` (October release). 
 
-See all availabale dates or dates for a specific year:
+List all availabale dates or dates for a specific year:
 
 ```python
 weo.all_dates() # ['2007-Oct', '2008-Apr', ..., '2019-Oct', '2020-Apr']
