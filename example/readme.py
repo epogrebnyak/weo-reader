@@ -1,8 +1,8 @@
 from weo import download, WEO
 
-download(year=2019, period=2, path="weo_2019_2.csv", overwrite=True)
+download("2020-Oct", path="weo.csv", overwrite=True)
 
-w = WEO("weo_2019_2.csv")
+w = WEO("weo.csv")
 
 # What is inside?
 w.variables()  # [('Gross domestic product, constant prices', 'National currency', 'NGDP_R'),
@@ -19,6 +19,8 @@ w.iso_code3("Netherlands")  # 'NLD'
 
 # Get some data
 w.get("General government gross debt", "Percent of GDP")
-w.getc("NGDP_RPCH")
-w.gdp_usd(2024).head(20).sort_values().plot.barh(title="GDP by country, USD bln (2024)")
+w.getc("NGDPDPC")
 w.country("DEU", 2018)
+
+# Plot a chart
+w.gdp_usd(2020).dropna().sort_values().tail(12).plot.barh(title="GDP by country, USD billion (2020)")
