@@ -28,25 +28,25 @@ You need to save data as a local file before use. Download WEO country data file
 ```python 
 from weo import download
 
-download("2019-Oct", path='weo.csv', overwrite=True)
+download("2020-Oct", path='weo.csv', overwrite=True)
 ```
 
 ### Check available dates
 
-You can access WEO releases starting `2007-Oct` with this client. WEO is normally released in April and October, one exception is `2011-Sep`. 
+You can access WEO releases starting `2007-Oct` with this client. WEO is normally released in April and October, but there are exceptions like `2011-Sep`. 
 
 There is an update of GDP figures in [June 2020](jun2020), but the file structure is incompatible with regular releases.
 
 Valid date formats are:
 
  - `2020-04`, `2020-Apr`, `2020-April` (April release),  
- - `2019-10`, `2019-Oct`, `2019-October` (October release). 
+ - `2020-10`, `2020-Oct`, `2020-October` (October release). 
 
-List all availabale dates or dates for a specific year:
+List all available dates or dates for a specific year:
 
 ```python
-weo.all_dates() # ['2007-Oct', '2008-Apr', ..., '2019-Oct', '2020-Apr']
-weo.dates(2019) # ['2019-Apr', '2019-Oct']
+weo.all_dates() # ['2007-Oct', '2008-Apr', ..., '2020-Apr', '2020-Oct']
+weo.dates(2020) # ['2020-Apr', '2020-Oct']
 ```
 
 ### Play with data
@@ -90,15 +90,15 @@ w.getc("NGDP_RPCH")
 w.country("DEU", 2018)
 ```
 
-Plot a chart with largest economies in 2024 (current prices):
+Plot a chart with the 12 largest economies in 2020 (current prices):
 
 ```python
-(w.gdp_usd(2024)
+(w.gdp_usd(2020)
   .dropna()
   .sort_values()
   .tail(12)
   .plot
-  .barh(title="GDP by country, USD bln (2024)")
+  .barh(title="GDP by country, USD billion (2020)")
 )
 ```
 
@@ -124,7 +124,7 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
 
 - You can download the WEO file in command line with `curl` command:
 ```
-curl -o weo.csv https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls
+curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls
 ```
 - `WEOOct2019all.xls` from the web site is really a CSV file, not an Excel file.
 - You cannot get [June 2020 GDP update][jun2020] with this client as the update has a different table structure.
