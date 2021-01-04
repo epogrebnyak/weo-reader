@@ -56,12 +56,19 @@ def version(filename):
 
 
 def accept_year(func):  # FIXME: make accept a country
-    def inner(self, *arg, year=None):
+    def inner(self, *arg, year=None, start_year=None, end_year=None):
         df = func(self)
         if arg:
             year = arg[0]
+        elif start_year and end_year:
+            year = [start_year + y for y in range(end_year - start_year + 1)]
         if year:
-            ts = df.transpose()[str(year)]
+            if type(year) == list:
+                year = [str(y) for y in year]
+            else:
+                year = str(year)
+
+            ts = df.transpose()[year]
             return ts
         else:
             return df
@@ -112,8 +119,9 @@ class WEO:
            and other
        """
 
-    def __init__(self, filename):
+    def __init__(self, filename, id_column="ISO"):
         self.df, _ = read_csv(filename)
+        self.id_column = id_column
 
     @property
     def years(self):
@@ -293,7 +301,7 @@ class WEO:
         self.check_subject(subject)
         self.check_unit(subject, unit)
         _df = self._get_by_subject_and_unit(subject, unit)
-        return self.t(_df, "ISO")
+        return self.t(_df, self.id_column)
 
     def getc(self, code: str):
         self.check_code(code)
@@ -351,6 +359,18 @@ class WEO:
     @accept_year
     def population(self):
         return self.get("Population", "Persons")
+
+    @accept_year
+    def gdp_pc_nc(self):
+        return self.get("Gross domestic product per capita, current prices", "National currency")
+
+    @accept_year
+    def gdp_pc_usd(self):
+        return self.get("Gross domestic product per capita, current prices", "U.S. dollars")
+
+    @accept_year
+    def gdp_ppp(self):
+        return self.get("Gross domestic product, current prices", "Purchasing power parity; international dollars")
 
     @accept_year
     def gdp_growth(self):
