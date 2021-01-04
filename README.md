@@ -126,7 +126,7 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
 ```
 curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls
 ```
-- `WEOOct2019all.xls` from the web site is really a CSV file, not an Excel file.
+- `WEOOct2020all.xls` from the web site is really a CSV file, not an Excel file.
 - You cannot get [June 2020 GDP update][jun2020] with this client as the update has a different table structure.
 
 [jun2020]: https://www.imf.org/en/Publications/WEO/Issues/2020/06/24/WEOUpdateJune2020
