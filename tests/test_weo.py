@@ -1,10 +1,8 @@
-from weo import download, WEO
+from weo import get
 
 
 def test_example_readme_py():
-    download("2019-Oct", "weo.csv", overwrite=True)
-
-    w = WEO("weo.csv")
+    w = get(2019, "Oct", "weo_2019_1.csv")
 
     # What is inside?
     w.variables()
@@ -27,6 +25,5 @@ def test_example_readme_py():
 
 
 def test_2020_April():
-    download("2020-Apr", path="2020_April.csv", overwrite=True)
-    w = WEO("2020_April.csv")
+    w = get(2020, "Apr", "weo_2020_1.csv")
     _ = [w.getc(x).head() for (s, u, x) in w.variables()]

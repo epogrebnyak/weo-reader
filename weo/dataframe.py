@@ -14,9 +14,11 @@ class WEO_ParsingError(ValueError):
 
 
 def alpha3_to_2(alpha3: str):
-    if alpha3 == "UVK":
-        return "Kosovo"
-    else:
+    exceptions = dict(UVK="Kosovo",
+    WBG="West Bank/Gaza Strip")
+    try:
+        return exceptions[alpha3]
+    except KeyError:
         return countries.get(alpha3).alpha2
 
 
@@ -71,46 +73,46 @@ def accept_year(func):  # FIXME: make accept a country
 
 class WEO:
     """Wrapper for pandas dataframe that holds
-       World Economic Outlook country dataset.
+    World Economic Outlook country dataset.
 
-       Initialised by local filepath: 
-       
-       w = WEO('weo.csv')
+    Initialised by local filepath:
 
-       
-       Source data:
-           .df
+    w = WEO('weo.csv')
 
-       Attributes:
-           .subjects
-           .codes                      
-           .core_codes
-           .years
 
-       All-or-subsets inspection methods:           
-           .variables()
-           .units()
-           .countries()
+    Source data:
+        .df
 
-       Country finders:
-           .iso_code3(country_name)
-           .iso_code2(country_name)
-           .country_name(country_code)
+    Attributes:
+        .subjects
+        .codes
+        .core_codes
+        .years
 
-       Single variable dataframe:
-           .get(subject, unit)
-           .getc(code)
+    All-or-subsets inspection methods:
+        .variables()
+        .units()
+        .countries()
 
-       Multiple variable dataframe:
-           .country(country_code)
-           .fix_year(year)
+    Country finders:
+        .iso_code3(country_name)
+        .iso_code2(country_name)
+        .country_name(country_code)
 
-       Variables:
-           .gdp_usd()
-           .current_account()
-           .libor_usd()
-           and other
-       """
+    Single variable dataframe:
+        .get(subject, unit)
+        .getc(code)
+
+    Multiple variable dataframe:
+        .country(country_code)
+        .fix_year(year)
+
+    Variables:
+        .gdp_usd()
+        .current_account()
+        .libor_usd()
+        and other
+    """
 
     def __init__(self, filename):
         self.df, _ = read_csv(filename)
@@ -215,7 +217,7 @@ class WEO:
 
     def countries(self, name=None):
         """List all countries or find country names that
-           include *name* as substring. The search is case-insensitive.
+        include *name* as substring. The search is case-insensitive.
         """
         if name:
             c = name.lower()
@@ -314,7 +316,7 @@ class WEO:
             - exchange rate
             - plottable information
         See notes for:
-            - net debt            
+            - net debt
         """
         if len(iso_code) == 3:
             ix = self.df.ISO == iso_code
