@@ -25,7 +25,17 @@ w.gdp_usd(2018).dropna().sort_values(ascending=True).tail(15).plot.barh()
 
 # Is everyone growing fast?
 figure()
-g = ((w.gdp_growth().loc["2018":,] / 100 + 1).prod() ** (1 / 7) - 1) * 100
+g = (
+    (
+        w.gdp_growth().loc[
+            "2018":,
+        ]
+        / 100
+        + 1
+    ).prod()
+    ** (1 / 7)
+    - 1
+) * 100
 g.hist(bins=50)
 
 figure()

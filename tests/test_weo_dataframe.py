@@ -18,7 +18,8 @@ def w():
 
 
 def test_wbg():
-    assert alpha3_to_2("WBG") # does not fail
+    assert alpha3_to_2("WBG")  # does not fail
+
 
 def test_convert():
     assert convert("9,902.554") == 9902.554

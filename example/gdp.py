@@ -38,11 +38,18 @@ def plot_mekko(
         ]
         ax = bx - 1
         a = (
-            0 if bx == 0 else z.iloc[ax,]
+            0
+            if bx == 0
+            else z.iloc[
+                ax,
+            ]
         )
         plt.text(
             x=(a + b) / 2,
-            y=heights.loc[lab,] + y_shift,
+            y=heights.loc[
+                lab,
+            ]
+            + y_shift,
             s=lab,
             horizontalalignment="center",
         )

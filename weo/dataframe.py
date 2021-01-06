@@ -14,8 +14,7 @@ class WEO_ParsingError(ValueError):
 
 
 def alpha3_to_2(alpha3: str):
-    exceptions = dict(UVK="Kosovo",
-    WBG="West Bank/Gaza Strip")
+    exceptions = dict(UVK="Kosovo", WBG="West Bank/Gaza Strip")
     try:
         return exceptions[alpha3]
     except KeyError:
