@@ -3,8 +3,9 @@
 ![Python 3.7](https://github.com/epogrebnyak/weo-reader/workflows/Python%203.7/badge.svg)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
-This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes be release dates. You can explore country data, macro variables across countries 
-or cross-section by year. Dataset vintages are available back to 2007. 
+This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes be release dates. You can explore single country data, macro variables across countries for a given year or a single variable year-country panel. 
+
+Dataset vintages are available back to 2007, the reported data goes back to 1980.
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
