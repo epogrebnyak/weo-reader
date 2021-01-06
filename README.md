@@ -1,6 +1,6 @@
 # weo-reader
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/epogrebnyak/weo-reader/main)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/epogrebnyak/weo-reader)
 ![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 

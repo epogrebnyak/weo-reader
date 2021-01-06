@@ -13,6 +13,11 @@ st.set_page_config(
 
 
 st.title("Let's look at WEO dataset")
+
+
+"""Picture here"""
+
+st.header("Reference")
 st.header("Load the data")
 
 """
