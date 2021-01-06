@@ -5,7 +5,7 @@ GDP growth rates worldwide, as seen together with economy size.
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from weo import download, WEO
+from weo import WEO, download
 
 path, url = download(2020, 2)
 w = WEO(path)

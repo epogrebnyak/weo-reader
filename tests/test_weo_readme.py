@@ -1,4 +1,5 @@
 import pytest
+
 from weo import get
 
 w1 = get(2019, "Oct")

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+
 from weo import WEO
 
 w = WEO("weo.csv")

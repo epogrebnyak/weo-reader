@@ -1,9 +1,9 @@
 """
 AutoViz example, see https://github.com/AutoViML
 """
-from weo import get
-
 from autoviz.AutoViz_Class import AutoViz_Class
+
+from weo import get
 
 AV = AutoViz_Class()
 

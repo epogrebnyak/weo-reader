@@ -8,8 +8,8 @@ try:
 except:
     pass
 
-from typing import Optional
 import os
+from typing import Optional
 
 
 def get(year: int, release: int, path: Optional[str] = None) -> WEO:

@@ -1,5 +1,6 @@
-from weo import WEO
 from matplotlib.pyplot import figure
+
+from weo import WEO
 
 w = WEO("weo.csv")
 

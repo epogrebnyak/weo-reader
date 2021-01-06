@@ -1,6 +1,7 @@
-import streamlit as st
 import numpy as np
 import pandas as pd
+import streamlit as st
+
 import weo
 
 st.set_page_config(
@@ -21,29 +22,31 @@ w = weo.get(2020, "October")
 ```
 """
 
+
 @st.cache
 def source():
     return weo.get(2020, 2)
+
 
 st.header("What is inside?")
 st.subheader("Variable names")
 
 w = source()
-with st.echo():   
-   for c in w.core_codes:
-       st.write(c, (w.from_code(c)))
+with st.echo():
+    for c in w.core_codes:
+        st.write(c, (w.from_code(c)))
 
 """Note: more variable codes come through `w.codes`."""
 
 st.subheader("Countries")
 
-with st.echo():   
-   st.write(w.countries("United"))
+with st.echo():
+    st.write(w.countries("United"))
 
 
 st.subheader("Years")
-with st.echo():   
-  st.write(w.years)
+with st.echo():
+    st.write(w.years)
 
 """
 1. Install: 
