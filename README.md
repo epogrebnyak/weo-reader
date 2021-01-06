@@ -1,6 +1,6 @@
 # weo-reader
 
-![Python 3.7](https://github.com/epogrebnyak/weo-reader/workflows/Python%203.7/badge.svg)
+![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
 This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes be release dates. You can explore single country data, macro variables across countries for a given year or a single variable year-country panel. 
@@ -15,7 +15,7 @@ Dataset vintages are available back to 2007, the reported data goes back to 1980
 
 ## Install
 
-The program uses Python 3.7. To install `weo` use:
+The program uses Python 3.6 or higher. To install `weo` use:
 
 `pip install weo`
 
