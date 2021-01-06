@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import weo
 
 st.set_page_config(
     page_title="WEO Reader",
@@ -10,22 +11,39 @@ st.set_page_config(
 )
 
 
-def md_link(text: str, url: str):
-    return f"[{text}]({url})"
+st.title("Let's look at WEO dataset")
+st.header("Load the data")
 
+"""
+```python
 import weo
+w = weo.get(2020, "October")
+```
+"""
 
 @st.cache
 def source():
     return weo.get(2020, 2)
+
+st.header("What is inside?")
+st.subheader("Variable names")
 
 w = source()
 with st.echo():   
    for c in w.core_codes:
        st.write(c, (w.from_code(c)))
 
-st.title("Let's look at WEO dataset")
-st.header("Minimal example")
+"""Note: more variable codes come through `w.codes`."""
+
+st.subheader("Countries")
+
+with st.echo():   
+   st.write(w.countries("United"))
+
+
+st.subheader("Years")
+with st.echo():   
+  st.write(w.years)
 
 """
 1. Install: 
