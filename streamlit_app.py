@@ -13,6 +13,16 @@ st.set_page_config(
 def md_link(text: str, url: str):
     return f"[{text}]({url})"
 
+import weo
+
+@st.cache
+def source():
+    return weo.get(2020, 2)
+
+w = source()
+with st.echo():   
+   for c in w.core_codes:
+       st.write(c, (w.from_code(c)))
 
 st.title("Let's look at WEO dataset")
 st.header("Minimal example")
