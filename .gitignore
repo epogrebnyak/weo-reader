@@ -1,5 +1,6 @@
 *.csv
 .DS_Store
+*.svg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

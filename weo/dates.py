@@ -175,13 +175,7 @@ def default_filename(d: Date):
     return f"weo_{d.year}_{d.release}.csv"
 
 
-def locate(d, filename: Optional[str] = None, directory: Optional[str] = None):
-    if filename is None:
-        filename = default_filename(d)
-    if directory is None:
-        return filename
-    else:
-        return os.path.normpath(os.path.join(directory, filename))
+
 
 
 def get_date(year: int, release: Union[int, str]):
@@ -189,6 +183,15 @@ def get_date(year: int, release: Union[int, str]):
     d = Date(year, release)
     validate(d)
     return d
+
+def locate(d: Date, filename: Optional[str] = None, directory: Optional[str] = None):
+    if filename is None:
+        filename = default_filename(d)
+    if directory is None:
+        path =  filename
+    else:
+        path = os.path.join(directory, filename)
+    return os.path.normpath(path)
 
 
 def curl(path: str, url: str):
@@ -202,9 +205,21 @@ def curl(path: str, url: str):
     return path
 
 
+def accept(
+    year: int,
+    release: Union[int, str],
+    filename: Optional[str] = None,
+    directory: Optional[str] = None):
+    d = get_date(year, release)
+    path = locate(d, filename, directory)
+    url = make_url_countries(d)
+    return d, path, url
+
+
+
 def download(
     year: int,
-    release: int,
+    release: Union[int, str],
     filename: Optional[str] = None,
     directory: str = ".",
     fetch=curl,
