@@ -3,9 +3,12 @@
 ![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
-This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes be release dates. You can explore single country data, macro variables across countries for a given year or a single variable year-country panel. 
+This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes by release dates. You can explore:
+- single country macroeconomic data and forecast, 
+- macro variables across countries for a given year,
+- country-year panel for single macro variable. 
 
-Dataset vintages are available back to 2007, the reported data goes back to 1980.
+Dataset releases (vintages) are available back to 2007, the reported data goes back to 1980, forecast is three years ahead.
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
@@ -15,7 +18,7 @@ Dataset vintages are available back to 2007, the reported data goes back to 1980
 
 ## Install
 
-The program uses Python 3.6 or higher. To install `weo` use:
+The program is tested for Python 3.8. To install `weo` use:
 
 `pip install weo`
 
@@ -40,7 +43,7 @@ Your can list all years and releases available for download  with  `weo.all_rele
     from weo import all_releases
 
     for (year, release) in all_releases():
-      download(year, release, directory='weo_data') 
+      weo.download(year, release, directory='weo_data') 
 ```
 
 Note that folder 'weo_data' must exist for this script to run.
@@ -49,7 +52,6 @@ Note that folder 'weo_data' must exist for this script to run.
 
 Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access and slicing of data. 
 
-The dataset is year-variable-country-value cube, you can fix any dimension to get a table.
 
 Try code below:
 
@@ -79,13 +81,13 @@ w.countries("United")      # Dataframe with United Arab Emirates, United Kingdom
 w.iso_code3("Netherlands") # 'NLD'
 ```
 
-See some data:
-
+The dataset is year-country-variable-value cube, you can fix any dimension to get a table.
 ```python
 
 w.get("General government gross debt", "Percent of GDP")
 w.getc("NGDP_RPCH")
-w.country("DEU", 2018)
+w.country("DEU")
+w.fix_year(1994)
 ```
 
 Plot a chart with largest economies in 2024 (current prices):
