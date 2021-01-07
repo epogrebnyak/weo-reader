@@ -1,6 +1,15 @@
-from weo.dates import (Date, all_releases, current, download, first,
-                       get_season, make_url_countries, month_str, succ,
-                       validate)
+from weo.dates import (
+    Date,
+    all_releases,
+    current,
+    download,
+    first,
+    get_season,
+    make_url_countries,
+    month_str,
+    succ,
+    validate,
+)
 
 
 def test_constructor():

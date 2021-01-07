@@ -19,23 +19,26 @@ Dataset releases (vintages) are available back to 2007, the reported data goes b
 
 ## Install
 
-The program is tested for Python 3.8. To install `weo` use:
+The program is tested to run under Python 3.8. It may work well with Python version 3.6 and above.
+
+To install `weo`:
 
 `pip install weo`
 
 ## Step 1. Download data
    
-You need to save data as a local file before use. Download WEO country data from IMF web site as shown below:
+You need to save data as from IMF web site as local file. Specify year
+and release: 
 
 ```python 
 import weo
 
-weo.download(2019, "Oct", filename="weo.csv")
+weo.download(year=2020, release="Oct", filename="weo.csv")
 ```
 
-You can access WEO releases starting October 2007 with this client. WEO is normally released in April and October, one exception is September 2011. The
-release is referenced by number (`1` or `2`) or month `'Apr'`,  `'Oct'` and in 2011 - `'Sep'`.
+You can access WEO releases starting October 2007 with this client. WEO is normally released in April and October, one exception is September 2011. 
 
+Release is referenced by number (`1` or `2`) or by month (`'Apr'` or  `'Oct'`, and `'Sep'` in in 2011).
 
 Your can list all years and releases available for download  with  `weo.all_releases()`. Combine it to create local dataset of WEO vintages from 2007 to present:
 
