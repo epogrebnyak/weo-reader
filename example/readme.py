@@ -1,8 +1,9 @@
-from weo import WEO, download
+import weo
+from weo import WEO
 
-download(year=2019, period=2, path="weo_2019_2.csv", overwrite=True)
+weo.download(year=2020, release="Oct", filename="weo.csv")
 
-w = WEO("weo_2019_2.csv")
+w = WEO("weo.csv")
 
 # What is inside?
 w.variables()  # [('Gross domestic product, constant prices', 'National currency', 'NGDP_R'),
@@ -13,12 +14,18 @@ w.codes
 w.from_code("LUR")
 
 # Countries
-w.countries("United")  # Dataframe with United Arab Emirates, United Kingdom
-# and United States
+w.countries("United")       # Dataframe with United Arab Emirates, United Kingdom
+                            # and United States
 w.iso_code3("Netherlands")  # 'NLD'
 
 # Get some data
 w.get("General government gross debt", "Percent of GDP")
 w.getc("NGDP_RPCH")
-w.gdp_usd(2024).head(20).sort_values().plot.barh(title="GDP by country, USD bln (2024)")
-w.country("DEU", 2018)
+w.country("DEU")
+w.fix_year(1994)
+
+# Plot a chart
+w.gdp_usd(2024).dropna().sort_values().tail(12).plot.barh(title="GDP by country, USD billion (2024)")
+
+# Get data from year range
+w.gdp_pc_usd(start_year=2000, end_year=2020)

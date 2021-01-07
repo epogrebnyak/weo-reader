@@ -38,16 +38,16 @@ weo.download(year=2020, release="Oct", filename="weo.csv")
 
 You can access WEO releases starting October 2007 with this client. WEO is normally released in April and October, one exception is September 2011. 
 
-Release is referenced by number (`1` or `2`) or by month (`'Apr'` or  `'Oct'`, and `'Sep'` in in 2011).
+Release is referenced by number (`1` or `2`) or by month (`'Apr'` or `'Oct'`, and `'Sep'` in 2011).
 
 Your can list all years and releases available for download  with  `weo.all_releases()`. Combine it to create local dataset of WEO vintages from 2007 to present:
 
 ```python
 
-    from weo import all_releases
+from weo import all_releases
 
-    for (year, release) in all_releases():
-      weo.download(year, release, directory='weo_data') 
+for (year, release) in all_releases():
+  weo.download(year, release, directory='weo_data') 
 ```
 
 Note that folder 'weo_data' must exist for this script to run.
@@ -75,7 +75,7 @@ w.variables()
 w.units()
 w.units("Gross domestic product, current prices")
 
-# variable codesß
+# variable codes
 w.codes
 w.from_code("LUR")
 
@@ -94,7 +94,7 @@ w.country("DEU")
 w.fix_year(1994)
 ```
 
-Plot a chart with largest economies in 2024 (current prices):
+Plot a chart with the projected 12 largest economies in 2024 (current prices):
 
 ```python
 (w.gdp_usd(2024)
@@ -102,8 +102,14 @@ Plot a chart with largest economies in 2024 (current prices):
   .sort_values()
   .tail(12)
   .plot
-  .barh(title="GDP by country, USD bln (2024)")
+  .barh(title="GDP by country, USD billion (2024)")
 )
+```
+
+Get GDP per capita data from 2000 to 2020:
+
+```python
+w.gdp_pc_usd(start_year=2000, end_year=2020)
 ```
 
 ## Alternative data sources
@@ -128,11 +134,10 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
 
 - You can download the WEO file in command line with `curl` command:
 ```
-curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.x
+curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls
 ```
-- `WEOOct2019all.xls` from the web site is really a CSV file, not an Excel file.
+- `WEOOct2020all.xls` from the web site is really a CSV file, not an Excel file.
 - There is an update of GDP figures in [June 2020](jun2020), but the file structure is incompatible with regular releases.
 - Prior to 2020 the URL was similar to `https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls`
-
 
 [jun2020]: https://www.imf.org/en/Publications/WEO/Issues/2020/06/24/WEOUpdateJune2020
