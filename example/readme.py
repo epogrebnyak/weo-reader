@@ -1,4 +1,4 @@
-from weo import download, WEO
+from weo import WEO, download
 
 download("2020-Oct", path="weo.csv", overwrite=True)
 

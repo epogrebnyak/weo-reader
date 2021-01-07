@@ -1,9 +1,11 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
-from weo import WEO
 from dataclasses import dataclass
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+from weo import WEO
 
 
 @dataclass
@@ -110,7 +112,7 @@ def plot(w, code):
 
 # script
 
-w = WEO("../weo.csv")
+w = WEO("weo.csv")
 plot(w, "UA")
 
 head = """

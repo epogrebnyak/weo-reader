@@ -1,11 +1,15 @@
 # weo-reader
 
-![Python 3.7](https://github.com/epogrebnyak/weo-reader/workflows/Python%203.7/badge.svg)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/epogrebnyak/weo-reader)
+![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
-This is a Python client to download [IMF World Economic Outlook Report][weo] dataset and use its data as [pandas](https://pandas.pydata.org/) dataframes. 
+This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes by release dates. You can explore:
+- single country macroeconomic data and forecast, 
+- macro variables across countries for a given year,
+- country-year panel for single macro variable. 
 
-You can download [WEO releases][weo] by year and month and explore the dataset. 
+Dataset releases (vintages) are available back to 2007, the reported data goes back to 1980, forecast is three years ahead.
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
@@ -15,43 +19,44 @@ You can download [WEO releases][weo] by year and month and explore the dataset.
 
 ## Install
 
-The program uses Python 3.7. To install `weo` as a package use:
+The program is tested to run under Python 3.8. It may work well with Python version 3.6 and above.
+
+To install `weo`:
 
 `pip install weo`
-   
-## Start using   
 
-### Download data
+## Step 1. Download data
    
-You need to save data as a local file before use. Download WEO country data file from IMF web site as shown below:
+You need to save data as from IMF web site as local file. Specify year
+and release: 
 
 ```python 
-from weo import download
+import weo
 
-download("2020-Oct", path='weo.csv', overwrite=True)
+
+weo.download(year=2020, release="Oct", filename="weo.csv")
 ```
 
-### Check available dates
+You can access WEO releases starting October 2007 with this client. WEO is normally released in April and October, one exception is September 2011. 
 
-You can access WEO releases starting `2007-Oct` with this client. WEO is normally released in April and October, but there are exceptions like `2011-Sep`. 
+Release is referenced by number (`1` or `2`) or by month (`'Apr'` or  `'Oct'`, and `'Sep'` in in 2011).
 
-There is an update of GDP figures in [June 2020](jun2020), but the file structure is incompatible with regular releases.
-
-Valid date formats are:
-
- - `2020-04`, `2020-Apr`, `2020-April` (April release),  
- - `2020-10`, `2020-Oct`, `2020-October` (October release). 
-
-List all available dates or dates for a specific year:
+Your can list all years and releases available for download  with  `weo.all_releases()`. Combine it to create local dataset of WEO vintages from 2007 to present:
 
 ```python
-weo.all_dates() # ['2007-Oct', '2008-Apr', ..., '2020-Apr', '2020-Oct']
-weo.dates(2020) # ['2020-Apr', '2020-Oct']
+
+    from weo import all_releases
+
+    for (year, release) in all_releases():
+      weo.download(year, release, directory='weo_data') 
 ```
 
-### Play with data
+Note that folder 'weo_data' must exist for this script to run.
 
-Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access/slicing of data.
+## Step 2. Inspect data
+
+Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access and slicing of data. 
+
 
 Try code below:
 
@@ -81,30 +86,30 @@ w.countries("United")      # Dataframe with United Arab Emirates, United Kingdom
 w.iso_code3("Netherlands") # 'NLD'
 ```
 
-See some data:
-
+The dataset is year-country-variable-value cube, you can fix any dimension to get a table.
 ```python
 
 w.get("General government gross debt", "Percent of GDP")
 w.getc("NGDP_RPCH")
-w.country("DEU", 2018)
+w.country("DEU")
+w.fix_year(1994)
 ```
 
-Plot a chart with the 12 largest economies in 2020 (current prices):
+Plot a chart with the 12 largest economies in 2024 (current prices):
 
 ```python
-(w.gdp_usd(2020)
+(w.gdp_usd(2024)
   .dropna()
   .sort_values()
   .tail(12)
   .plot
-  .barh(title="GDP by country, USD billion (2020)")
+  .barh(title="GDP by country, USD billion (2024)")
 )
 ```
 
-## Alternatives
+## Alternative data sources
 
-1. If you need the latest data and not the vintages of WEO releases, and you know 
+1\. If you need the latest data as time series and not the vintages of WEO releases, and you know 
 variables that you are looking for, *dbnomics* is a good choice: 
 - <https://db.nomics.world/IMF/WEO>
 - <https://db.nomics.world/IMF/WEOAGG>
@@ -118,7 +123,7 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
                                "?observations=1")
 ```
 
-2. Similar dataset, not updated since 2018, but has earlier years: https://github.com/datasets/imf-weo
+2\. Similar dataset, not updated since 2018, but with earlier years: https://github.com/datasets/imf-weo
 
 ## Development notes
 
@@ -127,6 +132,7 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
 curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls
 ```
 - `WEOOct2020all.xls` from the web site is really a CSV file, not an Excel file.
-- You cannot get [June 2020 GDP update][jun2020] with this client as the update has a different table structure.
+- There is an update of GDP figures in [June 2020](jun2020), but the file structure is incompatible with regular releases.
+- Prior to 2020 the URL was similar to `https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls`
 
 [jun2020]: https://www.imf.org/en/Publications/WEO/Issues/2020/06/24/WEOUpdateJune2020

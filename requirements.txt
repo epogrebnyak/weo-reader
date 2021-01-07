@@ -1,5 +1,3 @@
-pandas
-numpy
-matplotlib
-iso3166
-requests
+# This is a requirements file for streamlit app
+# The weo package dependecies are in pyproject.toml
+weo

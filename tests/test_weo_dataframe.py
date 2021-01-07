@@ -1,19 +1,24 @@
 import os
 import random
+
 import pytest  # type: ignore
 
-from weo.dataframe import WEO_ParsingError, convert
-from weo import download, WEO
+from weo import WEO, download
+from weo.dataframe import WEO_ParsingError, alpha3_to_2, convert
 
 # persist file for testing
 path = "weo_2019_2.csv"
 if not os.path.exists(path):
-    download("2019-October", path)
+    download(year=2019, release="October", filename=path)
 
 
 @pytest.fixture
 def w():
     yield WEO(path)
+
+
+def test_wbg():
+    assert alpha3_to_2("WBG")  # does not fail
 
 
 def test_convert():

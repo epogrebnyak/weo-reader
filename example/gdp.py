@@ -5,9 +5,10 @@ GDP growth rates worldwide, as seen together with economy size.
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from weo import WEO
+from weo import WEO, download
 
-w = WEO("weo.csv")
+path, url = download(2020, 2)
+w = WEO(path)
 
 
 def plot_mekko(
@@ -37,11 +38,18 @@ def plot_mekko(
         ]
         ax = bx - 1
         a = (
-            0 if bx == 0 else z.iloc[ax,]
+            0
+            if bx == 0
+            else z.iloc[
+                ax,
+            ]
         )
         plt.text(
             x=(a + b) / 2,
-            y=heights.loc[lab,] + y_shift,
+            y=heights.loc[
+                lab,
+            ]
+            + y_shift,
             s=lab,
             horizontalalignment="center",
         )
@@ -53,7 +61,7 @@ def largest(w, year, n):
     return pd.DataFrame(d_).dropna().sort_values("gdp").tail(n).sort_values("growth")
 
 
-def plot_growth_mekko(source, year, nlargest=25, **kwargs):
+def plot_growth_mekko(source, year, nlargest=15, **kwargs):
     df = largest(w, year, nlargest)
     return plot_mekko(
         widths=df.gdp,
@@ -66,13 +74,13 @@ def plot_growth_mekko(source, year, nlargest=25, **kwargs):
 ax = plt.figure()
 ar = plot_growth_mekko(
     w,
-    2018,
+    2020,
     color="lavender",
     edgecolor="slategrey",
-    labels=["USA", "CHN", "IND", "JPN", "DEU", "ARG"],
+    labels=["USA", "CHN", "IND", "JPN", "DEU", "RUS"],
 )
-br = plot_growth_mekko(w, 2024, labels=["USA", "CHN", "IND"])
-plt.ylim(-3, 9)
+br = plot_growth_mekko(w, 2025, labels=["USA", "CHN", "IND"])
+plt.ylim(-15, 9)
 plt.xlabel("GDP, USD bln")
 plt.ylabel("GDP real growth rate, %")
 plt.legend([ar, br], ["2018", "2024"])

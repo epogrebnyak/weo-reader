@@ -1,16 +1,13 @@
 """
 AutoViz example, see https://github.com/AutoViML
 """
-import os
-from weo import download, WEO
-
 from autoviz.AutoViz_Class import AutoViz_Class
+
+from weo import get
 
 AV = AutoViz_Class()
 
-if not os.path.exists("weo.csv"):
-    download("2019-Oct", "weo.csv")
-w = WEO("weo.csv")
+w = get(2019, "Oct")
 dft = AV.AutoViz(
     "",
     depVar="NGDP_RPCH",
