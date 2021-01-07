@@ -33,22 +33,21 @@ and release:
 ```python 
 import weo
 
-
 weo.download(year=2020, release="Oct", filename="weo.csv")
 ```
 
 You can access WEO releases starting October 2007 with this client. WEO is normally released in April and October, one exception is September 2011. 
 
-Release is referenced by number (`1` or `2`) or by month (`'Apr'` or  `'Oct'`, and `'Sep'` in in 2011).
+Release is referenced by number (`1` or `2`) or by month (`'Apr'` or `'Oct'`, and `'Sep'` in 2011).
 
 Your can list all years and releases available for download  with  `weo.all_releases()`. Combine it to create local dataset of WEO vintages from 2007 to present:
 
 ```python
 
-    from weo import all_releases
+from weo import all_releases
 
-    for (year, release) in all_releases():
-      weo.download(year, release, directory='weo_data') 
+for (year, release) in all_releases():
+  weo.download(year, release, directory='weo_data') 
 ```
 
 Note that folder 'weo_data' must exist for this script to run.
@@ -95,7 +94,7 @@ w.country("DEU")
 w.fix_year(1994)
 ```
 
-Plot a chart with the 12 largest economies in 2024 (current prices):
+Plot a chart with the projected 12 largest economies in 2024 (current prices):
 
 ```python
 (w.gdp_usd(2024)
@@ -105,6 +104,12 @@ Plot a chart with the 12 largest economies in 2024 (current prices):
   .plot
   .barh(title="GDP by country, USD billion (2024)")
 )
+```
+
+Get GDP per capita data from 2000 to 2020:
+
+```python
+w.gdp_pc_usd(start_year=2000, end_year=2020)
 ```
 
 ## Alternative data sources
