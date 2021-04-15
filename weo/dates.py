@@ -112,6 +112,8 @@ def make_url(d: Date, prefix: str, base_url: str = base_url):
     month = month_str(d)
     period_marker = period_str(d)
     args = base_url, year, month, period_marker, prefix
+    if d == Date(2021, 1):
+        return "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2021/WEOApr2021all.ashx"
     if d >= Date(2020, 2):
         return url_after_2020(*args)
     else:
