@@ -93,29 +93,16 @@ def period_str(d: Date) -> str:
 base_url = "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database"
 
 
-def filename(year, month, prefix):
-    return f"WEO{month}{year}{prefix}.xls"
-
-
-def url_after_2020(base_url, year, month, period_marker, prefix):
-    fn = filename(year, month, prefix)
-    return f"{base_url}/{year}/{period_marker}/{fn}"
-
-
-def url_before_2020(base_url, year, month, period_marker, prefix):
-    fn = filename(year, month, prefix)
-    return f"{base_url}/{year}/{fn}"
-
-
 def make_url(d: Date, prefix: str, base_url: str = base_url):
     year = d.year
     month = month_str(d)
     period_marker = period_str(d)
-    args = base_url, year, month, period_marker, prefix
-    if d >= Date(2020, 2):
-        return url_after_2020(*args)
-    else:
-        return url_before_2020(*args)
+
+    if year == 2020 and month == "Oct":
+        return base_url + f"/{year}/{period_marker}/WEO{month}{year}{prefix}.xls"
+    return (
+        base_url + f"/{year}/WEO{month}{year}{prefix}.xls"
+    )
 
 
 def make_url_countries(d: Date):
@@ -221,6 +208,7 @@ def download(
     filename: Optional[str] = None,
     directory: str = ".",
     fetch=curl,
+    overwrite=False,
 ):
     """Download dataset from IMF WEO website by release.
 
@@ -262,7 +250,7 @@ def download(
     d = get_date(year, release)
     path = locate(d, filename, directory)
     url = make_url_countries(d)
-    if os.path.exists(path):
+    if os.path.exists(path) and not overwrite:
         print("Already downloaded", name(d), "at", path)
     else:
         fetch(path, url)
