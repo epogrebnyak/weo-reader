@@ -98,7 +98,7 @@ def make_url(d: Date, prefix: str, base_url: str = base_url):
     month = month_str(d)
     period_marker = period_str(d)
 
-    if year == 2020 and month == "Oct":
+    if d == Date(2020, 2):
         return base_url + f"/{year}/{period_marker}/WEO{month}{year}{prefix}.xls"
     return (
         base_url + f"/{year}/WEO{month}{year}{prefix}.xls"
