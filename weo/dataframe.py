@@ -85,7 +85,6 @@ class WEO:
 
     w = WEO('weo.csv')
 
-
     Source data:
         .df
 

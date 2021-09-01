@@ -5,6 +5,7 @@
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
 This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes by release dates. You can explore:
+
 - single country macroeconomic data and forecast, 
 - macro variables across countries for a given year,
 - country-year panel for single macro variable. 
@@ -40,22 +41,23 @@ You can access WEO releases starting October 2007 with this client. WEO is norma
 
 Release is referenced by number (`1` or `2`) or by month (`'Apr'` or `'Oct'`, and `'Sep'` in 2011).
 
-Your can list all years and releases available for download  with  `weo.all_releases()`. Combine it to create local dataset of WEO vintages from 2007 to present:
+Your can list all years and releases available for download  with `weo.all_releases()`. 
+Combine it to create local dataset of WEO vintages from 2007 to present:
 
 ```python
 
-from weo import all_releases
+import weo
 
-for (year, release) in all_releases():
+for (year, release) in weo.all_releases():
   weo.download(year, release, directory='weo_data') 
 ```
 
-Note that folder 'weo_data' must exist for this script to run.
+Note that folder `weo_data` must exist for this script to run,
+it will not be created automatically.
 
 ## Step 2. Inspect data
 
-Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access and slicing of data. 
-
+Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access and slicing of data across time-country-variable dimensions. 
 
 Try code below:
 
@@ -86,6 +88,7 @@ w.iso_code3("Netherlands") # 'NLD'
 ```
 
 The dataset is year-country-variable-value cube, you can fix any dimension to get a table.
+
 ```python
 
 w.get("General government gross debt", "Percent of GDP")
@@ -128,11 +131,13 @@ ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
                                "?observations=1")
 ```
 
-2\. Similar dataset, not updated since 2018, but with earlier years: https://github.com/datasets/imf-weo
+2\. Similar dataset, not updated since 2018, but with earlier years than `weo-reader`: 
+https://github.com/datasets/imf-weo
 
 ## Development notes
 
 - You can download the WEO file in command line with `curl` command:
+
 ```
 curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls
 ```
