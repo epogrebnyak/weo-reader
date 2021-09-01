@@ -1,8 +1,10 @@
 # weo-reader
 
+![PyPI](https://img.shields.io/pypi/v/weo)
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/epogrebnyak/weo-reader)
 ![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
+
 
 This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes by release dates. You can explore:
 
