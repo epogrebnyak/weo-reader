@@ -22,7 +22,7 @@ Dataset releases (vintages) are available back to 2007, the reported data goes b
 
 ## Install
 
-The program is tested to run under Python 3.8. It may work well with Python version 3.6 and above.
+The program is tested to run under Python 3.8.5. It may work well with Python version 3.6 and above.
 
 To install `weo`:
 
