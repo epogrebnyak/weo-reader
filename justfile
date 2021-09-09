@@ -18,6 +18,10 @@ docs:
   poetry run sphinx-build -a docs docs/site
   start docs/site/index.html
 
+# Generate pdf version of sphinx documentation.
+pdf:
+  poetry run sphinx-build -b rinoh docs/. docs/_build/rinoh
+
 # Push sphinx documentation to gh-pages branch.
 gh:
   poetry run ghp-import docs/site --follow-links --force --no-jekyll --push
