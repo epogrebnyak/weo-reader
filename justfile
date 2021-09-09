@@ -15,5 +15,5 @@ apidoc:
 
 # build and show documentation in browser
 docs:
-  sphinx-build -a docs docs/site
+  poetry run sphinx-build -a docs docs/site
   start docs/site/index.html
