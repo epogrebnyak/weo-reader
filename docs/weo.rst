@@ -1,4 +1,4 @@
-Weo Package TEST
+Weo Package
 ===========
 
 Submodules
