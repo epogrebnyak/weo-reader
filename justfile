@@ -17,3 +17,7 @@ apidoc:
 docs:
   poetry run sphinx-build -a docs docs/site
   start docs/site/index.html
+
+# Push sphinx documentation to gh-pages branch.
+gh:
+  poetry run ghp-import docs/site --follow-links --force --no-jekyll --push
