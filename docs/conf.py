@@ -26,3 +26,14 @@ def get_toml():
 
 
 version = get_toml()["tool"]["poetry"]["version"]
+
+rinoh_documents = [
+    dict(
+        doc='index',
+        target='weomanual',
+        title='Weo Documentation',
+        subtitle=f'Release {version}',
+        author='Evgeny Pogrebnyak',
+        template='Article'
+    )
+]
