@@ -1,4 +1,4 @@
-weo package
+Weo Package
 ===========
 
 Submodules
