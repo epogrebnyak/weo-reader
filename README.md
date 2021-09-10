@@ -117,6 +117,10 @@ Get GDP per capita data from 2000 to 2020:
 w.gdp_pc_usd(start_year=2000, end_year=2020)
 ```
 
+## Code documentation
+
+`weo` package documentation is [here](https://epogrebnyak.github.io/weo-reader/)
+
 ## Alternative data sources
 
 1\. If you need the latest data as time series and not the vintages of WEO releases, and you know 
