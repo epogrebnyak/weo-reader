@@ -83,39 +83,42 @@ class WEO:
 
     Initialised by local filepath:
 
-    w = WEO('weo.csv')
-
-    Source data:
-        .df
+       w = WEO('weo.csv')
 
     Attributes:
-        .subjects
-        .codes
-        .core_codes
-        .years
+
+     - .subjects
+     - .codes
+     - .core_codes
+     - .years
 
     All-or-subsets inspection methods:
-        .variables()
-        .units()
-        .countries()
+
+     - .variables()
+     - .units()
+     - .countries()
 
     Country finders:
-        .iso_code3(country_name)
-        .iso_code2(country_name)
-        .country_name(country_code)
+
+     - .iso_code3(country_name)
+     - .iso_code2(country_name)
+     - .country_name(country_code)
 
     Single variable dataframe:
-        .get(subject, unit)
-        .getc(code)
+
+     - .get(subject, unit)
+     - .getc(code)
 
     Multiple variable dataframe:
-        .country(country_code)
-        .fix_year(year)
+
+     - .country(country_code)
+     - .fix_year(year)
 
     Variables:
-        .gdp_usd()
-        .current_account()
-        .libor_usd()
+
+      - .gdp_usd()
+      - .current_account()
+      - .libor_usd()
         and other
     """
 
