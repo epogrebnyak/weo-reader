@@ -13,9 +13,10 @@ To run:
 Caution: this will overwrite existing conf.py file.
 """
 
-from datetime import datetime
-import toml
 import re
+from datetime import datetime
+
+import toml
 
 AUTHOR_REGEX = re.compile(r"(?u)^(?P<name>[- .,\w\d'’\"()]+)(?: <(?P<email>.+?)>)?$")
 

@@ -365,15 +365,22 @@ class WEO:
 
     @accept_year
     def gdp_pc_nc(self):
-        return self.get("Gross domestic product per capita, current prices", "National currency")
+        return self.get(
+            "Gross domestic product per capita, current prices", "National currency"
+        )
 
     @accept_year
     def gdp_pc_usd(self):
-        return self.get("Gross domestic product per capita, current prices", "U.S. dollars")
+        return self.get(
+            "Gross domestic product per capita, current prices", "U.S. dollars"
+        )
 
     @accept_year
     def gdp_ppp(self):
-        return self.get("Gross domestic product, current prices", "Purchasing power parity; international dollars")
+        return self.get(
+            "Gross domestic product, current prices",
+            "Purchasing power parity; international dollars",
+        )
 
     @accept_year
     def gdp_growth(self):

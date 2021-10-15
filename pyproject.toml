@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "weo"
-version = "0.6.4"
+version = "0.7.0"
 description = "Python client to download IMF World Economic Outlook (WEO) dataset as pandas dataframes."
 authors = ["Evgeny Pogrebnyak <e.pogrebnyak@gmail.com>"]
 readme = "README.md"

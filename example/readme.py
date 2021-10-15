@@ -14,8 +14,8 @@ w.codes
 w.from_code("LUR")
 
 # Countries
-w.countries("United")       # Dataframe with United Arab Emirates, United Kingdom
-                            # and United States
+w.countries("United")  # Dataframe with United Arab Emirates, United Kingdom
+# and United States
 w.iso_code3("Netherlands")  # 'NLD'
 
 # Get some data
@@ -25,7 +25,9 @@ w.country("DEU")
 w.fix_year(1994)
 
 # Plot a chart
-w.gdp_usd(2024).dropna().sort_values().tail(12).plot.barh(title="GDP by country, USD billion (2024)")
+w.gdp_usd(2024).dropna().sort_values().tail(12).plot.barh(
+    title="GDP by country, USD billion (2024)"
+)
 
 # Get data from year range
 w.gdp_pc_usd(start_year=2000, end_year=2020)
