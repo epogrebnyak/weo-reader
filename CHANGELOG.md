@@ -1,6 +1,12 @@
 Version changes
 ===============
 
+0.7.0 (2020-10-16)
+------------------
+
+- Fixes the url for Oct 2021 release - thanks @jm-rivera.
+- Simplified code for url creation.
+
 0.6.4 (2021-09-01)
 ------------------
 

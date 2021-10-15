@@ -90,44 +90,27 @@ def period_str(d: Date) -> str:
     return str(d.release).zfill(2)
 
 
-base_url = "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database"
-
-
-def filename(year, month, prefix):
-    return f"WEO{month}{year}{prefix}.xls"
-
-
-def url_after_2020(base_url, year, month, period_marker, prefix):
-    fn = filename(year, month, prefix)
-    return f"{base_url}/{year}/{period_marker}/{fn}"
-
-
-def url_before_2020(base_url, year, month, period_marker, prefix):
-    fn = filename(year, month, prefix)
-    return f"{base_url}/{year}/{fn}"
-
-
-def make_url(d: Date, prefix: str, base_url: str = base_url):
+def create_url(d: Date, prefix: str):
+    base_url = "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database"
     year = d.year
     month = month_str(d)
-    period_marker = period_str(d)
-    args = base_url, year, month, period_marker, prefix
-    if d == Date(2021, 1):
-        return "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2021/WEOApr2021all.ashx"
-    if d == Date(2021, 2):
-        return "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2021/WEOOct2021all.ashx"
+    # another url break in Apr 2021 - we assume the URL will persist
+    if d >= Date(2021, 1):
+        return f"{base_url}/{year}/WEO{month}{year}{prefix}.ashx"
+    # url break in Oct 2020
     if d >= Date(2020, 2):
-        return url_after_2020(*args)
-    else:
-        return url_before_2020(*args)
+        period_marker = period_str(d)
+        return f"{base_url}/{year}/{period_marker}/WEO{month}{year}{prefix}.xls"
+    # earliest files
+    return f"{base_url}/{year}/WEO{month}{year}{prefix}.xls"
 
 
 def make_url_countries(d: Date):
-    return make_url(d, prefix="all")
+    return create_url(d, prefix="all")
 
 
 def make_url_commodities(d: Date):
-    return make_url(d, prefix="alla")
+    return create_url(d, prefix="alla")
 
 
 def yield_dates():
