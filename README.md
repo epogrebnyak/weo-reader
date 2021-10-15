@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/weo)](https://pypi.org/project/weo/)
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/epogrebnyak/weo-reader)
-![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)
+[![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)](https://github.com/epogrebnyak/weo-reader/actions)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
 
