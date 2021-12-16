@@ -30,7 +30,7 @@ To install `weo`:
 
 ## Step 1. Download data
    
-You need to save data as from IMF web site as local file. Specify year
+Save data from IMF web site as local file. Specify year
 and release: 
 
 ```python 
