@@ -1,5 +1,9 @@
 package := "weo"
 
+# list available commands (default option to just)
+list:
+  just --list
+
 # launch streamlit app
 st:
   streamlit run streamlit_app.py
@@ -8,6 +12,11 @@ st:
 lint:  
    black .
    isort .
+
+# run code from README
+readme:
+  cat README.md | codedown python > readme.py
+  python readme.py
 
 # create rst source for API documentation
 apidoc:

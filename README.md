@@ -5,20 +5,17 @@
 [![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)](https://github.com/epogrebnyak/weo-reader/actions)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
 
-
 This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes by release dates. You can explore:
 
-- single country macroeconomic data and forecast, 
+- single country macroeconomic data and forecast,
 - macro variables across countries for a given year,
-- country-year panel for single macro variable. 
+- country-year panel for single macro variable.
 
 Dataset releases (vintages) are available back to 2007, the reported data goes back to 1980, forecast is three years ahead.
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
-
 ![изображение](https://user-images.githubusercontent.com/9265326/103473902-8c64da00-4dae-11eb-957c-4737f56abdce.png)
-
 
 ## Install
 
@@ -28,38 +25,64 @@ To install `weo`:
 
 `pip install weo`
 
-## Step 1. Download data
-   
-Save data from IMF web site as local file. Specify year
-and release: 
+## First glance
 
-```python 
+```python
+from weo import download, WEO
+
+path, url = download(2022, 1) # first (April) semiannual release
+w = WEO(path)
+df_cpi = w.inflation()
+print(df_cpi.USA.tail(8))
+
+# weo_2022_1.csv 18.8Mb
+# Downloaded 2022-Apr WEO dataset
+#         USA
+# 2020  1.549
+# 2021  7.426
+# 2022  5.329
+# 2023  2.337
+# 2024  2.096
+# 2025  1.970
+# 2026  1.983
+# 2027  2.017
+```
+
+## Step 1. Download data
+
+Save data from IMF web site as local file. Specify year
+and release:
+
+```python
 import weo
 
 weo.download(year=2020, release="Oct", filename="weo.csv")
 ```
 
-- You can access WEO releases starting October 2007 with this client. 
-- WEO is normally released in April and October, one exception is September 2011. 
-- Release is referenced by number (`1` or `2`) or by month (`'Apr'` or `'Oct'`, and `'Sep'` in 2011).
+- You can access WEO releases starting October 2007 with this client.
+- WEO is normally released in April and October, one exception is September 2011.
+- Release is referenced by:
+    - number  `1` or `2`, or
+    - month `'Apr'` or `'Oct'`, and `'Sep'` in 2011.
 
-Your can list all years and releases available for download  with `weo.all_releases()`. 
-Combine it to create local dataset of WEO vintages from 2007 to present:
+Your can list all years and releases available for download with `weo.all_releases()`.
+Combine to create local dataset of WEO vintages from 2007 to present:
 
 ```python
-
+import pathlib
 import weo
 
-for (year, release) in weo.all_releases():
-  weo.download(year, release, directory='weo_data') 
-```
+# create folder 
+pathlib.Path("weo_data").mkdir(parents=False, exist_ok=True)
 
-Note that folder `weo_data` must exist for this script to run,
-it will not be created automatically.
+# download all releases
+for (year, release) in weo.all_releases():
+  weo.download(year, release, directory="weo_data")
+```
 
 ## Step 2. Inspect data
 
-Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access and slicing of data across time-country-variable dimensions. 
+Use `WEO` class to view and extract data. `WEO` is a wrapper around a pandas dataframe that ensures proper data import and easier access and slicing of data across time-country-variable dimensions.
 
 Try code below:
 
@@ -123,21 +146,28 @@ w.gdp_pc_usd(start_year=2000, end_year=2020)
 
 ## Alternative data sources
 
-1\. If you need the latest data as time series and not the vintages of WEO releases, and you know 
-variables that you are looking for, *dbnomics* is a good choice: 
+1\. If you need the latest data as time series and not the vintages of WEO releases, and you know variables that you are looking for, DBnomics is a good choice:
+
 - <https://db.nomics.world/IMF/WEO>
 - <https://db.nomics.world/IMF/WEOAGG>
 
-Small example:
+Example:
 
 ```python
 from dbnomics import fetch_series_by_api_link
 ts1 = fetch_series_by_api_link("https://api.db.nomics.world/v22/"
-                               "series/IMF/WEO/DEU.NGDPRPC"
+                               "series/IMF/WEO:latest/DEU.PCPI"
                                "?observations=1")
 ```
 
-2\. Similar dataset, not updated since 2018, but with earlier years than `weo-reader`: 
+[![dbnomics](https://user-images.githubusercontent.com/9265326/168478113-00fb4d3f-11c3-43ad-9c19-28e2204f89c1.png)](https://db.nomics.world/IMF/WEO:2021-10/DEU.PCPI.idx)
+
+More on DBnomics:
+
+- [DBnomics Web API](https://db.nomics.world/docs/web-api/)
+- [Introduction to DBnomics in Python](https://notes.quantecon.org/submission/5bd32515f966080015bafbcd)
+
+2\. Similar dataset, not updated since 2018, but with earlier years than `weo-reader`:
 https://github.com/datasets/imf-weo
 
 ## Development notes
@@ -147,8 +177,9 @@ https://github.com/datasets/imf-weo
 ```
 curl -o weo.csv https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls
 ```
+
 - `WEOOct2020all.xls` from the web site is really a CSV file, not an Excel file.
 - There is an update of GDP figures in [June 2020](jun2020), but the file structure is incompatible with regular releases.
-- Prior to 2020 the URL was similar to `https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls`
+- Prior to 2020 the URL structure was similar to `https://www.imf.org/external/pubs/ft/weo/2019/02/weodata/WEOOct2019all.xls`
 
 [jun2020]: https://www.imf.org/en/Publications/WEO/Issues/2020/06/24/WEOUpdateJune2020
