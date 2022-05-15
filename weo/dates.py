@@ -5,7 +5,7 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
-import requests
+import httpx
 
 __all__ = [
     "download",
@@ -46,7 +46,7 @@ class Date:
 
 def succ(d: Date) -> Date:
     year, rel = d.year, d.release
-    if d.release == 2:
+    if rel == 2:
         year += 1
         rel = 1
     else:
@@ -61,12 +61,14 @@ def first() -> Date:
 def current() -> Date:
     y = cur_year()
     m = cur_month()
-    if m >= 10:
-        return Date(y, 2)
+    if m <= 3:
+        return Date(y - 1, 2)
     elif 4 <= m < 10:
         return Date(y, 1)
+    elif m >= 10:
+        return Date(y, 2)
     else:
-        return Date(y - 1, 2)
+        raise ValueError((m, y))
 
 
 def month(d: Date) -> int:
@@ -178,13 +180,11 @@ def locate(d: Date, filename: Optional[str] = None, directory: Optional[str] = N
         path = os.path.join(directory, filename)
     return os.path.normpath(path)
 
-
+# https://www.python-httpx.org/advanced/#monitoring-download-progress
 def curl(path: str, url: str):
-    r = requests.get(url, stream=True)
-    iterable = r.iter_content(chunk_size=1024)
     with open(path, "wb") as f:
-        for chunk in iterable:
-            if chunk:  # filter out keep-alive new chunks
+        with httpx.stream("GET", url) as r:
+            for chunk in r.iter_bytes():
                 f.write(chunk)
     print(path, size_str(path))
     return path
@@ -224,8 +224,6 @@ def download(
 
       for (year, release) in all_releases():
         download(year, release, directory='weo_data')
-
-
 
     Parameters
     ----------

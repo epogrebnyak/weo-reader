@@ -1,6 +1,20 @@
 Version changes
 ===============
 
+0.7.2 (2022-10-16)
+------------------
+
+- switched from requests to httpx 
+- disabled Sphinx and streamlit dependencies in pyproject.toml
+- above allows quicker update of poetry dependencies
+
+0.7.1 (2022-10-16)
+------------------
+
+- added latest confirmed release date to README, it is now 2022-04
+- all releases 2007-01 to 2022-04 are downloadable 
+- added just command to create readme.py and run from README.md 
+
 0.7.0 (2020-10-16)
 ------------------
 

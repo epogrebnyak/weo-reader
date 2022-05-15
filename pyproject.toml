@@ -1,22 +1,22 @@
 [tool.poetry]
 name = "weo"
-version = "0.7.1"
+version = "0.7.2"
 description = "Python client to download IMF World Economic Outlook (WEO) dataset as pandas dataframes."
 authors = ["Evgeny Pogrebnyak <e.pogrebnyak@gmail.com>"]
 readme = "README.md"
 homepage = "https://github.com/epogrebnyak/weo-reader"
 
 [tool.poetry.dependencies]
-python = "^3.7.12"
-iso3166 = "^1.0.1"
-requests = "^2.25.1"
-pandas = "^1.1.0"
-toml = "^0.10.2"
+python = ">=3.8"
+pandas = "^1.4.2"
+iso3166 = "^2.0.2"
+httpx = "^0.22.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
-streamlit = "^0.73.1"
-matplotlib = "^3.4.3"
+pytest = "^7.1.2"
+matplotlib = "^3.5.2"
+# streamlit = "^0.73.1"
+# toml = "^0.10.2"
 # Sphinx = "^3.4.2"
 # pydata-sphinx-theme = "^0.4.1"
 # myst-parser = "^0.13.1"
@@ -24,6 +24,7 @@ matplotlib = "^3.4.3"
 # sphinx-click = "^3.0.1"
 # sphinx-rtd-theme = "^0.5.2"
 # rinohtype = "^0.5.3"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
