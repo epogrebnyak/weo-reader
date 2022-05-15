@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Weo Package &mdash; weo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="weo" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> weo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Weo Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-weo.dataframe">weo.dataframe module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-weo.dates">weo.dates module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-weo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">weo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Weo Package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/weo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="weo-package">
+<h1>Weo Package<a class="headerlink" href="#weo-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-weo.dataframe">
+<span id="weo-dataframe-module"></span><h2>weo.dataframe module<a class="headerlink" href="#module-weo.dataframe" title="Permalink to this headline">¶</a></h2>
+<p>Access WEO data as dataframe</p>
+<p>from weo import WEO
+w = WEO(‘weo.csv’)</p>
+<dl class="py class">
+<dt id="weo.dataframe.WEO">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">WEO</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ISO'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper for pandas dataframe that holds
+World Economic Outlook country dataset.</p>
+<p>Initialised by local filepath:</p>
+<blockquote>
+<div><p>w = WEO(‘weo.csv’)</p>
+</div></blockquote>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname"><span class="pre">-</span> <span class="pre">.subjects</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname"><span class="pre">-</span> <span class="pre">.codes</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname"><span class="pre">-</span> <span class="pre">.core_codes</span></code></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname"><span class="pre">-</span> <span class="pre">.years</span></code></dt>
+<dd></dd></dl>
+
+<p>All-or-subsets inspection methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.variables()</p></li>
+<li><p>.units()</p></li>
+<li><p>.countries()</p></li>
+</ul>
+</div></blockquote>
+<p>Country finders:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.iso_code3(country_name)</p></li>
+<li><p>.iso_code2(country_name)</p></li>
+<li><p>.country_name(country_code)</p></li>
+</ul>
+</div></blockquote>
+<p>Single variable dataframe:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.get(subject, unit)</p></li>
+<li><p>.getc(code)</p></li>
+</ul>
+</div></blockquote>
+<p>Multiple variable dataframe:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.country(country_code)</p></li>
+<li><p>.fix_year(year)</p></li>
+</ul>
+</div></blockquote>
+<p>Variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.gdp_usd()</p></li>
+<li><p>.current_account()</p></li>
+<li><p>.libor_usd()
+and other</p></li>
+</ul>
+</div></blockquote>
+<dl class="py method">
+<dt id="weo.dataframe.WEO.check_code">
+<code class="sig-name descname"><span class="pre">check_code</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.check_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.check_country">
+<code class="sig-name descname"><span class="pre">check_country</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.check_country" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.check_subject">
+<code class="sig-name descname"><span class="pre">check_subject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.check_subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.check_unit">
+<code class="sig-name descname"><span class="pre">check_unit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.check_unit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.codes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">codes</span></code><a class="headerlink" href="#weo.dataframe.WEO.codes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.core_codes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">core_codes</span></code><a class="headerlink" href="#weo.dataframe.WEO.core_codes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.core_codes_describe">
+<code class="sig-name descname"><span class="pre">core_codes_describe</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.core_codes_describe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.countries">
+<code class="sig-name descname"><span class="pre">countries</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.countries" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all countries or find country names that
+include <em>name</em> as substring. The search is case-insensitive.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.country">
+<code class="sig-name descname"><span class="pre">country</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.country" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Must add:</dt><dd><ul class="simple">
+<li><p>exchange rate</p></li>
+<li><p>plottable information</p></li>
+</ul>
+</dd>
+<dt>See notes for:</dt><dd><ul class="simple">
+<li><p>net debt</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.country_name">
+<code class="sig-name descname"><span class="pre">country_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.country_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return country name for ISO country <em>code</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.current_account">
+<code class="sig-name descname"><span class="pre">current_account</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.current_account" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.daterange">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">daterange</span></code><a class="headerlink" href="#weo.dataframe.WEO.daterange" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.exchange_rate">
+<code class="sig-name descname"><span class="pre">exchange_rate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.exchange_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.fix_year">
+<code class="sig-name descname"><span class="pre">fix_year</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.fix_year" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.from_code">
+<code class="sig-name descname"><span class="pre">from_code</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.from_code" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>variable_code</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gdp_growth">
+<code class="sig-name descname"><span class="pre">gdp_growth</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gdp_growth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gdp_nc">
+<code class="sig-name descname"><span class="pre">gdp_nc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gdp_nc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gdp_pc_nc">
+<code class="sig-name descname"><span class="pre">gdp_pc_nc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gdp_pc_nc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gdp_pc_usd">
+<code class="sig-name descname"><span class="pre">gdp_pc_usd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gdp_pc_usd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gdp_ppp">
+<code class="sig-name descname"><span class="pre">gdp_ppp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gdp_ppp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gdp_usd">
+<code class="sig-name descname"><span class="pre">gdp_usd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gdp_usd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.get">
+<code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.get" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subject</strong> (<em>str</em>) – </p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.getc">
+<code class="sig-name descname"><span class="pre">getc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.getc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gov_gross_debt_pgdp">
+<code class="sig-name descname"><span class="pre">gov_gross_debt_pgdp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gov_gross_debt_pgdp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.gov_net_lending_pgdp">
+<code class="sig-name descname"><span class="pre">gov_net_lending_pgdp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.gov_net_lending_pgdp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.inflation">
+<code class="sig-name descname"><span class="pre">inflation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.inflation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.iso_code2">
+<code class="sig-name descname"><span class="pre">iso_code2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.iso_code2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return two-letter ISO code for <em>country_name</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>country_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.iso_code3">
+<code class="sig-name descname"><span class="pre">iso_code3</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.iso_code3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return three-letter ISO code for <em>country_name</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>country_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.libor_usd">
+<code class="sig-name descname"><span class="pre">libor_usd</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.libor_usd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.nlargest">
+<code class="sig-name descname"><span class="pre">nlargest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2018</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.nlargest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.population">
+<code class="sig-name descname"><span class="pre">population</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.population" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.subjects">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">subjects</span></code><a class="headerlink" href="#weo.dataframe.WEO.subjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.t">
+<code class="sig-name descname"><span class="pre">t</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract columns with years from <em>df</em>, make <em>column</em> an index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.to_code">
+<code class="sig-name descname"><span class="pre">to_code</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.to_code" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subject</strong> (<em>str</em>) – </p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.units">
+<code class="sig-name descname"><span class="pre">units</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.variables">
+<code class="sig-name descname"><span class="pre">variables</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.WEO.variables" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="weo.dataframe.WEO.years">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">years</span></code><a class="headerlink" href="#weo.dataframe.WEO.years" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="weo.dataframe.WEO_ParsingError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">WEO_ParsingError</span></code><a class="headerlink" href="#weo.dataframe.WEO_ParsingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="weo.dataframe.accept_year">
+<code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">accept_year</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.accept_year" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="weo.dataframe.alpha3_to_2">
+<code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">alpha3_to_2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.alpha3_to_2" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>alpha3</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="weo.dataframe.convert">
+<code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">convert</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.convert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="weo.dataframe.read_csv">
+<code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">read_csv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.read_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="weo.dataframe.split_footnote">
+<code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">split_footnote</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.split_footnote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="weo.dataframe.version">
+<code class="sig-prename descclassname"><span class="pre">weo.dataframe.</span></code><code class="sig-name descname"><span class="pre">version</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dataframe.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-weo.dates">
+<span id="weo-dates-module"></span><h2>weo.dates module<a class="headerlink" href="#module-weo.dates" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="weo.dates.Date">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">weo.dates.</span></code><code class="sig-name descname"><span class="pre">Date</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">weo.dates.Release</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dates.Date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="weo.dates.Date.release">
+<code class="sig-name descname"><span class="pre">release</span></code><em class="property"><span class="pre">:</span> <span class="pre">weo.dates.Release</span></em><a class="headerlink" href="#weo.dates.Date.release" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="weo.dates.Date.year">
+<code class="sig-name descname"><span class="pre">year</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#weo.dates.Date.year" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="weo.dates.all_releases">
+<code class="sig-prename descclassname"><span class="pre">weo.dates.</span></code><code class="sig-name descname"><span class="pre">all_releases</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#weo.dates.all_releases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide all (year, release) pairs to use in bulk download.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[int, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="weo.dates.download">
+<code class="sig-prename descclassname"><span class="pre">weo.dates.</span></code><code class="sig-name descname"><span class="pre">download</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">year</span></em>, <em class="sig-param"><span class="pre">release</span></em>, <em class="sig-param"><span class="pre">filename=None</span></em>, <em class="sig-param"><span class="pre">directory='.'</span></em>, <em class="sig-param"><span class="pre">fetch=&lt;function</span> <span class="pre">curl&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dates.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download dataset from IMF WEO website by release.</p>
+<blockquote>
+<div><p>from weo import download
+download(2020, ‘Oct’, ‘weo.csv’)</p>
+</div></blockquote>
+<p>Equivalent to:</p>
+<blockquote>
+<div><p>curl -o weo.csv <a class="reference external" href="https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls">https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2020/02/WEOOct2020all.xls</a></p>
+</div></blockquote>
+<p>To download all releases (folder ‘weo_data’ must exist):</p>
+<blockquote>
+<div><p>from weo import all_releases</p>
+<dl class="simple">
+<dt>for (year, release) in all_releases():</dt><dd><p>download(year, release, directory=’weo_data’)</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – Year of WEO release.</p></li>
+<li><p><strong>release</strong> (<em>int</em><em> or </em><em>str</em>) – For spring WEO release use 1 or ‘Apr’
+For fall WEO release use 2, ‘Oct’ or (in 2011) - ‘Sep’.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Filename where to save file.</p></li>
+<li><p><strong>directory</strong> (<em>str</em>) – Directory where to write file.</p></li>
+<li><p><strong>fetch</strong> (<em>callable</em><em>, </em><em>optional</em>) – Used for testing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>path, url</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="weo.dates.make_url_commodities">
+<code class="sig-prename descclassname"><span class="pre">weo.dates.</span></code><code class="sig-name descname"><span class="pre">make_url_commodities</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dates.make_url_commodities" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> (<a class="reference internal" href="#weo.dates.Date" title="weo.dates.Date"><em>weo.dates.Date</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="weo.dates.make_url_countries">
+<code class="sig-prename descclassname"><span class="pre">weo.dates.</span></code><code class="sig-name descname"><span class="pre">make_url_countries</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.dates.make_url_countries" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> (<a class="reference internal" href="#weo.dates.Date" title="weo.dates.Date"><em>weo.dates.Date</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-weo">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-weo" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="weo.get">
+<code class="sig-prename descclassname"><span class="pre">weo.</span></code><code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#weo.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fast-track access to dataset - download if not present,
+read from file if already downloaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – </p></li>
+<li><p><strong>release</strong> (<em>int</em>) – </p></li>
+<li><p><strong>path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#weo.dataframe.WEO" title="weo.dataframe.WEO">weo.dataframe.WEO</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="weo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Evgeny Pogrebnyak.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
