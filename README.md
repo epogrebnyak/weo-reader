@@ -62,7 +62,7 @@ weo.download(year=2020, release="Oct", filename="weo.csv")
 - You can access WEO releases starting October 2007 with this client.
 - WEO is normally released in April and October, one exception is September 2011.
 - Release is referenced by:
-    - number  `1` or `2`, or
+    - number  `1` or `2`;
     - month `'Apr'` or `'Oct'`, and `'Sep'` in 2011.
 
 Your can list all years and releases available for download with `weo.all_releases()`.
@@ -142,7 +142,7 @@ w.gdp_pc_usd(start_year=2000, end_year=2020)
 
 ## Code documentation
 
-`weo` package documentation is [here](https://epogrebnyak.github.io/weo-reader/)
+`weo` package documentation is [here](https://epogrebnyak.github.io/weo-reader/).
 
 ## Alternative data sources
 
