@@ -37,16 +37,17 @@ To install `weo`:
 
 ## First glance
 
+Get US inflation forecast from April 2022 semiannual WEO release.
+
 ```python
 from weo import download, WEO
 
-path, url = download(2022, 1) # first (April) semiannual release
-w = WEO(path)
-df_cpi = w.inflation()
-print(df_cpi.USA.tail(8))
-
+path, url = download(2022, 1)
 # weo_2022_1.csv 18.8Mb
 # Downloaded 2022-Apr WEO dataset
+
+df_cpi = WEO(path).inflation()
+print(df_cpi.USA.tail(8))
 #         USA
 # 2020  1.549
 # 2021  7.426
