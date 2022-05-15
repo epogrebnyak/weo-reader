@@ -1,6 +1,6 @@
 from weo import download, WEO
 
-path, url = download(2022, 1) # first (April) semiannual release
+path, url = download(2022, 1)  # first (April) semiannual release
 w = WEO(path)
 df_cpi = w.inflation()
 print(df_cpi.USA.tail(8))

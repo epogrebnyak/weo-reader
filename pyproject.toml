@@ -16,14 +16,14 @@ toml = "^0.10.2"
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 streamlit = "^0.73.1"
-Sphinx = "^3.4.2"
-pydata-sphinx-theme = "^0.4.1"
-myst-parser = "^0.13.1"
 matplotlib = "^3.4.3"
-ghp-import = "^2.0.1"
-sphinx-click = "^3.0.1"
-sphinx-rtd-theme = "^0.5.2"
-rinohtype = "^0.5.3"
+# Sphinx = "^3.4.2"
+# pydata-sphinx-theme = "^0.4.1"
+# myst-parser = "^0.13.1"
+# ghp-import = "^2.0.1"
+# sphinx-click = "^3.0.1"
+# sphinx-rtd-theme = "^0.5.2"
+# rinohtype = "^0.5.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
