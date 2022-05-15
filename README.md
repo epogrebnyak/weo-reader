@@ -11,7 +11,17 @@ This is a Python client to download [IMF World Economic Outlook Report][weo] dat
 - macro variables across countries for a given year,
 - country-year panel for single macro variable.
 
+## Dataset releases (vintages)
+
 Dataset releases (vintages) are available back to 2007, the reported data goes back to 1980, forecast is three years ahead.
+
+| Release          | Date         |
+| :--------------- | :-----------:|
+| Latest confirmed | April 2022   |
+| First            | October 2007 |
+
+Confirmed release is tested to be processed with `weo`.
+Usually, if something breaks in a new release users raise an [issue here](https://github.com/epogrebnyak/weo-reader/issues).
 
 [weo]: https://www.imf.org/en/Publications/WEO
 
@@ -19,7 +29,7 @@ Dataset releases (vintages) are available back to 2007, the reported data goes b
 
 ## Install
 
-The program is tested to run with Python 3.8.5 and up.
+The program is tested to run with Python 3.8.5 and higher.
 
 To install `weo`:
 
@@ -62,8 +72,8 @@ weo.download(year=2020, release="Oct", filename="weo.csv")
 - You can access WEO releases starting October 2007 with this client.
 - WEO is normally released in April and October, one exception is September 2011.
 - Release is referenced by:
-    - number  `1` or `2`;
-    - month `'Apr'` or `'Oct'`, and `'Sep'` in 2011.
+  - number `1` or `2`;
+  - month `'Apr'` or `'Oct'`, and `'Sep'` in 2011.
 
 Your can list all years and releases available for download with `weo.all_releases()`.
 Combine to create local dataset of WEO vintages from 2007 to present:
@@ -72,7 +82,7 @@ Combine to create local dataset of WEO vintages from 2007 to present:
 import pathlib
 import weo
 
-# create folder 
+# create folder
 pathlib.Path("weo_data").mkdir(parents=False, exist_ok=True)
 
 # download all releases
