@@ -8,7 +8,7 @@ homepage = "https://github.com/epogrebnyak/weo-reader"
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-pandas = "^1.4.2"
+pandas = "^1.3.5"
 iso3166 = "^2.0.2"
 httpx = "^0.22.0"
 
