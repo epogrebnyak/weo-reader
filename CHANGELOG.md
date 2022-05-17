@@ -1,14 +1,19 @@
 Version changes
 ===============
 
-0.7.2 (2022-10-16)
+ 0.7.3 (2022-05-17)
+------------------
+
+- lock python version to ">=3.7.13" and pandas version to ">=1.3.5" for Google Colab compatibility
+ 
+0.7.2 (2022-05-16)
 ------------------
 
 - switched from requests to httpx 
 - disabled Sphinx and streamlit dependencies in pyproject.toml
 - above allows quicker update of poetry dependencies
 
-0.7.1 (2022-10-16)
+0.7.1 (2022-05-16)
 ------------------
 
 - added latest confirmed release date to README, it is now 2022-04
