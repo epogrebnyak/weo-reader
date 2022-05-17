@@ -1,9 +1,12 @@
 # weo-reader
 
 [![PyPI](https://img.shields.io/pypi/v/weo)](https://pypi.org/project/weo/)
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/epogrebnyak/weo-reader)
 [![pytest](https://github.com/epogrebnyak/weo-reader/workflows/pytest/badge.svg)](https://github.com/epogrebnyak/weo-reader/actions)
 [![Downloads](https://pepy.tech/badge/weo/week)](https://pepy.tech/project/weo/week)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Dvl1N3c9uRUEulm-Kto9zqW_VCj0YtzV)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/epogrebnyak/weo-reader)
+
 
 This is a Python client to download [IMF World Economic Outlook Report][weo] dataset as [pandas](https://pandas.pydata.org/) dataframes by release dates. You can explore:
 
@@ -29,11 +32,19 @@ Usually, if something breaks in a new release users raise an [issue here](https:
 
 ## Install
 
-The program is tested to run with Python 3.8.5 and higher.
+The program is tested to run with Python 3.7.13 (as in Google Colab) and higher.
 
-To install `weo`:
+To install:
 
-`pip install weo`
+```
+pip install weo
+```
+
+Latest version:
+
+```
+pip install git+https://github.com/epogrebnyak/weo-reader.git
+```
 
 ## First glance
 
