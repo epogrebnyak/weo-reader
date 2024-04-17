@@ -84,6 +84,10 @@ def month_str(d: Date) -> str:
     return {4: "Apr", 9: "Sep", 10: "Oct"}[month(d)]
 
 
+def long_month_str(d: Date) -> str:
+    return {4: "April", 9: "September", 10: "October"}[month(d)]
+
+
 def name(d: Date) -> str:
     return f"{d.year}-{month_str(d)} WEO dataset"
 
@@ -96,6 +100,10 @@ def create_url(d: Date, prefix: str):
     base_url = "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database"
     year = d.year
     month = month_str(d)
+    long_month = long_month_str(d)
+    # New break in Apr 2024 - we assume the URL will persist
+    if d >= Date(2024, 1):
+        return f"{base_url}/{year}/{long_month}/WEO{month}{year}{prefix}.xls"
     # another url break in Apr 2021 - we assume the URL will persist
     if d >= Date(2021, 1):
         return f"{base_url}/{year}/WEO{month}{year}{prefix}.ashx"
@@ -179,6 +187,7 @@ def locate(d: Date, filename: Optional[str] = None, directory: Optional[str] = N
     else:
         path = os.path.join(directory, filename)
     return os.path.normpath(path)
+
 
 # https://www.python-httpx.org/advanced/#monitoring-download-progress
 def curl(path: str, url: str):
