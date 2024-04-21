@@ -14,6 +14,14 @@ This is a Python client to download [IMF World Economic Outlook Report][weo] dat
 - macro variables across countries for a given year,
 - country-year panel for single macro variable.
 
+## Testimonials
+
+> Thanks for your contribution and am happy to be able to work off of your codes. This is really awesome.
+
+> I have been using your WEO API which is very great!
+
+> I wanted to express our appreciation for your package, `weo-reader`. We have used the package extensively in our work. It has been an invaluable tool for efficiently updating our database and conducting research. 
+
 ## Dataset releases (vintages)
 
 Dataset releases (vintages) are available back to 2007, the reported data goes back to 1980, forecast is three years ahead.
