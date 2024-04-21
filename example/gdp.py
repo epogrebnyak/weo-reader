@@ -33,23 +33,12 @@ def plot_mekko(
     for lab in labels:
         z = widths.cumsum()
         bx = z.index.get_loc(lab)
-        b = z.iloc[
-            bx,
-        ]
+        b = z.iloc[bx,]
         ax = bx - 1
-        a = (
-            0
-            if bx == 0
-            else z.iloc[
-                ax,
-            ]
-        )
+        a = 0 if bx == 0 else z.iloc[ax,]
         plt.text(
             x=(a + b) / 2,
-            y=heights.loc[
-                lab,
-            ]
-            + y_shift,
+            y=heights.loc[lab,] + y_shift,
             s=lab,
             horizontalalignment="center",
         )

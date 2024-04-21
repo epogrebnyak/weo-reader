@@ -4,6 +4,10 @@ package := "weo"
 list:
   just --list
 
+install:
+  npm install -g codedown
+  pip install dbnomics
+
 # launch streamlit app
 st:
   streamlit run streamlit_app.py
@@ -11,7 +15,8 @@ st:
 # black and isort
 lint:  
    black .
-   isort .
+   isort . --float-to-top
+   ruff check .
 
 # run code from README
 readme:

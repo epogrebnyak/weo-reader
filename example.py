@@ -1,4 +1,4 @@
-from weo import download, WEO
+from weo import WEO, download
 
 path, url = download(2022, 1)  # first (April) semiannual release
 w = WEO(path)

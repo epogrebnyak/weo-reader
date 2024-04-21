@@ -20,7 +20,7 @@ Dataset releases (vintages) are available back to 2007, the reported data goes b
 
 | Release          | Date         |
 | :--------------- | :-----------:|
-| Latest confirmed | April 2022   |
+| Latest confirmed | April 2024   |
 | First            | October 2007 |
 
 Confirmed release is tested to be processed with `weo`.
@@ -32,7 +32,7 @@ Usually, if something breaks in a new release users raise an [issue here](https:
 
 ## Install
 
-The program is tested to run with Python 3.7.13 (as in Google Colab) and higher.
+The program is tested to run with Python 3.8 or higher.
 
 To install:
 

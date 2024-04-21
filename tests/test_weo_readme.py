@@ -35,5 +35,5 @@ def test_plot():
 
 @pytest.mark.parametrize("w", [w1, w2])
 def test_getc_in_2020_April(w):
-    for (s, u, x) in w.variables():
+    for s, u, x in w.variables():
         w.getc(x).head()

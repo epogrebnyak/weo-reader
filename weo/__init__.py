@@ -1,15 +1,11 @@
+import os
+from typing import Optional
+
 from .dataframe import WEO
 from .dates import all_releases, download
 
-try:
-    from importlib.metadata import version
-
-    __version__ = version(__name__)
-except:
-    pass
-
-import os
-from typing import Optional
+# addd everything to all
+__all__ = ["all_releases", "download", "WEO", "get"]
 
 
 def get(year: int, release: int, path: Optional[str] = None) -> WEO:

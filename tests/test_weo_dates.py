@@ -13,8 +13,8 @@ from weo.dates import (
 
 
 def test_constructor():
-    d1 = Date(2020, 1)
-    d2 = Date(2020, 2)
+    Date(2020, 1)
+    Date(2020, 2)
 
 
 def foo(a, b):

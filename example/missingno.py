@@ -1,8 +1,9 @@
+import missingno as msno
+
 from weo import WEO
 
 w = WEO("../weo.csv")
 
-import missingno as msno
 
 msno.matrix(w.df.sort_values(["ISO", "WEO Subject Code"]))
 for label in w.core_codes:

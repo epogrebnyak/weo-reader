@@ -4,6 +4,7 @@
   w = WEO('weo.csv')
   
 """
+
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
 from iso3166 import countries  # type: ignore
@@ -64,7 +65,7 @@ def accept_year(func):  # FIXME: make accept a country
         elif start_year and end_year:
             year = [start_year + y for y in range(end_year - start_year + 1)]
         if year:
-            if type(year) == list:
+            if isinstance(year, list):
                 year = [str(y) for y in year]
             else:
                 year = str(year)
@@ -132,7 +133,7 @@ class WEO:
 
     @property
     def daterange(self):
-        return pd.period_range(start=self.years[0], end=self.years[-1], freq="A")
+        return pd.period_range(start=self.years[0], end=self.years[-1], freq="Y")
 
     @property
     def core_codes(self):
@@ -283,7 +284,7 @@ class WEO:
 
     def t(self, df, column):
         """Extract columns with years from *df*, make *column* an index."""
-        _df = df[self.years + [column]].set_index(column).transpose().applymap(convert)
+        _df = df[self.years + [column]].set_index(column).transpose().map(convert)
         _df.columns.name = ""
         _df.index = self.daterange
         return _df
@@ -294,7 +295,7 @@ class WEO:
             self.df[ix][self.years + [column]]
             .set_index(column)
             .transpose()
-            .applymap(convert)
+            .map(convert)
         )
         _df.columns.name = ""
         _df.index = self.daterange
@@ -316,7 +317,7 @@ class WEO:
         return (
             self.df[["ISO", "WEO Subject Code", str(year)]]
             .pivot(index="WEO Subject Code", columns="ISO", values=str(year))
-            .applymap(convert)
+            .map(convert)
         )
 
     def country(self, iso_code, year=None, compact=True):

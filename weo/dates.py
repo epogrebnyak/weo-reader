@@ -16,12 +16,8 @@ __all__ = [
 ]
 
 
-def cur_year() -> int:
-    return datetime.today().year
-
-
-def cur_month() -> int:
-    return datetime.today().month
+def today():
+    return datetime.today()
 
 
 class Release(Enum):
@@ -45,13 +41,13 @@ class Date:
 
 
 def succ(d: Date) -> Date:
-    year, rel = d.year, d.release
-    if rel == 2:
+    year, release = d.year, d.release
+    if release == 2:
         year += 1
-        rel = 1
+        release = 1
     else:
-        rel = 2
-    return Date(year, rel)
+        release = 2
+    return Date(year, release)
 
 
 def first() -> Date:
@@ -59,8 +55,8 @@ def first() -> Date:
 
 
 def current() -> Date:
-    y = cur_year()
-    m = cur_month()
+    y = today().year
+    m = today().month
     if m <= 3:
         return Date(y - 1, 2)
     elif 4 <= m < 10:
@@ -101,17 +97,17 @@ def create_url(d: Date, prefix: str):
     year = d.year
     month = month_str(d)
     long_month = long_month_str(d)
-    # New break in Apr 2024 - we assume the URL will persist
+    # New break in Apr 2024
     if d >= Date(2024, 1):
         return f"{base_url}/{year}/{long_month}/WEO{month}{year}{prefix}.xls"
-    # another url break in Apr 2021 - we assume the URL will persist
+    # URL format breaks in Apr 2021
     if d >= Date(2021, 1):
         return f"{base_url}/{year}/WEO{month}{year}{prefix}.ashx"
-    # url break in Oct 2020
+    # URL format breaks in Oct 2020
     if d >= Date(2020, 2):
         period_marker = period_str(d)
         return f"{base_url}/{year}/{period_marker}/WEO{month}{year}{prefix}.xls"
-    # earliest files
+    # the earliest files
     return f"{base_url}/{year}/WEO{month}{year}{prefix}.xls"
 
 
@@ -240,7 +236,7 @@ def download(
         Year of WEO release.
     release : int or str
         For spring WEO release use 1 or 'Apr'
-        For fall WEO release use 2, 'Oct' or (in 2011) - 'Sep'.
+        For fall WEO release use 2, or 'Oct'. In 2011 use 2 or 'Sep'.
     filename : str
         Filename where to save file.
     directory:

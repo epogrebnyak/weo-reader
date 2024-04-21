@@ -1,6 +1,7 @@
 """
 AutoViz example, see https://github.com/AutoViML
 """
+
 from autoviz.AutoViz_Class import AutoViz_Class
 
 from weo import get

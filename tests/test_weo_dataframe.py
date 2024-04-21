@@ -4,7 +4,7 @@ import random
 import pytest  # type: ignore
 
 from weo import WEO, download
-from weo.dataframe import WEO_ParsingError, alpha3_to_2, convert
+from weo.dataframe import alpha3_to_2, convert
 
 # persist file for testing
 path = "weo_2019_2.csv"

@@ -1,5 +1,3 @@
-import datetime
-
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
@@ -41,9 +39,6 @@ with PdfPages("multipage_pdf.pdf") as pdf:
     # d['CreationDate'] = datetime.datetime(2009, 11, 13)
     # d['ModDate'] = datetime.datetime.today()
 
-import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.backends.backend_pdf import PdfPages
 
 with PdfPages("multipage.pdf") as pp:
     for i in range(0, 10):
@@ -55,8 +50,6 @@ with PdfPages("multipage.pdf") as pp:
         ax2.plot(x, np.cos(x + i * np.pi / 10))
         pp.savefig(fig)
 
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 
 # Initialize:
 with PdfPages("foo.pdf") as pdf:
