@@ -40,7 +40,7 @@ Usually, if something breaks in a new release users raise an [issue here](https:
 
 ## Install
 
-The program is tested to run with Python 3.8 or higher.
+The program runs with Python 3.9 or higher.
 
 To install:
 
