@@ -4,12 +4,13 @@ from typing import Optional
 from .dataframe import WEO
 from .dates import all_releases, download
 
-# addd everything to all
-__all__ = ["all_releases", "download", "WEO", "get"]
+# Add everything to all
+__all__ = ["all_releases", "download", "get", "WEO"]
 
 
 def get(year: int, release: int, path: Optional[str] = None) -> WEO:
-    """Fast-track access to dataset - download if not present,
+    """Fast-track access to dataset:
+    download if not present,
     read from file if already downloaded.
     """
     from .dates import accept
